@@ -1,0 +1,2146 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>慢病工作台 - 龙虾智能问答（截图版）</title>
+<style>
+*{box-sizing:border-box;font-family:system-ui, sans-serif}
+body{background:#f5f7fa;padding:20px;margin:0}
+.container{max-width:960px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08)}
+.header{padding:16px;border-bottom:1px solid #eee}
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.doctor-info{font-size:12px;color:#5f6d82;text-align:right;white-space:nowrap}
+.patient-info{background:#f8f9fa;padding:12px 16px;border-radius:8px;font-size:14px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+#header-patient-info.is-hidden{display:none !important}
+.patient-summary{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.patient-more{color:#007bff;font-size:13px;cursor:pointer;flex-shrink:0}
+.patient-more:hover{text-decoration:underline}
+.tabs{display:flex;background:#f9f9f9;border-bottom:1px solid #eee}
+.tab{padding:14px 20px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:8px}
+.tab.active{color:#007bff;font-weight:500;border-bottom:2px solid #007bff;background:#fff}
+.qa-label{display:inline-flex;align-items:center;gap:4px}
+.mode-bar{display:flex;gap:10px;padding:10px 16px;border-bottom:1px solid #eee}
+.mode-btn{padding:6px 14px;border-radius:20px;border:1px solid #ccc;background:#fff;cursor:pointer}
+.mode-btn.active{background:#007bff;color:white;border-color:#007bff}
+.content{height:500px;overflow:hidden}
+.tab-content{display:none;height:100%}
+.tab-content.active{display:block}
+.screenshot{width:100%;height:100%;object-fit:contain}
+.workbench-page{padding:10px;background:#f4f6fa;display:flex;flex-direction:column;gap:8px;max-height:560px;overflow:auto}
+.wb-card{background:#fff;border:1px solid #e8edf4;border-radius:4px}
+.wb-title{padding:8px 10px;font-size:12px;font-weight:700;color:#20304a;border-bottom:1px solid #edf1f6}
+.wb-title::before{content:"▍";color:#4a86ff;margin-right:4px}
+.wb-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:8px}
+.wb-sub{border:1px solid #eef2f7}
+.wb-sub-hd{background:#edf2fa;color:#2e3d55;font-size:11px;padding:5px 8px;font-weight:700}
+.wb-row{display:grid;grid-template-columns:88px 1fr;align-items:center;padding:5px 8px;border-top:1px solid #f1f3f8;font-size:10px;color:#3a465a}
+.wb-row .muted{color:#7b8798}
+.wb-tag{display:inline-block;border:1px solid #f0a2a2;color:#d25d5d;background:#fff5f5;border-radius:10px;padding:1px 6px;font-size:10px;margin-right:4px}
+.wb-health{padding:8px}
+.wb-health-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.wb-btn{height:26px;border:1px solid #4a86ff;background:#4a86ff;color:#fff;border-radius:3px;font-size:11px;padding:0 10px;cursor:pointer}
+.wb-health-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.wb-panel{border:1px solid #eef2f7;min-height:160px;padding:8px}
+.wb-panel-title{font-size:11px;font-weight:700;color:#30435f;margin-bottom:7px}
+.wb-item{margin-bottom:8px}
+.wb-item-name{font-size:10px;color:#4d596f;margin-bottom:2px}
+.wb-line{height:4px;background:#eceff5;border-radius:999px;position:relative}
+.wb-line-fill{height:4px;background:#e04f5f;border-radius:999px}
+.wb-v{font-size:10px;color:#d73f53;text-align:right}
+.wb-chart{height:110px;border-left:1px solid #dce3ee;border-bottom:1px solid #dce3ee;position:relative;margin:8px}
+.wb-chart::before{content:"";position:absolute;left:0;right:0;top:30%;border-top:1px solid #eef2f7}
+.wb-chart::after{content:"";position:absolute;left:0;right:0;top:62%;border-top:1px solid #eef2f7}
+.wb-point{position:absolute;color:#d73f53;font-size:10px}
+.wb-foot{font-size:10px;color:#7c8798;line-height:1.3;margin-top:8px}
+.wb-bottom{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.wb-table-wrap{padding:0 8px 8px}
+.wb-table-head{display:flex;justify-content:flex-end;padding:6px 0}
+.wb-table{width:100%;border-collapse:collapse;font-size:11px}
+.wb-table th{background:#edf2fa;color:#32445f;font-weight:700;padding:6px;border:1px solid #e7edf6;text-align:left}
+.wb-table td{padding:7px 6px;border:1px solid #eef2f7;color:#3d4b60}
+.wb-empty{text-align:center;color:#97a1af}
+.record-page{padding:10px;background:#f4f6fa;max-height:560px;overflow:auto}
+.record-layout{display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:start}
+.record-main{display:flex;flex-direction:column;gap:10px}
+.record-card{background:#fff;border:1px solid #e8edf4;border-radius:4px}
+.record-title{padding:8px 10px;font-size:12px;font-weight:700;color:#20304a;border-bottom:1px solid #edf1f6}
+.record-title::before{content:"▍";color:#4a86ff;margin-right:4px}
+.record-subtitle{padding:6px 10px;font-size:12px;color:#4a86ff;font-weight:700}
+.record-table{width:100%;border-collapse:collapse;font-size:11px}
+.record-table th{background:#edf2fa;color:#32445f;font-weight:700;padding:6px;border:1px solid #e7edf6;text-align:left;white-space:nowrap;font-size:10px}
+.record-table td{padding:6px;border:1px solid #eef2f7;color:#3d4b60;vertical-align:top;font-size:10px}
+.record-muted{color:#8d97a6}
+.record-warn{color:#d75353;font-weight:700}
+.record-link{color:#4a86ff;text-decoration:none}
+.record-grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:8px 10px 10px}
+.record-grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px 10px 10px}
+.record-field{display:grid;grid-template-columns:96px 1fr;font-size:11px;line-height:1.45;gap:6px}
+.record-field .k{color:#6e7788}
+.record-field .v{color:#334055}
+.record-list{padding:0 10px 10px;display:flex;flex-direction:column;gap:8px}
+.record-block{border-top:1px dashed #e8edf4;padding-top:8px}
+.record-block:first-child{border-top:none;padding-top:0}
+.record-label{font-size:11px;font-weight:700;color:#2f405d;margin-bottom:5px}
+.record-index{position:sticky;top:8px;background:#fff;border:1px solid #e8edf4;border-radius:4px;padding:8px}
+.record-index-title{font-size:13px;font-weight:700;color:#2f3d56;margin-bottom:6px}
+.record-index a{display:block;font-size:11px;color:#43526b;text-decoration:none;padding:4px 0}
+.record-index a:hover{color:#2f6ee5}
+.guide-page{padding:10px;background:#f4f6fa;max-height:560px;overflow:auto}
+.guide-card{background:#fff;border:1px solid #e8edf4;border-radius:4px;padding:8px}
+.guide-tabs{display:flex;gap:18px;font-size:11px;color:#5a667b;padding:2px 2px 10px}
+.guide-tab{cursor:pointer}
+.guide-tab.active{color:#2f6ee5;font-weight:700;border-bottom:2px solid #2f6ee5;padding-bottom:4px}
+.guide-filter{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.g-label{font-size:11px;color:#5f6d82}
+.g-input,.g-select{height:28px;border:1px solid #dbe2ee;border-radius:3px;background:#fff;padding:0 8px;font-size:11px;color:#334055}
+.g-input{min-width:120px}
+.g-date{min-width:170px}
+.g-btn{height:28px;border-radius:3px;border:1px solid #d6deea;background:#fff;color:#3a4b66;font-size:11px;padding:0 12px;cursor:pointer}
+.g-btn.primary{background:#2f6ee5;color:#fff;border-color:#2f6ee5}
+.g-btn.dark{margin-left:auto;background:#444;color:#fff;border-color:#444;border-radius:12px;padding:0 10px}
+.guide-table{width:100%;border-collapse:collapse;font-size:11px}
+.guide-table th{background:#edf2fa;color:#32445f;font-weight:700;padding:6px;border:1px solid #e7edf6;text-align:left;font-size:10px}
+.guide-table td{padding:7px 6px;border:1px solid #eef2f7;color:#3d4b60;font-size:10px}
+.guide-link{color:#2f6ee5;text-decoration:none;font-weight:700;font-size:10px}
+.guide-pagination{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:8px 2px 2px;font-size:11px;color:#657287}
+.guide-page-btn{width:20px;height:20px;border:1px solid #d9e1ee;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:#4b5b75}
+.guide-page-btn.active{background:#2f6ee5;color:#fff;border-color:#2f6ee5}
+.ref-page{padding:10px;background:#f4f6fa;max-height:560px;overflow:auto}
+.ref-card{background:#fff;border:1px solid #e8edf4;border-radius:4px}
+.ref-subtabs{display:flex;gap:0;border-bottom:1px solid #e9eef6}
+.ref-subtab{padding:8px 14px;font-size:11px;color:#4f5d74;cursor:pointer;background:#f7f9fd;border-right:1px solid #e9eef6}
+.ref-subtab.active{background:#fff;color:#12a06f;font-weight:700}
+.ref-pane{display:none}
+.ref-pane.active{display:block}
+.ref-book-top{display:flex;justify-content:flex-end;padding:8px 10px;font-size:11px;color:#6b778c}
+.ref-book-wrap{padding:8px 10px 16px}
+.ref-label{font-size:11px;color:#44526b;font-weight:700;margin-bottom:8px}
+.ref-radio-row{display:flex;gap:16px;align-items:center;margin-bottom:46px}
+.ref-radio-row label{font-size:12px;color:#7b8798}
+.ref-empty{padding:70px 0 140px;text-align:center;font-size:16px;color:#2b3a52}
+.ref-rule{border-top:1px dashed #e6ebf4;padding-top:10px;font-size:11px;color:#5f6d82;line-height:1.6}
+.ref-rule p{margin:4px 0}
+.ref-filter{display:grid;grid-template-columns:repeat(6,minmax(120px,1fr));gap:8px;padding:10px}
+.ref-field{display:flex;align-items:center;gap:6px}
+.ref-field .k{font-size:11px;color:#5f6d82;white-space:nowrap}
+.ref-input,.ref-select{height:28px;border:1px solid #dbe2ee;border-radius:3px;background:#fff;padding:0 8px;font-size:11px;color:#334055;min-width:0;width:100%}
+.ref-actions{grid-column:span 6;display:flex;justify-content:flex-end;gap:8px}
+.ref-btn{height:28px;border-radius:3px;border:1px solid #d6deea;background:#fff;color:#3a4b66;font-size:11px;padding:0 12px;cursor:pointer}
+.ref-btn.primary{background:#10a37f;color:#fff;border-color:#10a37f}
+.ref-table-wrap{padding:0 10px 10px}
+.ref-table{width:100%;border-collapse:collapse;font-size:11px}
+.ref-table th{background:#edf2fa;color:#32445f;font-weight:700;padding:6px;border:1px solid #e7edf6;text-align:left;white-space:nowrap;font-size:10px}
+.ref-table td{padding:7px 6px;border:1px solid #eef2f7;color:#3d4b60;font-size:10px}
+.ref-pager{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:8px 2px 4px;font-size:11px;color:#657287}
+.chat-area{flex:1;padding:16px;display:flex;flex-direction:column;min-height:0}
+.chat{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px;min-height:0}
+.chat-compose{display:flex;gap:8px;align-items:center;padding-top:12px;margin-top:4px;border-top:1px solid #e8ecf1;flex-shrink:0}
+.chat-input{flex:1;min-width:0;height:40px;border:1px solid #dbe2ee;border-radius:10px;padding:0 14px;font-size:14px;color:#1f2937;background:#fff}
+.chat-input::placeholder{color:#9aa5b5}
+.chat-input:focus{outline:none;border-color:#2f6ee5;box-shadow:0 0 0 3px rgba(47,110,229,.12)}
+.chat-send-btn{height:40px;padding:0 18px;border-radius:10px;border:none;background:#2f6ee5;color:#fff;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
+.chat-send-btn:hover{background:#2563c9}
+.doctor-hint{font-size:11px;color:#6b778c;line-height:1.5;margin:0 0 10px;padding:8px 10px;background:#f4f7fb;border-radius:8px;border:1px solid #e8edf4}
+.doctor-subscribe-wrap{margin-top:12px;padding-top:12px;border-top:1px dashed #d0d8e4}
+.doctor-subscribe-wrap .doctor-subscribe-label{font-size:11px;color:#8b95a8;margin:0 0 6px}
+.btn.btn-subscribe{background:#f8fafc;color:#64748b;border:1px dashed #cbd5e1;font-weight:500;font-size:12px}
+.btn.btn-subscribe:hover{background:#f1f5f9;color:#475569}
+.msg{max-width:80%;padding:10px 14px;border-radius:14px;line-height:1.5}
+.user{background:#007bff;color:white;align-self:flex-end}
+.assistant{background:#e9f0ff;color:#222;align-self:flex-start;white-space:pre-wrap}
+.assistant-card{background:#f5f8ff;border:1px solid #dfe8ff}
+.assistant-card{padding:14px 16px;border-radius:12px}
+.assistant-card > div:first-child{font-size:17px;line-height:1.4;font-weight:600;color:#2f3c56;margin-bottom:10px}
+.assistant-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:2px}
+.assistant-action-btn{border:1px solid #cbd8f5;background:#fff;color:#2f5db3;border-radius:16px;height:34px;padding:0 14px;font-size:12px;font-weight:600;cursor:pointer}
+.assistant-action-btn.primary{background:#2f6ee5;border-color:#2f6ee5;color:#fff}
+.claw-summary{background:#f7f9ff;border:1px solid #dbe4ff;padding:12px;border-radius:12px}
+.claw-card-title{font-size:16px;font-weight:700;color:#29447a;margin-bottom:8px;line-height:1.35}
+.claw-card-body{white-space:pre-wrap;color:#2f3c56;font-size:13px;line-height:1.5}
+.risk-card{background:#f7f9ff;border:1px solid #dbe4ff;white-space:normal;padding:12px}
+.risk-group{margin-top:8px}
+.risk-group-title{font-size:12px;font-weight:700;color:#3b4f73;margin-bottom:6px}
+.risk-row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.risk-name{min-width:86px;color:#4a5c7e;font-size:12px}
+.risk-tag{display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:12px;font-size:12px;font-weight:700;border:1px solid}
+.risk-tag.red{background:#fff1f1;color:#c93a3a;border-color:#f1b2b2}
+.risk-tag.yellow{background:#fff8e9;color:#b87912;border-color:#f0d39c}
+.risk-tag.blue{background:#eef4ff;color:#2f63d6;border-color:#bdd0ff}
+.risk-tag.purple{background:#f3efff;color:#6f44c9;border-color:#d5c5ff}
+.risk-note{margin-top:8px;padding-top:8px;border-top:1px dashed #d9e1f7;color:#4f5e79;font-size:12px;line-height:1.45}
+.check-card{background:#f7f9ff;border:1px solid #dbe4ff;padding:12px;border-radius:12px;white-space:normal}
+.check-tabs{display:flex;gap:18px;border-bottom:1px solid #dfe6f7;margin:6px 0 10px}
+.check-tab{padding:0 2px 8px;font-size:12px;color:#61728f;cursor:pointer}
+.check-tab.active{color:#2f6ee5;font-weight:700;border-bottom:2px solid #2f6ee5}
+.check-tip{font-size:12px;color:#2f6ee5;margin-bottom:6px}
+.check-table{width:100%;border-collapse:collapse;font-size:12px}
+.check-table th,.check-table td{border:1px solid #d8dfef;padding:8px 10px;vertical-align:top}
+.check-table th{background:#eaf0fa;color:#33486c;text-align:left}
+.check-link{color:#2f6ee5;text-decoration:none}
+.check-muted{color:#8090ac}
+.check-row-warn td{background:#fff7f7}
+.check-row-warn .check-link{color:#d94b4b}
+.check-refer{margin-top:10px;font-size:12px;color:#44526b;line-height:1.5}
+.quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+.quick-btn{border:1px solid #d7e0f2;background:#fff;color:#2f6ee5;border-radius:18px;height:34px;padding:0 14px;font-size:12px;cursor:pointer}
+.quick-action-card{background:#e9f0ff;border:1px solid #dbe4ff;white-space:normal;padding:10px 12px;border-radius:12px}
+.quick-action-card .quick-actions{margin-top:0}
+.panel{width:260px;flex:0 0 260px;min-width:260px;border-left:1px solid #eee;padding:12px;background:#fafbfc;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.panel-body-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-right:4px;margin-right:-4px}
+.panel-log-wrap{flex-shrink:0;border-top:1px solid #e5e7eb;margin-top:8px;padding-top:10px;display:flex;flex-direction:column;gap:6px;min-height:0;max-height:42%}
+.panel-log-wrap .log{max-height:140px;overflow-y:auto;word-break:break-word}
+#tab-lobster .content{display:flex;align-items:stretch;min-height:0;height:500px}
+#tab-lobster .chat-area{min-height:0}
+.btns{display:flex;flex-direction:column;gap:8px}
+.btn{padding:9px 12px;background:#007bff;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;text-align:left}
+.btn:disabled{background:#ccc;cursor:not-allowed}
+.group{font-size:12px;color:#666;margin:8px 0 4px 2px}
+.log-title{font-size:13px;font-weight:500;margin-bottom:6px}
+.log{font-size:12px;color:#333;line-height:1.4}
+.log-item{margin-bottom:4px}
+.typing::after{content:"...";animation:typing 1s infinite}
+@keyframes typing{0%{content:"."}50%{content:"..."}100%{content:"."}}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);display:none;justify-content:center;align-items:center}
+.modal-content{background:#fff;border-radius:8px;width:380px;padding:20px}
+.modal-title{font-weight:bold;margin-bottom:10px}
+.modal-btns{display:flex;gap:8px;margin-top:16px}
+.modal-btn{flex:1;padding:8px;border-radius:6px;border:none;cursor:pointer}
+.primary{background:#007bff;color:white}
+.disease-modal-step{display:none}
+.disease-modal-step.active{display:block}
+.modal-sub{font-size:12px;color:#5a6678;line-height:1.45;margin:8px 0 12px}
+.modal-pill-list{display:flex;flex-direction:column;gap:8px;margin:12px 0}
+.modal-pill-btn{width:100%;border:1px solid #cfe0ff;background:#f5f9ff;color:#2f6ee5;border-radius:999px;padding:10px 14px;font-size:13px;cursor:pointer;text-align:center}
+.modal-pill-btn:hover{background:#eaf2ff}
+.modal-pill-btn.active{background:#d6e8ff;border-color:#9ec5ff;font-weight:600}
+.modal-back{font-size:12px;color:#2f6ee5;cursor:pointer;background:none;border:none;padding:0;margin-bottom:10px}
+.fill-block{display:none;margin-top:10px}
+.fill-hint{font-size:11px;color:#6b778c;margin:0 0 8px;line-height:1.4}
+.fill-row{margin-bottom:8px}
+.fill-row label{display:block;font-size:12px;color:#334055;margin-bottom:4px}
+.fill-row input,.fill-row select{width:100%;padding:8px;border-radius:6px;border:1px solid #dbe2ee}
+.fill-error{color:#c0392b;font-size:12px;margin-top:6px;display:none}
+.ai-deep-card{background:#f7f9ff;border:1px solid #dbe4ff;border-radius:12px;padding:12px;max-width:100%;white-space:normal}
+.ai-deep-card .claw-card-title{font-size:15px;font-weight:700;color:#29447a;margin-bottom:8px}
+.ai-deep-badge{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:#1a7f4c;background:#e8f7ee;border-radius:8px;padding:6px 10px;margin-bottom:10px}
+.ai-deep-details{margin-bottom:6px;border:1px solid #d9e3f5;border-radius:8px;background:#fff;overflow:hidden}
+.ai-deep-details>summary{cursor:pointer;padding:8px 10px;font-size:12px;font-weight:600;color:#2f4a73;background:#eef4fc;list-style:none}
+.ai-deep-details>summary::-webkit-details-marker{display:none}
+.ai-deep-details[open]>summary{border-bottom:1px solid #e2ebf7}
+.ai-deep-body{padding:8px 10px;font-size:11px;line-height:1.45;color:#334055}
+.ai-deep-body--flush{padding:0}
+.ai-deep-body .kv{margin:3px 0;padding-left:8px;border-left:2px solid #cfe0ff}
+.ai-plan-title{font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:6px}
+.ai-plan-sub{font-size:11px;color:#5a6a86;margin-bottom:8px}
+.ai-plan-link{float:right;font-size:11px;color:#2f6ee5}
+.med-plan-card{border:1px solid #c5d9f5;border-radius:8px;margin-bottom:10px;overflow:hidden;background:#fff}
+.med-plan-card--anchor{border-color:#7eb3e8;box-shadow:0 2px 8px rgba(47,110,229,.1)}
+.med-plan-hd{background:linear-gradient(180deg,#e8f1fc,#dceaf8);padding:8px 10px;font-size:12px;font-weight:600;color:#1a3d6b;display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.med-plan-combo{background:linear-gradient(180deg,#dbeaf9,#cfe3f8);padding:9px 10px;font-size:12px;font-weight:700;color:#102a4a;line-height:1.45;border-top:1px solid #b8d4f0}
+.med-plan-strategy-note{font-size:11px;color:#334055;padding:10px 10px;background:#f8fbff;border-top:1px solid #e2ebf7;line-height:1.5}
+.med-plan-cost{font-size:11px;color:#b45309;padding:6px 10px;background:#fffbeb;border-bottom:1px solid #f5e6c8}
+.med-drug-row{font-size:11px;padding:6px 10px;border-top:1px solid #eef2f7;line-height:1.4}
+.med-drug-row strong{color:#20304a}
+.med-note{font-size:11px;color:#4a5568;padding:8px 10px;background:#fafbfc;border-top:1px dashed #e2e8f0}
+.support-block{margin-bottom:10px}
+.support-block strong{display:block;font-size:12px;color:#1e3a5f;margin:6px 0 4px}
+.support-block ul{margin:4px 0 8px 16px;padding:0;font-size:11px;line-height:1.5;color:#334055}
+.support-block li{margin:2px 0}
+.support-more{font-size:11px;color:#2f6ee5;margin-top:6px;cursor:pointer}
+.ai-deep-foot{font-size:10px;color:#8b95a8;margin-top:10px;padding-top:8px;border-top:1px dashed #d9e3f5}
+.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);display:none;z-index:99}
+.detail-drawer{position:fixed;top:0;right:-340px;width:340px;max-width:92vw;height:100%;background:#fff;box-shadow:-2px 0 12px rgba(0,0,0,0.15);z-index:100;transition:right .25s ease;display:flex;flex-direction:column}
+.detail-drawer.open{right:0}
+.detail-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #eee}
+.detail-title{font-size:15px;font-weight:600}
+.detail-close{border:none;background:#fff;font-size:20px;line-height:1;cursor:pointer;color:#666}
+.detail-body{padding:0;overflow:auto;flex:1;background:#f4f5f7}
+.patient-card{padding:10px 10px 14px;color:#2f3542}
+.patient-head{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+.avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#cfe2ff,#d9dde6)}
+.patient-name{font-size:16px;font-weight:700;line-height:1.15}
+.patient-age{font-size:12px;font-weight:600;color:#4b5563}
+.pair-row{display:flex;align-items:center;justify-content:space-between;margin:6px 0}
+.pair-label{font-size:13px;font-weight:700;color:#4b5563}
+.pill{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:13px;border:1px solid #6ea8ff;color:#2f6ee5;background:#eef5ff;font-size:13px;font-weight:700}
+.pill.warn{border-color:#f6b26b;background:#fff6ed;color:#e58a2a}
+.section-title{margin:12px 0 5px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:7px;color:#111827}
+.section-title::before{content:"✚";font-size:10px;width:15px;height:15px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#4c8ffb;color:#fff}
+.section-title.info::before{content:"i";font-weight:700}
+.line-text{font-size:13px;line-height:1.35;margin:4px 0;color:#2f3542}
+.line-strong{font-size:17px;font-weight:800;line-height:1}
+.link-more{margin-left:auto;font-size:13px;color:#2f6ee5;text-decoration:none}
+.note-box{width:100%;min-height:100px;border:1px solid #d4d8de;border-radius:6px;padding:9px 10px;font-size:13px;line-height:1.35;color:#374151;resize:vertical;background:#f8f9fb}
+.save-wrap{display:flex;justify-content:center;margin-top:12px}
+.save-btn{min-width:82px;height:30px;border:none;border-radius:6px;background:#4c8ffb;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <div class="header-top">
+      <h3 style="margin:0">慢病管理工作台</h3>
+      <div class="doctor-info">肖红&nbsp;&nbsp;D120105041331&nbsp;&nbsp;天津市东丽医院</div>
+    </div>
+    <div class="patient-info" id="header-patient-info">
+      <span class="patient-summary">当前接诊患者：张三 男 56岁｜高血压2级、2型糖尿病</span>
+      <span class="patient-more" onclick="openPatientDetail()">查看更多</span>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('workbench')">工作台</div>
+    <div class="tab" onclick="switchTab('record')">健康档案</div>
+    <div class="tab" onclick="switchTab('guide')">慢病管理</div>
+    <div class="tab" onclick="switchTab('referral')">双向转诊</div>
+    <div class="tab" onclick="switchTab('lobster')">
+      <span class="qa-label">🦞 智能问答</span>
+    </div>
+  </div>
+
+  <!-- 工作台 Tab -->
+  <div id="tab-workbench" class="tab-content active">
+    <div class="workbench-page">
+      <div class="wb-card">
+        <div class="wb-title">患者概览</div>
+        <div class="wb-grid3">
+          <div class="wb-sub">
+            <div class="wb-sub-hd">病史概览</div>
+            <div class="wb-row"><span class="muted">现病史</span><span>肥胖; 高血压</span></div>
+            <div class="wb-row"><span class="muted">病情评估</span><span><span class="wb-tag">可疑同心病</span><span class="wb-tag">CVD10%内危</span></span></div>
+            <div class="wb-row"><span class="muted">既往史</span><span>冠心病</span></div>
+            <div class="wb-row"><span class="muted">过敏史</span><span class="muted">--</span></div>
+          </div>
+          <div class="wb-sub">
+            <div class="wb-sub-hd">病情情况</div>
+            <div class="wb-row"><span class="muted">合并症/并发症</span><span class="muted">--</span></div>
+            <div class="wb-row"><span class="muted">危重症/症状</span><span>高血压流水线, 四肢发凉, 乏力, 头晕, 胸闷</span></div>
+            <div class="wb-row"><span class="muted">危险信息</span><span class="muted">--</span></div>
+            <div class="wb-row"><span class="muted">药物不良反应</span><span>二甲双胍（测试数据-公司）</span></div>
+          </div>
+          <div class="wb-sub">
+            <div class="wb-sub-hd">生活概况</div>
+            <div class="wb-row"><span class="muted">饮食</span><span>偏重米饭</span></div>
+            <div class="wb-row"><span class="muted">运动</span><span>重体力劳动; 情绪差</span></div>
+            <div class="wb-row"><span class="muted">睡眠</span><span>睡眠情况一般</span></div>
+            <div class="wb-row"><span class="muted">烟酒</span><span>吸烟20年, 每日2支; 不饮酒</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wb-card wb-health">
+        <div class="wb-health-head">
+          <div class="wb-title" style="padding:0;border:none">关注指标</div>
+          <button class="wb-btn">设置监控目标</button>
+        </div>
+        <div class="wb-health-grid">
+          <div class="wb-panel">
+            <div class="wb-panel-title">血糖</div>
+            <div class="wb-item">
+              <div class="wb-item-name">糖化血红蛋白</div>
+              <div class="wb-line"><div class="wb-line-fill" style="width:62%"></div></div>
+              <div class="wb-v">7.8</div>
+            </div>
+            <div class="wb-item">
+              <div class="wb-item-name">空腹血糖</div>
+              <div class="wb-line"></div>
+            </div>
+            <div class="wb-item">
+              <div class="wb-item-name">餐后2小时血糖</div>
+              <div class="wb-line"></div>
+            </div>
+            <div class="wb-foot">暂无数据，请提醒患者定期检测</div>
+          </div>
+          <div class="wb-panel">
+            <div class="wb-panel-title">血压</div>
+            <div class="wb-chart">
+              <span class="wb-point" style="left:58%;top:20%">156</span>
+              <span class="wb-point" style="left:58%;top:55%">100</span>
+            </div>
+            <div class="wb-foot">3/12 最新录入；血压波动较大，建议随访</div>
+          </div>
+          <div class="wb-panel">
+            <div class="wb-panel-title">血脂</div>
+            <div class="wb-item"><div class="wb-item-name">总胆固醇</div><div class="wb-line"></div></div>
+            <div class="wb-item"><div class="wb-item-name">甘油三酯</div><div class="wb-line"></div></div>
+            <div class="wb-item"><div class="wb-item-name">低密度脂蛋白</div><div class="wb-line"></div></div>
+            <div class="wb-item"><div class="wb-item-name">高密度脂蛋白</div><div class="wb-line"></div></div>
+            <div class="wb-foot">暂无数据，请提醒患者按时检测</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wb-bottom">
+        <div class="wb-card">
+          <div class="wb-title">用药记录</div>
+          <div class="wb-table-wrap">
+            <div class="wb-table-head"><button class="wb-btn">一键开方</button></div>
+            <table class="wb-table">
+              <thead><tr><th>药品</th><th>规格</th><th>用量</th><th>频率</th><th>开具时间</th></tr></thead>
+              <tbody><tr><td class="wb-empty" colspan="5">暂无用药信息</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        <div class="wb-card">
+          <div class="wb-title">检验检查</div>
+          <div class="wb-table-wrap">
+            <div class="wb-table-head"><button class="wb-btn">一键开单</button></div>
+            <table class="wb-table">
+              <thead><tr><th>检查项目</th><th>检查状态</th><th>检查项结果</th><th>开具时间</th><th>操作</th></tr></thead>
+              <tbody><tr><td>糖耐受症</td><td>已过期</td><td></td><td>2024-08-31</td><td>--</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 健康档案 Tab -->
+  <div id="tab-record" class="tab-content">
+    <div class="record-page">
+      <div class="record-layout">
+        <div class="record-main">
+          <div class="record-card" id="sec-condition">
+            <div class="record-title">病情概况</div>
+            <table class="record-table">
+              <thead>
+                <tr>
+                  <th>疾病诊断</th><th>类型</th><th>确诊时间</th><th>症状</th><th>合并症/并发症</th><th>诊疗情况</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>糖脂异常</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td></tr>
+                <tr><td>高血压</td><td>原发性高血压</td><td>2025-03-04</td><td>淋漓尿, 四肢发凉, 眩晕, 下肢水肿, 头晕, 胸闷</td><td>--</td><td>生活方式改变 药物治疗, 手术治疗, 康复治疗, 替代治疗</td></tr>
+                <tr><td>肥胖</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="record-card" id="sec-check">
+            <div class="record-title">检查提醒</div>
+            <div class="record-subtitle">多病综合</div>
+            <table class="record-table">
+              <thead>
+                <tr>
+                  <th>检查项目</th><th>小项</th><th>检查结果</th><th>参考范围</th><th>检查时间</th><th>建议复查时间</th><th>检查状态</th><th>操作</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td rowspan="6">体格检查</td><td>身高</td><td>170.0cm</td><td>--</td><td>2025/10/12</td><td>2025-11-11</td><td class="record-warn">待检查</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>体重</td><td>80.0kg</td><td>--</td><td>2025/10/12</td><td>2025-11-11</td><td class="record-warn">待检查</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>BMI</td><td>27.7kg/m2</td><td>18.5-24.0</td><td>2025/10/12</td><td>--</td><td>--</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>腰围</td><td>90.0cm</td><td>--</td><td>2025/10/12</td><td>2025-11-11</td><td class="record-warn">待检查</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>臀围</td><td>95.0cm</td><td>--</td><td>2025/10/12</td><td>2025-11-11</td><td class="record-warn">待检查</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>腰臀比</td><td>0.9</td><td>0.75-0.85</td><td>2025/10/12</td><td>--</td><td>--</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+
+                <tr><td rowspan="3">血压检查</td><td>收缩压</td><td>150.0mmHg ↑</td><td>90~140</td><td>2026/03/12</td><td>2026-04-11</td><td>已完成</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>舒张压</td><td>100.0mmHg ↑</td><td>60~90</td><td>2026/03/12</td><td>2026-04-11</td><td>已完成</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>心率</td><td>78</td><td>--</td><td>2026/03/12</td><td>--</td><td>--</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+
+                <tr><td>动态血压监测</td><td>动态血压监测报告</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+
+                <tr><td rowspan="3">血糖检查</td><td>空腹血糖</td><td>6.8mmol/L ↑</td><td>3.9~6.1</td><td>2025/08/04</td><td>2026-02-02</td><td class="record-warn">待检查</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>餐后血糖</td><td>8.9mmol/L ↑</td><td>3.9~7.8</td><td>2025/08/05</td><td>--</td><td>--</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>糖化血红蛋白</td><td>7.8% ↑</td><td>4~6</td><td>2025/08/05</td><td>2026-02-03</td><td class="record-warn">待检查</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+
+                <tr><td>动态血糖监测</td><td>动态血糖监测报告</td><td><a class="record-link" href="javascript:void(0)">查看附件</a></td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+
+                <tr><td rowspan="4">血脂检查</td><td>总胆固醇</td><td>5.47mmol/L</td><td>2.84~5.68</td><td>2024/08/23</td><td>2025-08-23</td><td class="record-warn">待检查</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>甘油三酯</td><td>1.23mmol/L</td><td>0.56~1.7</td><td>2024/08/23</td><td>2025-08-23</td><td class="record-warn">待检查</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>低密度脂蛋白</td><td>3.51mmol/L ↑</td><td>2.1~3.1</td><td>2025/07/07</td><td>2026-07-07</td><td>已完成</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+                <tr><td>高密度脂蛋白</td><td>1.10mmol/L ↓</td><td>1.14~1.76</td><td>2025/04/29</td><td>2026-04-29</td><td>已完成</td><td><a class="record-link" href="javascript:void(0)">查看历史数据</a></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="record-card" id="sec-basic">
+            <div class="record-title">基本信息</div>
+            <div class="record-grid3">
+              <div class="record-field"><span class="k">手机号:</span><span class="v">--</span></div>
+              <div class="record-field"><span class="k">详细地址:</span><span class="v">--</span></div>
+              <div class="record-field"><span class="k">身份证:</span><span class="v">330102197002*** 查询</span></div>
+              <div class="record-field"><span class="k">家庭住址:</span><span class="v">--</span></div>
+              <div class="record-field"><span class="k">职业:</span><span class="v">--</span></div>
+              <div class="record-field"><span class="k">婚姻情况:</span><span class="v">--</span></div>
+              <div class="record-field"><span class="k">妊娠哺乳情况:</span><span class="v">否/否</span></div>
+              <div class="record-field"><span class="k">既病史:</span><span class="v">肥胖, 高血压</span></div>
+              <div class="record-field"><span class="k">既往史:</span><span class="v">肾结石</span></div>
+              <div class="record-field"><span class="k">重疾史:</span><span class="v">高血压二级家族 - (外) 祖父母</span></div>
+              <div class="record-field"><span class="k">过敏史:</span><span class="v">--</span></div>
+            </div>
+          </div>
+
+          <div class="record-card" id="sec-sign">
+            <div class="record-title">体征信息</div>
+            <div class="record-grid3">
+              <div class="record-field"><span class="k">身高:</span><span class="v">170cm</span></div>
+              <div class="record-field"><span class="k">体重:</span><span class="v">80kg</span></div>
+              <div class="record-field"><span class="k">BMI:</span><span class="v">27.7kg/m2</span></div>
+              <div class="record-field"><span class="k">腰围:</span><span class="v">90cm</span></div>
+              <div class="record-field"><span class="k">臀围:</span><span class="v">95cm</span></div>
+              <div class="record-field"><span class="k">腰臀比:</span><span class="v">0.9</span></div>
+              <div class="record-field"><span class="k">血压:</span><span class="v">150/100mmHg</span></div>
+              <div class="record-field"><span class="k">心率:</span><span class="v">78次/min</span></div>
+            </div>
+          </div>
+
+          <div class="record-card" id="sec-life">
+            <div class="record-title">生活习惯</div>
+            <div class="record-list">
+              <div class="record-block">
+                <div class="record-label">饮食情况</div>
+                <div class="record-grid3" style="padding:0">
+                  <div class="record-field"><span class="k">过敏食物:</span><span class="v">--</span></div>
+                  <div class="record-field"><span class="k">饮食口味:</span><span class="v">偏重</span></div>
+                  <div class="record-field"><span class="k">每日主食:</span><span class="v">200克</span></div>
+                  <div class="record-field"><span class="k">日常主食:</span><span class="v">米饭</span></div>
+                  <div class="record-field"><span class="k">饮食:</span><span class="v">--</span></div>
+                  <div class="record-field"><span class="k">摄盐情况:</span><span class="v">5-8g</span></div>
+                  <div class="record-field"><span class="k">每日蔬菜:</span><span class="v">300-400g</span></div>
+                  <div class="record-field"><span class="k">新鲜鱼类:</span><span class="v">--</span></div>
+                </div>
+              </div>
+              <div class="record-block">
+                <div class="record-label">运动情况</div>
+                <div class="record-grid3" style="padding:0">
+                  <div class="record-field"><span class="k">劳动工作强度:</span><span class="v">重体力</span></div>
+                  <div class="record-field"><span class="k">每日步数:</span><span class="v">--步</span></div>
+                  <div class="record-field"><span class="k">运动方式:</span><span class="v">慢走</span></div>
+                  <div class="record-field"><span class="k">运动时间:</span><span class="v">--</span></div>
+                  <div class="record-field"><span class="k">运动时长:</span><span class="v">&lt;20分钟</span></div>
+                  <div class="record-field"><span class="k">活动频率:</span><span class="v">&lt;3次/周</span></div>
+                </div>
+              </div>
+              <div class="record-block">
+                <div class="record-label">睡眠情况</div>
+                <div class="record-grid3" style="padding:0">
+                  <div class="record-field"><span class="k">睡眠情况:</span><span class="v">一般</span></div>
+                  <div class="record-field"><span class="k">睡眠规律情况:</span><span class="v">--</span></div>
+                  <div class="record-field"><span class="k">睡眠服务:</span><span class="v">--</span></div>
+                </div>
+              </div>
+              <div class="record-block">
+                <div class="record-label">其他生活习惯</div>
+                <div class="record-grid3" style="padding:0">
+                  <div class="record-field"><span class="k">吸烟情况:</span><span class="v">是</span></div>
+                  <div class="record-field"><span class="k">吸烟:</span><span class="v">20年</span></div>
+                  <div class="record-field"><span class="k">平均每天:</span><span class="v">2支</span></div>
+                  <div class="record-field"><span class="k">饮酒情况:</span><span class="v">否</span></div>
+                  <div class="record-field"><span class="k">频率:</span><span class="v">--</span></div>
+                  <div class="record-field"><span class="k">饮酒类型/饮酒量:</span><span class="v">啤酒偶饮，白酒与葡萄酒偶饮</span></div>
+                  <div class="record-field"><span class="k">焦虑量表得分:</span><span class="v">--</span></div>
+                  <div class="record-field"><span class="k">抑郁量表得分:</span><span class="v">--</span></div>
+                  <div class="record-field"><span class="k">长期精神紧张:</span><span class="v">是</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <aside class="record-index">
+          <div class="record-index-title">本页目录</div>
+          <a href="#sec-condition">病情概况</a>
+          <a href="#sec-check">检查提醒</a>
+          <a href="#sec-basic">基本信息</a>
+          <a href="#sec-sign">体征信息</a>
+          <a href="#sec-life">生活习惯</a>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <!-- 健康指导 Tab -->
+  <div id="tab-guide" class="tab-content">
+    <div class="guide-page">
+      <div class="guide-card">
+        <div class="guide-tabs">
+          <span class="guide-tab">就诊记录</span>
+          <span class="guide-tab active">健康指导</span>
+          <span class="guide-tab">管理周报</span>
+        </div>
+
+        <div class="guide-filter">
+          <span class="g-label">姓名</span>
+          <input class="g-input" value="刘平">
+          <span class="g-label">状态</span>
+          <select class="g-select"><option>全部</option></select>
+          <span class="g-label">创建日期</span>
+          <input class="g-input g-date" value="开始日期~结束日期">
+          <button class="g-btn primary">搜索</button>
+          <button class="g-btn">重置</button>
+          <button class="g-btn primary">开健康指导单</button>
+          <button class="g-btn dark">膳食运动指导单要点</button>
+        </div>
+
+        <table class="guide-table">
+          <thead>
+            <tr>
+              <th>指导目标</th><th>覆盖病种</th><th>制定人</th><th>下次随访时间</th><th>创建时间</th><th>状态</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>张振</td><td>2026-03-17 00:00:00</td><td>2026-03-17 13:37:59</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+            <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>孟丽</td><td>2025-12-05 00:00:00</td><td>2025-12-05 18:38:48</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+            <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>孟丽</td><td>2025-12-05 00:00:00</td><td>2025-12-05 16:38:41</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+            <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>张振</td><td>--</td><td>2025-12-01 16:44:01</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+            <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>张振</td><td>2025-09-19 00:00:00</td><td>2025-09-19 00:41:44</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+            <tr><td>慢病健康管理</td><td>--</td><td>郑东东</td><td>2025-09-16 00:00:00</td><td>2025-09-16 12:25:16</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+            <tr><td>慢病健康管理</td><td>--</td><td>张振</td><td>2025-09-11 00:00:00</td><td>2025-09-11 15:02:02</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+            <tr><td>慢病健康管理</td><td>--</td><td>张振</td><td>2025-09-06 00:00:00</td><td>2025-08-06 00:14:57</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+          </tbody>
+        </table>
+
+        <div class="guide-pagination">
+          <span>共 19 条</span>
+          <a class="guide-page-btn active" href="javascript:void(0)">1</a>
+          <a class="guide-page-btn" href="javascript:void(0)">2</a>
+          <a class="guide-page-btn" href="javascript:void(0)">3</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 双向转诊 Tab -->
+  <div id="tab-referral" class="tab-content">
+    <div class="ref-page">
+      <div class="ref-card">
+        <div class="ref-subtabs">
+          <div id="ref-tab-book" class="ref-subtab active" onclick="switchReferralSubtab('book')">转诊预约</div>
+          <div id="ref-tab-log" class="ref-subtab" onclick="switchReferralSubtab('log')">转诊记录</div>
+        </div>
+
+        <div id="ref-pane-book" class="ref-pane active">
+          <div class="ref-book-top">-- -- &lt; 返回工作台</div>
+          <div class="ref-book-wrap">
+            <div class="ref-label">转诊渠道</div>
+            <div class="ref-radio-row">
+              <label><input type="radio" name="ref-way"> 双向转诊-向上</label>
+              <label><input type="radio" name="ref-way"> 双向转诊-向下</label>
+              <label><input type="radio" name="ref-way"> 号源转诊</label>
+              <label><input type="radio" name="ref-way"> 一中心转诊</label>
+            </div>
+            <div class="ref-rule">
+              <p><strong>*转诊渠道说明</strong></p>
+              <p>1-双向转诊：机构可根据上转/下转业务规则发起转诊；上级机构可发起向上转，下级机构可发起向下转。</p>
+              <p>2-专题转诊：若已开通专题转诊业务，可按规则发起专题转诊。</p>
+              <p>3-一中心转诊：平台可按统一配置触发转诊分诊，便于区域内协同。</p>
+              <p>如需转诊渠道支持，请联系平台管理员开通后使用。</p>
+            </div>
+          </div>
+        </div>
+
+        <div id="ref-pane-log" class="ref-pane">
+          <div class="record-title" style="border-bottom:none">转诊记录</div>
+          <div class="ref-filter">
+            <div class="ref-field"><span class="k">发起行政区</span><select class="ref-select"><option>全部</option></select></div>
+            <div class="ref-field"><span class="k">发起医院</span><select class="ref-select"><option>全部</option></select></div>
+            <div class="ref-field"><span class="k">转诊状态</span><select class="ref-select"><option>全部</option></select></div>
+            <div class="ref-field"><span class="k">就诊日期</span><input class="ref-input" value="开始日期-结束日期"></div>
+            <div class="ref-field"><span class="k">去向行政区</span><select class="ref-select"><option>全部</option></select></div>
+            <div class="ref-field"><span class="k">去向医院</span><select class="ref-select"><option>全部</option></select></div>
+            <div class="ref-field"><span class="k">转诊病症</span><select class="ref-select"><option>全部</option></select></div>
+            <div class="ref-field"><span class="k">患者姓名</span><input class="ref-input"></div>
+            <div class="ref-field"><span class="k">大人头签约</span><select class="ref-select"><option>全部</option></select></div>
+            <div class="ref-field"><span class="k">糖人头签约</span><select class="ref-select"><option>全部</option></select></div>
+            <div class="ref-actions">
+              <button class="ref-btn primary">查询</button>
+              <button class="ref-btn">重置</button>
+            </div>
+          </div>
+          <div class="ref-table-wrap">
+            <table class="ref-table">
+              <thead>
+                <tr>
+                  <th>姓名</th><th>大人头签约</th><th>糖人头签约</th><th>家签机构</th><th>手机号</th><th>转诊原因</th><th>转诊病向</th><th>转诊状态</th><th>转诊发起医院</th><th>转诊发起医生</th><th>转诊去向医院</th><th>转诊去向科室</th><th>转诊去向医生</th><th>接诊类型</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>周跃</td><td>是</td><td>是</td><td></td><td>158****9823</td><td>需要前往上级医...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区华...</td><td>孙健</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>王学兰</td><td>是</td><td></td><td></td><td>139****4276</td><td>需要前往上级医...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区金...</td><td>王雷</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>张俊伶</td><td>是</td><td></td><td></td><td>185****5862</td><td>需要前往上级医...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区金...</td><td>王雷</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>尹秀华</td><td>是</td><td>是</td><td></td><td>137****3506</td><td>需要前往上级医...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区金...</td><td>王雷</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>吴利英</td><td>是</td><td></td><td></td><td>150****7235</td><td>其他（请填写）...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区张...</td><td>张福</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>周茂志</td><td>是</td><td></td><td></td><td>150****8199</td><td>需要前往上级医...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区金...</td><td>王雷</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>王凤莉</td><td>是</td><td></td><td></td><td>189****5106</td><td>需要前往上级医...</td><td>向上转诊</td><td>已取消</td><td>天津市东丽区金...</td><td>王雷</td><td></td><td></td><td></td><td></td></tr>
+                <tr><td>周玉江</td><td>是</td><td></td><td></td><td>139****9682</td><td>其他（请填写）...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区张...</td><td>彭树文</td><td></td><td></td><td></td><td></td></tr>
+              </tbody>
+            </table>
+            <div class="ref-pager">
+              <span>共 92 条</span>
+              <a class="guide-page-btn active" href="javascript:void(0)">1</a>
+              <a class="guide-page-btn" href="javascript:void(0)">2</a>
+              <span>...</span>
+              <a class="guide-page-btn" href="javascript:void(0)">114</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 龙虾智能问答 Tab -->
+  <div id="tab-lobster" class="tab-content">
+    <div class="mode-bar">
+      <div class="mode-btn active" id="mode-patient" onclick="switchMode('patient')">
+        当前患者对话
+      </div>
+      <div class="mode-btn" id="mode-doctor" onclick="switchMode('doctor')">
+        医生自由模式（不绑患者）
+      </div>
+    </div>
+    <div class="content" style="display:flex">
+      <div class="chat-area">
+        <div class="chat" id="chat"></div>
+        <div class="chat-compose">
+          <input type="text" id="lobster-input" class="chat-input" placeholder="输入消息，按 Enter 或点击发送…" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();sendLobsterChat()}">
+          <button type="button" class="chat-send-btn" onclick="sendLobsterChat()">发送</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-body-scroll">
+        <div id="patient-btns" class="btns">
+          <div class="group">📊 档案与评估</div>
+          <button class="btn" onclick="run(1)">读取健康档案</button>
+          <button class="btn" onclick="run(2)">慢病风险评估</button>
+          <div class="group">💊 诊疗辅助</div>
+          <button class="btn" onclick="run(6)">推荐检验检查</button>
+          <button class="btn" onclick="showDiseaseSelect()">推荐诊疗方案</button>
+          <button class="btn" onclick="run(8)">临床报告解读</button>
+          <button class="btn" onclick="run(3)">生成生活处方</button>
+          <button class="btn" onclick="run(4)">转诊建议判断</button>
+          <div class="group">🧩 扩展能力</div>
+          <button class="btn" disabled>病历质控（开发中）</button>
+          <button class="btn" disabled>用药审查（开发中）</button>
+          <button class="btn" onclick="showHistory()">查看历史对话</button>
+          <button class="btn" onclick="requestSkill()">申请定制技能</button>
+        </div>
+        <div id="doctor-btns" class="btns" style="display:none">
+          <div class="group">💬 智能问答</div>
+          <button class="btn" onclick="askGuide()">问问指南</button>
+          <button class="btn" onclick="queryDrug()">药品查询</button>
+          <div class="group">📝 任务</div>
+          <p class="doctor-hint">创建任务前，建议在<strong>底部输入框</strong>写清：任务主题、期望产出（如综述/表格）、截止时间；再点「创建任务」将按内容生成演示任务。也可直接点按钮走示例流程。</p>
+          <button class="btn" onclick="createTask()">创建任务</button>
+          <button class="btn" onclick="myTasks()">我的任务</button>
+          <div class="doctor-subscribe-wrap">
+            <div class="doctor-subscribe-label">以下为演示入口（无实际推送）</div>
+            <button type="button" class="btn btn-subscribe" onclick="subscribe()">订阅指南更新</button>
+          </div>
+        </div>
+        </div>
+        <div class="panel-log-wrap">
+          <div class="log-title">龙虾工作流日志</div>
+          <div id="log" class="log"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 患者详情侧边栏 -->
+<div id="detailOverlay" class="detail-overlay" onclick="closePatientDetail()"></div>
+<div id="detailDrawer" class="detail-drawer" aria-hidden="true">
+  <div class="detail-header">
+    <div class="detail-title">患者详情</div>
+    <button class="detail-close" onclick="closePatientDetail()">×</button>
+  </div>
+  <div class="detail-body">
+    <div class="patient-card">
+      <div class="patient-head">
+        <div class="avatar"></div>
+        <div>
+          <div class="patient-name">刘平</div>
+          <div class="patient-age">男 56岁</div>
+        </div>
+      </div>
+
+      <div class="pair-row"><div class="pair-label">家庭签约</div><span class="pill">已签约</span></div>
+      <div class="pair-row"><div class="pair-label">糖人头签约</div><span class="pill">未签约</span></div>
+      <div class="pair-row"><div class="pair-label">大人头签约</div><span class="pill">已签约</span></div>
+      <div class="line-text">签约机构 天津市西青区中北镇社区卫生服务中心</div>
+      <div class="pair-row"><div class="pair-label">减重签约</div><span class="pill">服务结束</span></div>
+      <div class="pair-row"><div class="pair-label">糖尿病缓解门诊</div><span class="pill">未开通</span></div>
+
+      <div class="section-title">确诊疾病</div>
+      <div class="line-text">肥胖</div>
+      <div class="line-text">高血压 <span class="line-strong">1.1</span>年</div>
+
+      <div class="section-title">治疗情况 <a class="link-more" href="javascript:void(0)">查看全部</a></div>
+
+      <div class="section-title">体型</div>
+      <div class="line-text">BMI： <span class="line-strong">27.7</span> 超重</div>
+      <div class="line-text">体重： <span class="line-strong">80.0</span></div>
+      <div class="line-text">腰围： <span class="line-strong">90.0</span></div>
+
+      <div class="section-title">重点关注</div>
+      <div class="pair-row"><div class="pair-label">AI分析:</div><span class="pill warn">高血压</span></div>
+      <div class="pair-row"><div class="pair-label">AI分组:</div><span class="pill">暂无分组</span></div>
+
+      <div class="section-title info">备注</div>
+      <textarea class="note-box">用药不良反应导致焦虑</textarea>
+      <div class="save-wrap"><button class="save-btn">保存</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- 推荐诊疗方案：模式 → 病种 -->
+<div class="modal" id="diseaseModal">
+  <div class="modal-content" style="width:420px;max-width:94vw">
+    <div id="disease-step-1" class="disease-modal-step active">
+      <div class="modal-title">请选择生成模式</div>
+      <div class="modal-sub">先选择决策树或 AI 深度思考，再选择对应病种。</div>
+      <div class="modal-pill-list">
+        <button type="button" class="modal-pill-btn" onclick="selectPlanGenMode('tree')">决策树（指南规则）</button>
+        <button type="button" class="modal-pill-btn" onclick="selectPlanGenMode('ai')">AI深度思考（专病模型）</button>
+      </div>
+      <div class="modal-btns" style="margin-top:8px">
+        <button class="modal-btn" onclick="closeModal()">取消</button>
+      </div>
+    </div>
+    <div id="disease-step-tree" class="disease-modal-step">
+      <button type="button" class="modal-back" onclick="backToPlanStep1()">← 返回</button>
+      <div class="modal-title">请选择病种</div>
+      <div class="modal-sub">以下诊疗方案均基于指南路径生成。</div>
+      <div class="modal-pill-list">
+        <button type="button" class="modal-pill-btn active" onclick="pickTreeDisease('ht', this)">推荐高血压诊疗方案</button>
+        <button type="button" class="modal-pill-btn" onclick="pickTreeDisease('dm', this)">推荐糖尿病诊疗方案</button>
+        <button type="button" class="modal-pill-btn" onclick="pickTreeDisease('chd', this)">推荐冠心病诊疗方案</button>
+        <button type="button" class="modal-pill-btn" onclick="pickTreeDisease('stroke', this)">推荐脑卒中诊疗方案</button>
+      </div>
+      <div class="modal-btns">
+        <button class="modal-btn" onclick="closeModal()">取消</button>
+        <button class="modal-btn primary" onclick="confirmPlanDisease()">确认</button>
+      </div>
+    </div>
+    <div id="disease-step-ai" class="disease-modal-step">
+      <button type="button" class="modal-back" onclick="backToPlanStep1()">← 返回</button>
+      <div class="modal-title">调用专病模型 · 请选择病种</div>
+      <div class="modal-sub">AI 深度思考与用药经济学评价仅覆盖以下专病。</div>
+      <div class="modal-pill-list">
+        <button type="button" class="modal-pill-btn active" onclick="pickAiDisease('ht', this)">调用专病模型推荐【高血压】诊疗方案</button>
+        <button type="button" class="modal-pill-btn" onclick="pickAiDisease('dm', this)">调用专病模型推荐【糖尿病】诊疗方案</button>
+        <button type="button" class="modal-pill-btn" onclick="pickAiDisease('stroke', this)">调用专病模型推荐【脑卒中】诊疗方案</button>
+      </div>
+      <div class="modal-btns">
+        <button class="modal-btn" onclick="closeModal()">取消</button>
+        <button class="modal-btn primary" onclick="confirmPlanDisease()">确认</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 完善入参（按病种） -->
+<div class="modal" id="fillModal">
+  <div class="modal-content" style="max-height:88vh;overflow:auto">
+    <div class="modal-title" id="fillModalTitle">请完善入参</div>
+
+    <div id="fill-section-dm" class="fill-disease-block" style="display:none">
+      <div class="fill-row">
+        <label>糖尿病具体诊断 <span style="color:#c0392b">*</span></label>
+        <select id="fill-dm-diag">
+          <option value="">请选择</option>
+          <option value="2型糖尿病">2型糖尿病</option>
+          <option value="2型糖尿病伴多个并发症">2型糖尿病伴多个并发症</option>
+          <option value="2型糖尿病性肾病">2型糖尿病性肾病</option>
+          <option value="糖尿病合并高血压">糖尿病合并高血压</option>
+          <option value="妊娠期糖尿病（既往史）">妊娠期糖尿病（既往史）</option>
+        </select>
+      </div>
+      <div class="fill-hint">血糖指标至少填写一项：空腹 / 餐后2h / 糖化血红蛋白</div>
+      <div class="fill-row"><label>空腹血糖（mmol/L）</label><input id="fill-fbg" type="text" placeholder="如：6.8"></div>
+      <div class="fill-row"><label>餐后2小时血糖（mmol/L）</label><input id="fill-post" type="text" placeholder="如：9.1"></div>
+      <div class="fill-row"><label>糖化血红蛋白（%）</label><input id="fill-hba1c" type="text" placeholder="如：7.6"></div>
+    </div>
+
+    <div id="fill-section-ht" class="fill-disease-block" style="display:none">
+      <div class="fill-row">
+        <label>高血压具体诊断 <span style="color:#c0392b">*</span></label>
+        <select id="fill-ht-diag">
+          <option value="">请选择</option>
+          <option value="原发性高血压">原发性高血压</option>
+          <option value="高血压2级">高血压2级</option>
+          <option value="高血压3级">高血压3级</option>
+          <option value="高血压合并2型糖尿病">高血压合并2型糖尿病</option>
+          <option value="高血压合并高脂血症">高血压合并高脂血症</option>
+        </select>
+      </div>
+      <div class="fill-row"><label>收缩压（mmHg） <span style="color:#c0392b">*</span></label><input id="fill-sbp" type="text" placeholder="如：150"></div>
+      <div class="fill-row"><label>舒张压（mmHg） <span style="color:#c0392b">*</span></label><input id="fill-dbp" type="text" placeholder="如：100"></div>
+    </div>
+
+    <div id="fill-section-chd" class="fill-disease-block" style="display:none">
+      <div class="fill-row">
+        <label>冠心病具体诊断 <span style="color:#c0392b">*</span></label>
+        <select id="fill-chd-diag">
+          <option value="">请选择</option>
+          <option value="稳定型心绞痛">稳定型心绞痛</option>
+          <option value="急性冠脉综合征（恢复期）">急性冠脉综合征（恢复期）</option>
+          <option value="陈旧性心肌梗死">陈旧性心肌梗死</option>
+          <option value="冠脉支架术后">冠脉支架术后</option>
+          <option value="缺血性心肌病">缺血性心肌病</option>
+        </select>
+      </div>
+      <div class="fill-row"><label>低密度脂蛋白 LDL-C（mmol/L） <span style="color:#c0392b">*</span></label><input id="fill-ldl-chd" type="text" placeholder="如：2.03"></div>
+    </div>
+
+    <div id="fill-section-stroke" class="fill-disease-block" style="display:none">
+      <div class="fill-row">
+        <label>脑卒中具体诊断 <span style="color:#c0392b">*</span></label>
+        <select id="fill-stroke-diag">
+          <option value="">请选择</option>
+          <option value="脑梗死（恢复期）">脑梗死（恢复期）</option>
+          <option value="短暂性脑缺血发作（TIA）">短暂性脑缺血发作（TIA）</option>
+          <option value="脑出血（恢复期）">脑出血（恢复期）</option>
+          <option value="蛛网膜下腔出血（恢复期）">蛛网膜下腔出血（恢复期）</option>
+          <option value="脑卒中后遗症期">脑卒中后遗症期</option>
+        </select>
+      </div>
+      <div class="fill-row"><label>低密度脂蛋白 LDL-C（mmol/L） <span style="color:#c0392b">*</span></label><input id="fill-ldl-stroke" type="text" placeholder="如：2.03"></div>
+    </div>
+
+    <div id="fillErrMsg" style="color:#c0392b;font-size:12px;margin-top:8px;display:none"></div>
+    <div class="modal-btns">
+      <button class="modal-btn" onclick="closeAllModal()">取消</button>
+      <button class="modal-btn primary" onclick="confirmFill()">提交生成方案</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Tab 切换
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'))
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'))
+  event.currentTarget.classList.add('active')
+  document.getElementById('tab-' + tab).classList.add('active')
+}
+
+// 模式切换
+let currentMode = 'patient'
+function switchMode(mode) {
+  currentMode = mode
+  const chat = document.getElementById('chat')
+  const log = document.getElementById('log')
+  chat.innerHTML = ''
+  log.innerHTML = ''
+  const modePatient = document.getElementById('mode-patient')
+  const modeDoctor = document.getElementById('mode-doctor')
+  const patientBtns = document.getElementById('patient-btns')
+  const doctorBtns = document.getElementById('doctor-btns')
+  const headerPatient = document.getElementById('header-patient-info')
+  const lobsterInput = document.getElementById('lobster-input')
+  if (headerPatient) headerPatient.classList.toggle('is-hidden', mode === 'doctor')
+  if (lobsterInput) {
+    lobsterInput.placeholder = mode === 'doctor'
+      ? '自由提问（不绑患者），输入后发送…'
+      : '输入追问或说明，按 Enter 发送…'
+  }
+  if (mode === 'patient') {
+    modePatient.classList.add('active')
+    modeDoctor.classList.remove('active')
+    patientBtns.style.display = 'flex'
+    doctorBtns.style.display = 'none'
+  } else {
+    modePatient.classList.remove('active')
+    modeDoctor.classList.add('active')
+    patientBtns.style.display = 'none'
+    doctorBtns.style.display = 'flex'
+  }
+}
+function sendLobsterChat() {
+  const el = document.getElementById('lobster-input')
+  const v = (el && el.value || '').trim()
+  if (!v) return
+  el.value = ''
+  addMsg(v, 'user')
+  addLog('→ 用户输入：' + (v.length > 48 ? v.slice(0, 48) + '…' : v))
+  const loading = addMsg('处理中...', 'assistant typing')
+  setTimeout(async () => {
+    loading.remove()
+    const short = v.length > 200 ? v.slice(0, 200) + '…' : v
+    const reply = currentMode === 'doctor'
+      ? `【龙虾回复（演示）】已收到您的消息：\n${short}\n\n自由模式下对话不关联患者档案；可继续输入追问，或使用右侧「问问指南」「药品查询」等能力。`
+      : `【龙虾回复（演示）】已记录与当前患者上下文相关的追问：\n${short}\n\n可结合右侧技能生成结构化结果（读档案、风险评估、推荐检查等）。`
+    await type(addMsg('', 'assistant'), reply)
+  }, 650)
+}
+function switchReferralSubtab(tab) {
+  document.getElementById('ref-tab-book').classList.toggle('active', tab === 'book')
+  document.getElementById('ref-tab-log').classList.toggle('active', tab === 'log')
+  document.getElementById('ref-pane-book').classList.toggle('active', tab === 'book')
+  document.getElementById('ref-pane-log').classList.toggle('active', tab === 'log')
+}
+
+// 通用工具
+function addLog(text) {
+  const item = document.createElement('div')
+  item.className = 'log-item'
+  item.textContent = text
+  document.getElementById('log').appendChild(item)
+}
+function addMsg(text, cls) {
+  const div = document.createElement('div')
+  div.className = 'msg ' + cls
+  div.textContent = text
+  const chat = document.getElementById('chat')
+  chat.appendChild(div)
+  chat.scrollTop = 9999
+  return div
+}
+function addActionMsg(promptText, actions) {
+  const div = document.createElement('div')
+  div.className = 'msg assistant assistant-card'
+  const p = document.createElement('div')
+  p.textContent = promptText
+  div.appendChild(p)
+  const row = document.createElement('div')
+  row.className = 'assistant-actions'
+  actions.forEach((act, idx) => {
+    const btn = document.createElement('button')
+    btn.className = 'assistant-action-btn' + (idx === 0 ? ' primary' : '')
+    btn.textContent = act.label
+    btn.onclick = () => {
+      row.querySelectorAll('button').forEach(b => b.disabled = true)
+      addMsg(act.label, 'user')
+      act.onClick()
+    }
+    row.appendChild(btn)
+  })
+  div.appendChild(row)
+  const chat = document.getElementById('chat')
+  chat.appendChild(div)
+  chat.scrollTop = 9999
+  return div
+}
+function addRiskAssessmentCard(input) {
+  const div = document.createElement('div')
+  div.className = 'msg assistant risk-card'
+  div.innerHTML = `
+    <div class="claw-card-title">慢病风险评估标签（🦞 OpenClaw）</div>
+    <div style="font-size:12px;color:#5a6a86;margin-bottom:6px">${input.patient}</div>
+    <div class="risk-group">
+      <div class="risk-group-title">已患病病情控制标签</div>
+      <div class="risk-row"><span class="risk-name">慢阻肺</span><span class="risk-tag blue">稳定期A组</span></div>
+      <div class="risk-row"><span class="risk-name">糖尿病</span><span class="risk-tag red">红标</span></div>
+      <div class="risk-row"><span class="risk-name">高血压</span><span class="risk-tag yellow">黄标</span></div>
+    </div>
+    <div class="risk-group">
+      <div class="risk-group-title">未患病风险评估标签</div>
+      <div class="risk-row"><span class="risk-name">CVD10</span><span class="risk-tag purple">很高危</span></div>
+      <div class="risk-row"><span class="risk-name">ASCVD</span><span class="risk-tag purple">极高危</span></div>
+    </div>
+    <div class="risk-note">
+      <div><strong>分层依据：</strong>血压 ${input.bp}；空腹/餐后 ${input.fbg} / ${input.pbg}；糖化 ${input.hba1c}；LDL-C ${input.ldl}</div>
+      <div><strong>建议：</strong>优先纳入红黄灯管理，2周复评；强化降脂与生活方式干预，必要时上级专科联合管理。</div>
+    </div>
+  `
+  const chat = document.getElementById('chat')
+  chat.appendChild(div)
+  chat.scrollTop = 9999
+}
+function addClawSummaryCard(titleText) {
+  const card = document.createElement('div')
+  card.className = 'msg assistant claw-summary'
+  const title = document.createElement('div')
+  title.className = 'claw-card-title'
+  title.textContent = titleText
+  const body = document.createElement('div')
+  body.className = 'claw-card-body'
+  card.appendChild(title)
+  card.appendChild(body)
+  const chat = document.getElementById('chat')
+  chat.appendChild(card)
+  chat.scrollTop = 9999
+  return body
+}
+function addCheckRecommendationCard(type) {
+  const card = document.createElement('div')
+  card.className = 'msg assistant check-card'
+  const title = type === 'insurance'
+    ? '检查检验推荐-医保上报（🦞 OpenClaw）'
+    : `检查检验推荐-${type}（🦞 OpenClaw）`
+  const isInsurance = type === 'insurance'
+  const insuranceRows = [
+    { item: '血糖检查', value: '餐后2小时血糖（2025-08-10）', status: 'pending' },
+    { item: '尿常规检查', value: '尿蛋白（2025-09-16）<br>尿酮体（2025-09-16）', status: 'abnormal' },
+    { item: '神经病变筛查（可选）', value: '震动感觉阈值VPT（-）', status: 'all' }
+  ]
+  const diseaseRows = [
+    { item: '血糖检查', value: '2026-03-04', status: 'pending' },
+    { item: '血常规检查', value: '2026-03-10', status: 'pending' },
+    { item: '肾功能检查', value: '2026-03-04', status: 'pending' },
+    { item: '血同型半胱氨酸', value: '-', status: 'abnormal' },
+    { item: '尿常规检查', value: '2025-09-16', status: 'pending' },
+    { item: '神经病变筛查', value: '-', status: 'abnormal' }
+  ]
+  const allRows = isInsurance ? insuranceRows : diseaseRows
+  const tabs = isInsurance ? ['待检', '全部', '异常项'] : ['待检', '全部']
+  const defaultTab = '待检'
+
+  function renderRows(tabName) {
+    const tbody = card.querySelector('tbody')
+    if (!tbody) return
+    let rows = allRows
+    if (tabName === '待检') rows = allRows.filter(r => r.status === 'pending' || r.status === 'abnormal')
+    if (tabName === '异常项') rows = allRows.filter(r => r.status === 'abnormal')
+    if (tabName === '全部') rows = allRows
+    tbody.innerHTML = rows.map(r => {
+      const rowClass = r.status === 'abnormal' ? ' class="check-row-warn"' : ''
+      const left = isInsurance
+        ? r.item
+        : `${r.item} <a class="check-link" href="javascript:void(0)">查看缺项</a>`
+      const right = r.value === '-' ? '<span class="check-muted">-</span>' : r.value
+      return `<tr${rowClass}><td>${left}</td><td>${right}</td></tr>`
+    }).join('')
+  }
+
+  card.innerHTML = `
+    <div class="claw-card-title">${title}</div>
+    <div class="claw-card-body">${isInsurance ? '依据医保上报关键指标，调取患者健康档案待检数据，推荐检查项目，辅助医保上报。' : `综合汇总${type}各类推荐检查，以下待检项（缺失/过期），建议更新。`}</div>
+    ${isInsurance ? '<div class="check-tip">*部分数据如未及时归档案，请以实际检查结果为准</div>' : ''}
+    <div class="check-tabs">
+      ${tabs.map(t => `<span class="check-tab${t === defaultTab ? ' active' : ''}" data-tab="${t}">${t}</span>`).join('')}
+    </div>
+    <table class="check-table">
+      <thead>
+        <tr>${isInsurance ? '<th>推荐检查</th><th>上报指标（最近检查时间）</th>' : '<th>待检项</th><th>上次检查时间</th>'}</tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    ${isInsurance ? `
+      <div class="check-refer">
+        <strong>参考文献：</strong><br>
+        《糖尿病人头健康管理指标数据有关说明》<br>
+        《市医保结算中心关于选定糖尿病门特健康管理事项关键指标数据的通知》
+      </div>` : '<div class="check-refer"><a class="check-link" href="javascript:void(0)">查看更多</a></div>'}
+  `
+  const chat = document.getElementById('chat')
+  chat.appendChild(card)
+  chat.scrollTop = 9999
+
+  renderRows(defaultTab)
+  card.querySelectorAll('.check-tab').forEach(tab => {
+    tab.onclick = () => {
+      const tabName = tab.getAttribute('data-tab')
+      card.querySelectorAll('.check-tab').forEach(t => t.classList.remove('active'))
+      tab.classList.add('active')
+      renderRows(tabName)
+    }
+  })
+}
+
+async function runCheckRecommendationFlow() {
+  addMsg('推荐检验检查', 'user')
+  await sleep(250)
+  addLog('→ 调用 🦞 OpenClaw：check.recommend')
+  addLog('→ 入参：健康档案 + 医保上报关键指标 + 缺项规则')
+  const loading = addMsg('正在生成推荐检查清单...', 'assistant typing')
+  await sleep(900)
+  loading.remove()
+  addCheckRecommendationCard('insurance')
+
+  const actions = document.createElement('div')
+  actions.className = 'msg quick-action-card'
+  const actionRow = document.createElement('div')
+  actionRow.className = 'quick-actions'
+  actionRow.innerHTML = '<button class="quick-btn" data-disease="高血压">单独推荐高血压检查</button><button class="quick-btn" data-disease="糖尿病">单独推荐糖尿病检查</button><button class="quick-btn" data-disease="多病综合">推荐多病综合检查</button>'
+  actions.appendChild(actionRow)
+  const chat = document.getElementById('chat')
+  chat.appendChild(actions)
+  chat.scrollTop = 9999
+  actions.querySelectorAll('.quick-btn').forEach(btn => {
+    btn.onclick = async () => {
+      actions.querySelectorAll('.quick-btn').forEach(b => b.disabled = true)
+      const disease = btn.getAttribute('data-disease')
+      addMsg(`追问：单独推荐${disease}检查`, 'user')
+      addLog(`→ 🦞 OpenClaw 追问：check.recommend.${disease}`)
+      const l2 = addMsg('正在生成单病种待检项与缺项...', 'assistant typing')
+      await sleep(850)
+      l2.remove()
+      addCheckRecommendationCard(disease)
+    }
+  })
+}
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)) }
+async function type(node, txt) {
+  let i = 0
+  return new Promise(r => {
+    const it = setInterval(() => {
+      node.textContent = txt.slice(0, ++i)
+      document.getElementById('chat').scrollTop = 9999
+      if (i >= txt.length) { clearInterval(it); r() }
+    }, 16)
+  })
+}
+function resetDiseaseModalSteps() {
+  document.querySelectorAll('#diseaseModal .disease-modal-step').forEach(el => el.classList.remove('active'))
+  const s1 = document.getElementById('disease-step-1')
+  if (s1) s1.classList.add('active')
+}
+function showDiseaseStep(id) {
+  document.querySelectorAll('#diseaseModal .disease-modal-step').forEach(el => el.classList.remove('active'))
+  const el = document.getElementById(id)
+  if (el) el.classList.add('active')
+}
+function closeModal() {
+  document.getElementById('diseaseModal').style.display = 'none'
+  resetDiseaseModalSteps()
+}
+function closeAllModal() {
+  document.getElementById('diseaseModal').style.display = 'none'
+  document.getElementById('fillModal').style.display = 'none'
+  resetDiseaseModalSteps()
+}
+function openPatientDetail() {
+  document.getElementById('detailOverlay').style.display = 'block'
+  document.getElementById('detailDrawer').classList.add('open')
+  document.getElementById('detailDrawer').setAttribute('aria-hidden', 'false')
+}
+function closePatientDetail() {
+  document.getElementById('detailOverlay').style.display = 'none'
+  document.getElementById('detailDrawer').classList.remove('open')
+  document.getElementById('detailDrawer').setAttribute('aria-hidden', 'true')
+}
+
+// 申请定制技能
+async function requestSkill() {
+  addMsg("我需要定制技能：心功能评估", "user")
+  await sleep(300)
+  addLog("→ 提交技能定制申请")
+  const loading = addMsg("提交中...", "assistant typing")
+  await sleep(1200)
+  loading.remove()
+  await type(addMsg("", "assistant"), `✅ 申请已提交
+申请技能：心功能评估
+状态：已受理
+工作人员将在3个工作日内联系您评估需求与报价。`)
+}
+
+// 患者模式功能 · 推荐诊疗方案（模式 + 病种）
+const PLAN_DISEASE_NAMES = { ht: '高血压', dm: '2型糖尿病', chd: '冠心病', stroke: '脑卒中' }
+/** @type {''|'tree'|'ai'} */
+let planGenMode = ''
+let selectedDisease = ''
+function showDiseaseSelect() {
+  planGenMode = ''
+  selectedDisease = 'ht'
+  resetDiseaseModalSteps()
+  document.querySelectorAll('#disease-step-tree .modal-pill-btn').forEach((b, i) => b.classList.toggle('active', i === 0))
+  document.querySelectorAll('#disease-step-ai .modal-pill-btn').forEach((b, i) => b.classList.toggle('active', i === 0))
+  document.getElementById('diseaseModal').style.display = 'flex'
+}
+function selectPlanGenMode(mode) {
+  planGenMode = mode
+  selectedDisease = 'ht'
+  if (mode === 'tree') {
+    document.querySelectorAll('#disease-step-tree .modal-pill-btn').forEach((b, i) => b.classList.toggle('active', i === 0))
+    showDiseaseStep('disease-step-tree')
+  } else {
+    document.querySelectorAll('#disease-step-ai .modal-pill-btn').forEach((b, i) => b.classList.toggle('active', i === 0))
+    showDiseaseStep('disease-step-ai')
+  }
+}
+function backToPlanStep1() {
+  planGenMode = ''
+  showDiseaseStep('disease-step-1')
+}
+function pickTreeDisease(code, btn) {
+  selectedDisease = code
+  btn.parentElement.querySelectorAll('.modal-pill-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+}
+function pickAiDisease(code, btn) {
+  selectedDisease = code
+  btn.parentElement.querySelectorAll('.modal-pill-btn').forEach(b => b.classList.remove('active'))
+  btn.classList.add('active')
+}
+function buildPlanUserMessage() {
+  const modeLabel = planGenMode === 'tree' ? '决策树' : 'AI深度思考'
+  if (planGenMode === 'tree') {
+    const map = { ht: '高血压', dm: '糖尿病', chd: '冠心病', stroke: '脑卒中' }
+    return `推荐诊疗方案：${modeLabel}｜${map[selectedDisease]}诊疗方案`
+  }
+  const short = selectedDisease === 'dm' ? '糖尿病' : (selectedDisease === 'ht' ? '高血压' : '脑卒中')
+  return `推荐诊疗方案：${modeLabel}｜调用专病模型推荐【${short}】诊疗方案`
+}
+async function confirmPlanDisease() {
+  closeModal()
+  addMsg(buildPlanUserMessage(), 'user')
+  await sleep(300)
+  addLog('→ 调用 Skill：诊疗方案推荐')
+  addLog(`→ 模式：${planGenMode === 'tree' ? '决策树' : 'AI深度思考'}；病种：${selectedDisease}`)
+  addLog('→ 检查入参')
+  const loading = addMsg('检查档案参数...', 'assistant typing')
+  await sleep(1100)
+  loading.remove()
+  if (selectedDisease === 'dm') {
+    addMsg('⚠️ 请选择糖尿病具体诊断；空腹血糖、餐后血糖、糖化血红蛋白至少填写一项。', 'assistant')
+  } else if (selectedDisease === 'ht') {
+    addMsg('⚠️ 请选择高血压具体诊断，并填写收缩压与舒张压。', 'assistant')
+  } else if (selectedDisease === 'chd' || selectedDisease === 'stroke') {
+    addMsg('⚠️ 请选择具体诊断，并填写低密度脂蛋白 LDL-C。', 'assistant')
+  } else {
+    addMsg('⚠️ 请完善入参。', 'assistant')
+  }
+  await sleep(400)
+  syncFillModalForDisease()
+  document.getElementById('fillModal').style.display = 'flex'
+}
+function hideFillErr() {
+  const el = document.getElementById('fillErrMsg')
+  if (el) { el.style.display = 'none'; el.textContent = '' }
+}
+function showFillErr(msg) {
+  const el = document.getElementById('fillErrMsg')
+  if (el) { el.textContent = msg; el.style.display = 'block' }
+}
+function syncFillModalForDisease() {
+  hideFillErr()
+  const title = document.getElementById('fillModalTitle')
+  ;['fill-section-dm', 'fill-section-ht', 'fill-section-chd', 'fill-section-stroke'].forEach(id => {
+    const el = document.getElementById(id)
+    if (el) el.style.display = 'none'
+  })
+  if (selectedDisease === 'dm') {
+    const el = document.getElementById('fill-section-dm')
+    if (el) el.style.display = 'block'
+    if (title) title.textContent = '请完善入参（糖尿病）'
+  } else if (selectedDisease === 'ht') {
+    const el = document.getElementById('fill-section-ht')
+    if (el) el.style.display = 'block'
+    if (title) title.textContent = '请完善入参（高血压）'
+  } else if (selectedDisease === 'chd') {
+    const el = document.getElementById('fill-section-chd')
+    if (el) el.style.display = 'block'
+    if (title) title.textContent = '请完善入参（冠心病）'
+  } else if (selectedDisease === 'stroke') {
+    const el = document.getElementById('fill-section-stroke')
+    if (el) el.style.display = 'block'
+    if (title) title.textContent = '请完善入参（脑卒中）'
+  }
+}
+function buildDmGluLine(fbg, post, hba) {
+  const parts = []
+  if (fbg) parts.push(`空腹 ${fbg} mmol/L`)
+  if (post) parts.push(`餐后2h ${post} mmol/L`)
+  if (hba) parts.push(`糖化 ${hba}%`)
+  return parts.join('；') || '—'
+}
+function escapeHtml(s) {
+  if (s == null || s === '') return ''
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+/** @param {{ decisionTree?: boolean }} [opts] */
+function planCardModeCopy(opts) {
+  const dt = opts && opts.decisionTree
+  return {
+    titleSuffix: dt ? '决策树' : 'AI深度思考',
+    badge: dt ? '✓ 决策树方案（演示）' : '✓ 已完成深度思考（演示）',
+    foot: dt ? '以上内容为决策树方案推荐，请根据患者情况进行决策。' : '以上内容为 AI 推荐，请根据患者情况进行决策。'
+  }
+}
+function buildSupportingSuggestionsHtml() {
+  return `<details class="ai-deep-details" open><summary>配套建议</summary>
+  <div class="ai-deep-body">
+    <div class="support-block">
+      <strong>健康管理方案</strong>
+      <strong>· 营养建议</strong>
+      <ul>
+        <li>低蛋白饮食（0.6g/kg/日）：优质蛋白占比≥60%（鸡蛋、鱼肉），限磷（&lt;800mg/日）。</li>
+        <li>严格限盐（&lt;3g/日），避免高钾食物（香蕉、土豆），碳水化合物选择低GI食物（燕麦、全麦）。</li>
+      </ul>
+      <strong>· 运动建议</strong>
+      <ul>
+        <li>床边脚踏车训练（每日10-15分钟，心率&lt;100次/分），避免跌倒风险。</li>
+      </ul>
+      <strong>· 体重管理</strong>
+      <ul>
+        <li>目标维持当前体重（BMI 24.2kg/m²），监测水肿情况。</li>
+      </ul>
+    </div>
+    <div class="support-block">
+      <strong>随访计划</strong>
+      <strong>· 血糖监测</strong>
+      <ul>
+        <li>每日空腹+餐后2h血糖监测，目标空腹5.0-8.3mmol/L，餐后&lt;11.1mmol/L。</li>
+        <li>每3月检测HbA1c，目标&lt;8.5%。</li>
+      </ul>
+      <strong>· 肾功能监测</strong>
+      <ul>
+        <li>每周监测血钾、肌酐，每月检测尿蛋白/肌酐比值。</li>
+      </ul>
+      <strong>· 综合随访</strong>
+      <ul>
+        <li>1月后：评估胰岛素剂量调整、TG/LDL-C变化。</li>
+        <li>3月后：复查eGFR、眼底检查（预防视网膜病变）。</li>
+      </ul>
+    </div>
+    <div class="support-block">
+      <strong>预警提示</strong>
+      <strong>1. 胰岛素治疗</strong>
+      <ul>
+        <li>低血糖风险高（老年+肾功能不全），教育识别症状（冷汗、心悸），随身携带葡萄糖片。</li>
+        <li>起始剂量减少20%（避免eGFR下降加重低血糖）。</li>
+      </ul>
+      <strong>2. 非诺贝特 + 他汀</strong>
+      <ul>
+        <li>监测肌酸激酶（CK）和肝酶（ALT/AST），若肌痛或CK&gt;5倍上限需停药。</li>
+      </ul>
+      <strong>3. 肾功能恶化</strong>
+      <ul>
+        <li>避免NSAIDs（如布洛芬），限制造影剂使用（需提前停用二甲双胍）。</li>
+      </ul>
+    </div>
+    <div class="support-more">查看更多 ▼</div>
+  </div>
+</details>`
+}
+function buildRecommendedTherapyPlanHtml() {
+  return `
+    <div class="med-plan-card med-plan-card--anchor" style="margin-bottom:0">
+      <div class="med-plan-hd"><span>本组推荐诊疗方案（临床路径锚定）</span><span style="white-space:nowrap"><button type="button" style="border:1px solid #2f6ee5;background:#2f6ee5;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">推荐依据</button></span></div>
+      <div class="med-plan-combo">德谷胰岛素注射液 + 非诺贝特 + 门冬胰岛素注射液</div>
+      <div class="med-plan-strategy-note"><strong>策略说明：</strong>以胰岛素强化降糖为主，联合贝特类管理甘油三酯；基础胰岛素覆盖全天血糖、餐时胰岛素控制餐后高峰，剂量个体化并依据指南分层与随访调整。<span class="ai-plan-link" style="float:none;white-space:nowrap">详阅分层依据</span></div>
+    </div>`
+}
+function buildMedPlanCardsHtml() {
+  return `
+    <div class="med-plan-card">
+      <div class="med-plan-hd"><span>方案一 · 经济学优选（最高性价比）</span><span style="white-space:nowrap"><button type="button" style="border:1px solid #2f6ee5;background:#2f6ee5;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">一键采纳</button></span></div>
+      <div class="med-plan-combo">德谷胰岛素注射液 + 非诺贝特胶囊 + 门冬胰岛素注射液</div>
+      <div class="med-plan-cost">方案日均费用：14.24元　预估年费用：5197.6元</div>
+      <div class="med-drug-row"><strong>德谷胰岛素注射液</strong>　注射液　3ml:300IU(笔芯)*1支　77.11元/盒；日均10.29元；预估年费用3755.85元</div>
+      <div class="med-drug-row"><strong>非诺贝特胶囊</strong>　胶囊剂　0.1g*24粒　23.15元/盒；日均0.49元；预估年费用178.85元</div>
+      <div class="med-drug-row"><strong>门冬胰岛素注射液</strong>　注射液　3ml:300IU(笔芯)*1支　25.9元/盒；日均3.46元；预估年费用1262.9元</div>
+      <div class="med-note"><strong>推荐说明：</strong>与第 4 步诊疗路径一致，在非诺贝特剂型上选用胶囊；结合检验结果、不良反应史与卫生经济学评价生成。</div>
+    </div>
+    <div class="med-plan-card">
+      <div class="med-plan-hd"><span>方案2：多专家共识方案</span></div>
+      <div class="med-plan-combo">德谷胰岛素注射液 + 非诺贝特分散片 + 门冬胰岛素注射液</div>
+      <div class="med-plan-cost">方案日均费用：15.15元　预估年费用：5529.75元</div>
+      <div class="med-drug-row"><strong>德谷胰岛素注射液</strong>　注射液　3ml:300IU(笔芯)*1支　77.11元/盒；日均10.29元；预估年费用3755.85元</div>
+      <div class="med-drug-row"><strong>非诺贝特分散片</strong>　分散片　0.1g*24片　28.6元/盒；日均0.86元；预估年费用313.9元</div>
+      <div class="med-drug-row"><strong>门冬胰岛素注射液</strong>　注射液　3ml:300IU(笔芯)*1支　25.9元/盒；日均3.46元；预估年费用1262.9元</div>
+      <div class="med-note"><strong>推荐说明：</strong>路径与方案一相同，非诺贝特改为分散片（溶出与依从性差异）；费用略高，供院内目录或患者偏好选择。</div>
+    </div>`
+}
+function buildHtRecommendedTherapyPlanHtml() {
+  return `
+    <div class="med-plan-card med-plan-card--anchor" style="margin-bottom:0">
+      <div class="med-plan-hd"><span>本组推荐诊疗方案（临床路径锚定）</span><span style="white-space:nowrap"><button type="button" style="border:1px solid #2f6ee5;background:#2f6ee5;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">推荐依据</button></span></div>
+      <div class="med-plan-combo">缬沙坦 + 氨氯地平 + 氢氯噻嗪</div>
+      <div class="med-plan-strategy-note"><strong>策略说明：</strong>RAS 通路抑制/拮抗联合 CCB 与噻嗪类利尿剂，适用于中高危及需联合降压人群；目标血压与疗程依据危险分层设定，注意监测血钾、肌酐与容量状态。<span class="ai-plan-link" style="float:none;white-space:nowrap">详阅分层依据</span></div>
+    </div>`
+}
+function buildHtMedPlanCardsHtml() {
+  return `
+    <div class="med-plan-card">
+      <div class="med-plan-hd"><span>方案一 · 经济学优选（最高性价比）</span><span style="white-space:nowrap"><button type="button" style="border:1px solid #2f6ee5;background:#2f6ee5;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">一键采纳</button></span></div>
+      <div class="med-plan-combo">缬沙坦胶囊 + 苯磺酸氨氯地平片 + 氢氯噻嗪片</div>
+      <div class="med-plan-cost">方案日均费用：8.62元　预估年费用：3146.3元</div>
+      <div class="med-drug-row"><strong>缬沙坦胶囊</strong>　胶囊　80mg*7粒　18.6元/盒；日均2.66元；预估年费用970.9元</div>
+      <div class="med-drug-row"><strong>苯磺酸氨氯地平片</strong>　片剂　5mg*28片　12.8元/盒；日均0.46元；预估年费用167.9元</div>
+      <div class="med-drug-row"><strong>氢氯噻嗪片</strong>　片剂　25mg*100片　6.5元/盒；日均0.05元；预估年费用18.25元</div>
+      <div class="med-note"><strong>推荐说明：</strong>与第 4 步诊疗路径一致；联合降压覆盖 RAS、血管与容量三条机制，结合院内目录与卫生经济学评价生成。</div>
+    </div>
+    <div class="med-plan-card">
+      <div class="med-plan-hd"><span>方案2：多专家共识方案</span></div>
+      <div class="med-plan-combo">厄贝沙坦片 + 左旋氨氯地平片 + 吲达帕胺缓释片</div>
+      <div class="med-plan-cost">方案日均费用：10.28元　预估年费用：3752.2元</div>
+      <div class="med-drug-row"><strong>厄贝沙坦片</strong>　片剂　150mg*7片　22.4元/盒；日均3.20元；预估年费用1168元</div>
+      <div class="med-drug-row"><strong>左旋氨氯地平片</strong>　片剂　2.5mg*14片　15.2元/盒；日均1.09元；预估年费用397.85元</div>
+      <div class="med-drug-row"><strong>吲达帕胺缓释片</strong>　片剂　1.5mg*30片　28元/盒；日均0.93元；预估年费用339.45元</div>
+      <div class="med-note"><strong>推荐说明：</strong>路径与方案一相同，在 ARB/CCB/利尿剂类别内选用不同活性成分与剂型；供指南共识偏好或个体耐受选择。</div>
+    </div>`
+}
+function buildHtSupportingSuggestionsHtml() {
+  return `<details class="ai-deep-details" open><summary>配套建议</summary>
+  <div class="ai-deep-body">
+    <div class="support-block">
+      <strong>健康管理方案</strong>
+      <strong>· 营养与限盐</strong>
+      <ul>
+        <li>DASH 饮食思路：多蔬果、低脂乳、少饱和脂肪；钠摄入 &lt;5g 盐/日（约 2000mg 钠）。</li>
+        <li>限制加工食品与腌制品，注意隐形盐。</li>
+      </ul>
+      <strong>· 运动与体重</strong>
+      <ul>
+        <li>每周 ≥150 分钟中等强度有氧（快走、骑车），配合抗阻训练每周 2 次。</li>
+        <li>BMI 与腰围纳入目标管理，减重有助于降压达标。</li>
+      </ul>
+    </div>
+    <div class="support-block">
+      <strong>随访计划</strong>
+      <ul>
+        <li>家庭血压：早晚固定时间测量，记录均值供复诊调药。</li>
+        <li>启动/调整 RAS 抑制剂或利尿剂后：4–8 周复查肌酐、血钾。</li>
+        <li>每年评估靶器官：尿蛋白、眼底、颈动脉超声（按风险）。</li>
+      </ul>
+    </div>
+    <div class="support-block">
+      <strong>预警提示</strong>
+      <ul>
+        <li>警惕低血压、头晕；老年人注意体位性低血压。</li>
+        <li>噻嗪类/保钾药联用注意高钾；痛风急性期慎用利尿剂方案调整。</li>
+        <li>妊娠或计划妊娠：避免 ARB/ACEI，需产科协同。</li>
+      </ul>
+    </div>
+    <div class="support-more">查看更多 ▼</div>
+  </div>
+</details>`
+}
+function buildStrokeRecommendedTherapyPlanHtml() {
+  return `
+    <div class="med-plan-card med-plan-card--anchor" style="margin-bottom:0">
+      <div class="med-plan-hd"><span>本组推荐诊疗方案（临床路径锚定）</span><span style="white-space:nowrap"><button type="button" style="border:1px solid #2f6ee5;background:#2f6ee5;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">推荐依据</button></span></div>
+      <div class="med-plan-combo">阿司匹林肠溶片 + 阿托伐他汀钙片 + 氯吡格雷片</div>
+      <div class="med-plan-strategy-note"><strong>策略说明：</strong>缺血性脑卒中二级预防以抗血小板与强化降脂为核心，双抗疗程遵循指南与出血风险评估；同步管理血压、血糖与生活方式，康复与随访贯穿全程。<span class="ai-plan-link" style="float:none;white-space:nowrap">详阅分层依据</span></div>
+    </div>`
+}
+function buildStrokeMedPlanCardsHtml() {
+  return `
+    <div class="med-plan-card">
+      <div class="med-plan-hd"><span>方案一 · 经济学优选（最高性价比）</span><span style="white-space:nowrap"><button type="button" style="border:1px solid #2f6ee5;background:#2f6ee5;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">一键采纳</button></span></div>
+      <div class="med-plan-combo">阿司匹林肠溶片 + 阿托伐他汀钙片 + 氯吡格雷片</div>
+      <div class="med-plan-cost">方案日均费用：11.35元　预估年费用：4142.75元</div>
+      <div class="med-drug-row"><strong>阿司匹林肠溶片</strong>　肠溶片　100mg*30片　8.2元/盒；日均0.27元；预估年费用98.6元</div>
+      <div class="med-drug-row"><strong>阿托伐他汀钙片</strong>　片剂　20mg*7片　32.5元/盒；日均4.64元；预估年费用1693.6元</div>
+      <div class="med-drug-row"><strong>硫酸氢氯吡格雷片</strong>　片剂　75mg*7片　56元/盒；日均8.00元；预估年费用2920元</div>
+      <div class="med-note"><strong>推荐说明：</strong>与第 4 步诊疗路径一致；双抗疗程以临床评估为准，本演示为固定组合与经济学测算。</div>
+    </div>
+    <div class="med-plan-card">
+      <div class="med-plan-hd"><span>方案2：多专家共识方案</span></div>
+      <div class="med-plan-combo">阿司匹林肠溶片 + 瑞舒伐他汀钙片 + 氯吡格雷片</div>
+      <div class="med-plan-cost">方案日均费用：12.88元　预估年费用：4701.2元</div>
+      <div class="med-drug-row"><strong>阿司匹林肠溶片</strong>　肠溶片　100mg*30片　8.2元/盒；日均0.27元；预估年费用98.6元</div>
+      <div class="med-drug-row"><strong>瑞舒伐他汀钙片</strong>　片剂　10mg*7片　38.9元/盒；日均5.56元；预估年费用2029.4元</div>
+      <div class="med-drug-row"><strong>硫酸氢氯吡格雷片</strong>　片剂　75mg*7片　56元/盒；日均8.00元；预估年费用2920元</div>
+      <div class="med-note"><strong>推荐说明：</strong>路径与方案一相同，他汀换用瑞舒伐他汀；供 LDL-C 目标、耐受性或院内目录差异选择。</div>
+    </div>`
+}
+function buildStrokeSupportingSuggestionsHtml() {
+  return `<details class="ai-deep-details" open><summary>配套建议</summary>
+  <div class="ai-deep-body">
+    <div class="support-block">
+      <strong>健康管理方案</strong>
+      <strong>· 营养与吞咽</strong>
+      <ul>
+        <li>存在吞咽障碍时稠粥/泥状饮食，防误吸；戒烟限酒。</li>
+        <li>控制盐与饱和脂肪，增加蔬菜与全谷物。</li>
+      </ul>
+      <strong>· 运动与康复</strong>
+      <ul>
+        <li>在康复师指导下进行肢体功能与步态训练，预防跌倒。</li>
+        <li>认知与语言训练按评估分期安排。</li>
+      </ul>
+    </div>
+    <div class="support-block">
+      <strong>随访计划</strong>
+      <ul>
+        <li>血脂：依据目标值复测 LDL-C、肝酶、CK；血压、血糖同步管理。</li>
+        <li>抗血小板期间注意黑便、皮下瘀斑等出血征象。</li>
+        <li>神经功能与日常生活能力（mRS 等）定期评估。</li>
+      </ul>
+    </div>
+    <div class="support-block">
+      <strong>预警提示</strong>
+      <ul>
+        <li>双抗或抗栓治疗出血风险：消化道高危者可评估胃黏膜保护。</li>
+        <li>他汀相关肌痛、肝酶升高需复查并调整剂量或换药。</li>
+        <li>新发神经功能缺损、剧烈头痛等需急诊排除再卒中。</li>
+      </ul>
+    </div>
+    <div class="support-more">查看更多 ▼</div>
+  </div>
+</details>`
+}
+function buildChdRecommendedTherapyPlanHtml() {
+  return `
+    <div class="med-plan-card med-plan-card--anchor" style="margin-bottom:0">
+      <div class="med-plan-hd"><span>本组推荐诊疗方案（临床路径锚定）</span><span style="white-space:nowrap"><button type="button" style="border:1px solid #2f6ee5;background:#2f6ee5;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">推荐依据</button></span></div>
+      <div class="med-plan-combo">阿司匹林肠溶片 + 阿托伐他汀钙片 + 美托洛尔缓释片</div>
+      <div class="med-plan-strategy-note"><strong>策略说明：</strong>慢性冠脉综合征以抗血小板联合强化降脂为基石，β 受体阻滞剂控制心率与心肌氧耗；血运重建史与症状负荷决定疗程与目标，注意出血、心率与气道反应等个体化因素。<span class="ai-plan-link" style="float:none;white-space:nowrap">详阅分层依据</span></div>
+    </div>`
+}
+function buildChdMedPlanCardsHtml() {
+  return `
+    <div class="med-plan-card">
+      <div class="med-plan-hd"><span>方案一 · 经济学优选（最高性价比）</span><span style="white-space:nowrap"><button type="button" style="border:1px solid #2f6ee5;background:#2f6ee5;color:#fff;border-radius:6px;padding:4px 10px;font-size:11px;cursor:pointer">一键采纳</button></span></div>
+      <div class="med-plan-combo">阿司匹林肠溶片 + 阿托伐他汀钙片 + 酒石酸美托洛尔片</div>
+      <div class="med-plan-cost">方案日均费用：9.18元　预估年费用：3350.7元</div>
+      <div class="med-drug-row"><strong>阿司匹林肠溶片</strong>　肠溶片　100mg*30片　8.2元/盒；日均0.27元；预估年费用98.6元</div>
+      <div class="med-drug-row"><strong>阿托伐他汀钙片</strong>　片剂　20mg*7片　32.5元/盒；日均4.64元；预估年费用1693.6元</div>
+      <div class="med-drug-row"><strong>酒石酸美托洛尔片</strong>　片剂　25mg*20片　9.8元/盒；日均0.49元；预估年费用178.85元</div>
+      <div class="med-note"><strong>推荐说明：</strong>与第 4 步诊疗路径一致；美托洛尔选用常释片便于滴定；结合卫生经济学评价生成。</div>
+    </div>
+    <div class="med-plan-card">
+      <div class="med-plan-hd"><span>方案2：多专家共识方案</span></div>
+      <div class="med-plan-combo">阿司匹林肠溶片 + 瑞舒伐他汀钙片 + 琥珀酸美托洛尔缓释片</div>
+      <div class="med-plan-cost">方案日均费用：11.02元　预估年费用：4022.3元</div>
+      <div class="med-drug-row"><strong>阿司匹林肠溶片</strong>　肠溶片　100mg*30片　8.2元/盒；日均0.27元；预估年费用98.6元</div>
+      <div class="med-drug-row"><strong>瑞舒伐他汀钙片</strong>　片剂　10mg*7片　38.9元/盒；日均5.56元；预估年费用2029.4元</div>
+      <div class="med-drug-row"><strong>琥珀酸美托洛尔缓释片</strong>　缓释片　47.5mg*7片　42元/盒；日均6.00元；预估年费用2190元</div>
+      <div class="med-note"><strong>推荐说明：</strong>路径与方案一相同，他汀换用瑞舒伐他汀、美托洛尔换用缓释剂型；供指南共识偏好或个体耐受选择。</div>
+    </div>`
+}
+function buildChdSupportingSuggestionsHtml() {
+  return `<details class="ai-deep-details" open><summary>配套建议</summary>
+  <div class="ai-deep-body">
+    <div class="support-block">
+      <strong>健康管理方案</strong>
+      <strong>· 活动与康复</strong>
+      <ul>
+        <li>在心脏康复评估下有序进行有氧训练，出现胸痛、气短或心悸加重时暂停并就诊。</li>
+        <li>避免剧烈运动与屏气用力，注意热身与放松。</li>
+      </ul>
+      <strong>· 营养</strong>
+      <ul>
+        <li>地中海饮食思路：多蔬果、全谷物、鱼类与橄榄油；限制反式脂肪与含糖饮料。</li>
+      </ul>
+    </div>
+    <div class="support-block">
+      <strong>随访计划</strong>
+      <ul>
+        <li>血脂：复测 LDL-C、肝酶、CK；血压、血糖同步管理。</li>
+        <li>抗血小板期间注意黑便、皮下瘀斑等出血征象。</li>
+        <li>支架/搭桥术后按医嘱双抗疗程与复诊。</li>
+      </ul>
+    </div>
+    <div class="support-block">
+      <strong>预警提示</strong>
+      <ul>
+        <li>β 受体阻滞剂：哮喘/COPD、严重心动过缓者慎用；勿突然停药。</li>
+        <li>他汀相关肌痛、肝酶升高需复查并调整。</li>
+        <li>胸痛性质或频率变化需急诊排除急性冠脉综合征。</li>
+      </ul>
+    </div>
+    <div class="support-more">查看更多 ▼</div>
+  </div>
+</details>`
+}
+function addChdPlanCard(chdPayload, opts) {
+  const m = planCardModeCopy(opts)
+  const showThink = !opts || !opts.decisionTree
+  const thinkingHtml = showThink ? `
+    <details class="ai-deep-details" open><summary>3 思考过程</summary>
+      <div class="ai-deep-body">结合缺血负荷、LVEF、合并症与出血风险，在抗栓 + 降脂 + 心率控制框架内选择可及方案；关注药物相互作用与随访再评估。</div>
+    </details>` : ''
+  const arch = collectArchiveInput()
+  const diagLabel = chdPayload && chdPayload.diagLabel ? chdPayload.diagLabel : '—'
+  const ldl = chdPayload && chdPayload.ldl != null ? chdPayload.ldl : '—'
+  const card = document.createElement('div')
+  card.className = 'msg assistant ai-deep-card'
+  card.innerHTML = `
+    <div class="claw-card-title">诊疗方案推荐-冠心病 · ${m.titleSuffix}（🦞 OpenClaw）</div>
+    <div class="ai-deep-badge">${m.badge}</div>
+    <details class="ai-deep-details"><summary>1 患者病情入参（来源于健康档案）</summary>
+      <div class="ai-deep-body">
+        <div class="kv">${escapeHtml(arch.patient)}</div>
+        <div class="kv">具体诊断：${escapeHtml(diagLabel)}</div>
+        <div class="kv">低密度脂蛋白 LDL-C：${escapeHtml(ldl)} mmol/L（完善入参）</div>
+        <div class="kv">档案血压参考：${escapeHtml(arch.bp)}　LDL ${escapeHtml(arch.ldl)}</div>
+        <div class="kv">合并诊断：${escapeHtml(arch.diagnosis.join('、'))}</div>
+      </div>
+    </details>
+    <details class="ai-deep-details"><summary>2 参考资料</summary>
+      <div class="ai-deep-body">《中国慢性冠脉综合征患者诊断及管理指南》；《稳定性冠心病诊断与治疗指南》；《冠心病合理用药指南》。</div>
+    </details>
+    ${thinkingHtml}
+    <details class="ai-deep-details" open><summary>4 推荐诊疗方案（仅1套）</summary>
+      <div class="ai-deep-body ai-deep-body--flush">${buildChdRecommendedTherapyPlanHtml()}</div>
+    </details>
+    <div class="ai-plan-title" style="margin-top:10px">5 用药选品方案（多套 · 多专家共识/经济学评价）</div>
+    <div class="ai-plan-sub">以下用药组合均依据第 4 步诊疗路径，对院内可及品种进行选品组方与费用测算；每组先给出<strong>药品1 + 药品2 + …</strong>组合，再列各药规格与价格明细。</div>
+    ${buildChdMedPlanCardsHtml()}
+    ${buildChdSupportingSuggestionsHtml()}
+    <div class="ai-deep-foot">${m.foot}</div>
+  `
+  document.getElementById('chat').appendChild(card)
+  document.getElementById('chat').scrollTop = 99999
+}
+function addAiDeepHypertensionPlanCard(htPayload, opts) {
+  const m = planCardModeCopy(opts)
+  const showThink = !opts || !opts.decisionTree
+  const thinkingHtml = showThink ? `
+    <details class="ai-deep-details" open><summary>3 思考过程</summary>
+      <div class="ai-deep-body">结合血压水平、危险分层与靶器官风险，优先选择可及、循证充分的联合方案；兼顾电解质、肾功能与合并用药相互作用，并预留随访调药空间。</div>
+    </details>` : ''
+  const arch = collectArchiveInput()
+  const diagLabel = htPayload && htPayload.diagLabel ? htPayload.diagLabel : '—'
+  const bpLine = htPayload && htPayload.bpLine ? htPayload.bpLine : '—'
+  const card = document.createElement('div')
+  card.className = 'msg assistant ai-deep-card'
+  card.innerHTML = `
+    <div class="claw-card-title">诊疗方案推荐-高血压 · ${m.titleSuffix}（🦞 OpenClaw）</div>
+    <div class="ai-deep-badge">${m.badge}</div>
+    <details class="ai-deep-details"><summary>1 患者病情入参（来源于健康档案）</summary>
+      <div class="ai-deep-body">
+        <div class="kv">${escapeHtml(arch.patient)}</div>
+        <div class="kv">具体诊断：${escapeHtml(diagLabel)}</div>
+        <div class="kv">血压：${escapeHtml(bpLine)} mmHg（完善入参）</div>
+        <div class="kv">档案血压参考：${escapeHtml(arch.bp)}</div>
+        <div class="kv">合并诊断：${escapeHtml(arch.diagnosis.join('、'))}</div>
+        <div class="kv">检验摘要：LDL ${escapeHtml(arch.ldl)}　空腹 ${escapeHtml(arch.fbg)}　糖化 ${escapeHtml(arch.hba1c)}</div>
+      </div>
+    </details>
+    <details class="ai-deep-details"><summary>2 参考资料</summary>
+      <div class="ai-deep-body">《中国高血压防治指南（2024 年修订版）》；《中国心血管病一级预防指南》；《高血压合理用药指南（第2版）》。</div>
+    </details>
+    ${thinkingHtml}
+    <details class="ai-deep-details" open><summary>4 推荐诊疗方案（仅1套）</summary>
+      <div class="ai-deep-body ai-deep-body--flush">${buildHtRecommendedTherapyPlanHtml()}</div>
+    </details>
+    <div class="ai-plan-title" style="margin-top:10px">5 用药选品方案（多套 · 多专家共识/经济学评价）</div>
+    <div class="ai-plan-sub">以下用药组合均依据第 4 步诊疗路径，对院内可及品种进行选品组方与费用测算；每组先给出<strong>药品1 + 药品2 + …</strong>组合，再列各药规格与价格明细。</div>
+    ${buildHtMedPlanCardsHtml()}
+    ${buildHtSupportingSuggestionsHtml()}
+    <div class="ai-deep-foot">${m.foot}</div>
+  `
+  document.getElementById('chat').appendChild(card)
+  document.getElementById('chat').scrollTop = 99999
+}
+function addAiDeepStrokePlanCard(strokePayload, opts) {
+  const m = planCardModeCopy(opts)
+  const showThink = !opts || !opts.decisionTree
+  const thinkingHtml = showThink ? `
+    <details class="ai-deep-details" open><summary>3 思考过程</summary>
+      <div class="ai-deep-body">在二级预防框架下平衡缺血获益与出血风险；降脂目标结合 ASCVD 风险与检验结果；抗栓疗程个体化并联动血压、血糖与康复计划。</div>
+    </details>` : ''
+  const arch = collectArchiveInput()
+  const diagLabel = strokePayload && strokePayload.diagLabel ? strokePayload.diagLabel : '—'
+  const ldl = strokePayload && strokePayload.ldl != null ? strokePayload.ldl : '—'
+  const card = document.createElement('div')
+  card.className = 'msg assistant ai-deep-card'
+  card.innerHTML = `
+    <div class="claw-card-title">诊疗方案推荐-脑卒中 · ${m.titleSuffix}（🦞 OpenClaw）</div>
+    <div class="ai-deep-badge">${m.badge}</div>
+    <details class="ai-deep-details"><summary>1 患者病情入参（来源于健康档案）</summary>
+      <div class="ai-deep-body">
+        <div class="kv">${escapeHtml(arch.patient)}</div>
+        <div class="kv">具体诊断：${escapeHtml(diagLabel)}</div>
+        <div class="kv">低密度脂蛋白 LDL-C：${escapeHtml(ldl)} mmol/L（完善入参）</div>
+        <div class="kv">档案血压参考：${escapeHtml(arch.bp)}　LDL ${escapeHtml(arch.ldl)}</div>
+        <div class="kv">合并诊断：${escapeHtml(arch.diagnosis.join('、'))}</div>
+      </div>
+    </details>
+    <details class="ai-deep-details"><summary>2 参考资料</summary>
+      <div class="ai-deep-body">《中国急性缺血性脑卒中诊治指南》；《中国脑卒中防治指导规范》；《中国缺血性脑卒中和短暂性脑缺血发作二级预防指南》。</div>
+    </details>
+    ${thinkingHtml}
+    <details class="ai-deep-details" open><summary>4 推荐诊疗方案（仅1套）</summary>
+      <div class="ai-deep-body ai-deep-body--flush">${buildStrokeRecommendedTherapyPlanHtml()}</div>
+    </details>
+    <div class="ai-plan-title" style="margin-top:10px">5 用药选品方案（多套 · 多专家共识/经济学评价）</div>
+    <div class="ai-plan-sub">以下用药组合均依据第 4 步诊疗路径，对院内可及品种进行选品组方与费用测算；每组先给出<strong>药品1 + 药品2 + …</strong>组合，再列各药规格与价格明细。</div>
+    ${buildStrokeMedPlanCardsHtml()}
+    ${buildStrokeSupportingSuggestionsHtml()}
+    <div class="ai-deep-foot">${m.foot}</div>
+  `
+  document.getElementById('chat').appendChild(card)
+  document.getElementById('chat').scrollTop = 99999
+}
+function addAiDeepDiabetesPlanCard(dmPayload, opts) {
+  const m = planCardModeCopy(opts)
+  const showThink = !opts || !opts.decisionTree
+  const thinkingHtml = showThink ? `
+    <details class="ai-deep-details" open><summary>3 思考过程</summary>
+      <div class="ai-deep-body">综合血糖、血压、肾功能及合并用药，结合 ASCVD 与 CKD 风险分层，优先胰岛素强化与降脂联合；兼顾卫生经济学与院内可及性。</div>
+    </details>` : ''
+  const arch = collectArchiveInput()
+  const diagLabel = dmPayload && dmPayload.diagLabel ? dmPayload.diagLabel : '—'
+  const gluLine = dmPayload && dmPayload.gluLine ? dmPayload.gluLine : '—'
+  const card = document.createElement('div')
+  card.className = 'msg assistant ai-deep-card'
+  card.innerHTML = `
+    <div class="claw-card-title">诊疗方案推荐-糖尿病 · ${m.titleSuffix}（🦞 OpenClaw）</div>
+    <div class="ai-deep-badge">${m.badge}</div>
+    <details class="ai-deep-details"><summary>1 患者病情入参（来源于健康档案）</summary>
+      <div class="ai-deep-body">
+        <div class="kv">${escapeHtml(arch.patient)}</div>
+        <div class="kv">具体诊断：${escapeHtml(diagLabel)}</div>
+        <div class="kv">血糖指标：${escapeHtml(gluLine)}</div>
+        <div class="kv">合并诊断：${escapeHtml(arch.diagnosis.join('、'))}</div>
+        <div class="kv">检验摘要：空腹 ${escapeHtml(arch.fbg)}　餐后 ${escapeHtml(arch.pbg)}　糖化 ${escapeHtml(arch.hba1c)}　LDL ${escapeHtml(arch.ldl)}</div>
+      </div>
+    </details>
+    <details class="ai-deep-details"><summary>2 参考资料</summary>
+      <div class="ai-deep-body">《中国2型糖尿病防治指南（2024版）》；《糖尿病肾脏病防治指南》；《成人糖尿病高危人群筛查与干预专家共识》。</div>
+    </details>
+    ${thinkingHtml}
+    <details class="ai-deep-details" open><summary>4 推荐诊疗方案（仅1套）</summary>
+      <div class="ai-deep-body ai-deep-body--flush">${buildRecommendedTherapyPlanHtml()}</div>
+    </details>
+    <div class="ai-plan-title" style="margin-top:10px">5 用药选品方案（多套 · 多专家共识/经济学评价）</div>
+    <div class="ai-plan-sub">以下用药组合均依据第 4 步诊疗路径，对院内可及品种进行选品组方与费用测算；每组先给出<strong>药品1 + 药品2 + …</strong>组合，再列各药规格与价格明细。</div>
+    ${buildMedPlanCardsHtml()}
+    ${buildSupportingSuggestionsHtml()}
+    <div class="ai-deep-foot">${m.foot}</div>
+  `
+  document.getElementById('chat').appendChild(card)
+  document.getElementById('chat').scrollTop = 99999
+}
+async function runAiDeepDiabetesOutput(dmPayload) {
+  addLog('→ 🦞 OpenClaw：plan.deep_think + support_bundle')
+  const loading = addMsg('AI医生助手正在进行深度思考…', 'assistant typing')
+  await sleep(1400)
+  loading.remove()
+  addAiDeepDiabetesPlanCard(dmPayload)
+}
+async function runAiDeepHypertensionOutput(htPayload) {
+  addLog('→ 🦞 OpenClaw：plan.deep_think + support_bundle')
+  const loading = addMsg('AI医生助手正在进行深度思考…', 'assistant typing')
+  await sleep(1400)
+  loading.remove()
+  addAiDeepHypertensionPlanCard(htPayload)
+}
+async function runAiDeepStrokeOutput(strokePayload) {
+  addLog('→ 🦞 OpenClaw：plan.deep_think + support_bundle')
+  const loading = addMsg('AI医生助手正在进行深度思考…', 'assistant typing')
+  await sleep(1400)
+  loading.remove()
+  addAiDeepStrokePlanCard(strokePayload)
+}
+async function runTreeDiabetesOutput(dmPayload) {
+  addLog('→ 🦞 OpenClaw：plan.decision_tree + support_bundle')
+  const loading = addMsg('生成方案中...', 'assistant typing')
+  await sleep(1100)
+  loading.remove()
+  addAiDeepDiabetesPlanCard(dmPayload, { decisionTree: true })
+}
+async function runTreeHypertensionOutput(htPayload) {
+  addLog('→ 🦞 OpenClaw：plan.decision_tree + support_bundle')
+  const loading = addMsg('生成方案中...', 'assistant typing')
+  await sleep(1100)
+  loading.remove()
+  addAiDeepHypertensionPlanCard(htPayload, { decisionTree: true })
+}
+async function runTreeStrokeOutput(strokePayload) {
+  addLog('→ 🦞 OpenClaw：plan.decision_tree + support_bundle')
+  const loading = addMsg('生成方案中...', 'assistant typing')
+  await sleep(1100)
+  loading.remove()
+  addAiDeepStrokePlanCard(strokePayload, { decisionTree: true })
+}
+async function runTreeChdOutput(chdPayload) {
+  addLog('→ 🦞 OpenClaw：plan.decision_tree + support_bundle')
+  const loading = addMsg('生成方案中...', 'assistant typing')
+  await sleep(1100)
+  loading.remove()
+  addChdPlanCard(chdPayload, { decisionTree: true })
+}
+async function confirmFill() {
+  hideFillErr()
+
+  if (selectedDisease === 'dm') {
+    const diag = (document.getElementById('fill-dm-diag') && document.getElementById('fill-dm-diag').value || '').trim()
+    const fbg = (document.getElementById('fill-fbg') && document.getElementById('fill-fbg').value || '').trim()
+    const post = (document.getElementById('fill-post') && document.getElementById('fill-post').value || '').trim()
+    const hba = (document.getElementById('fill-hba1c') && document.getElementById('fill-hba1c').value || '').trim()
+    if (!diag) { showFillErr('请选择糖尿病具体诊断'); return }
+    if (!fbg && !post && !hba) { showFillErr('请至少填写一项：空腹血糖 / 餐后2h血糖 / 糖化血红蛋白'); return }
+    const gluLine = buildDmGluLine(fbg, post, hba)
+    const dmPayload = { diagLabel: diag, fbg, post, hba1c: hba, gluLine }
+    closeAllModal()
+    addLog('→ 入参完善，生成诊疗方案（糖尿病）')
+    if (planGenMode === 'ai') {
+      await runAiDeepDiabetesOutput(dmPayload)
+    } else {
+      await runTreeDiabetesOutput(dmPayload)
+    }
+    return
+  }
+
+  if (selectedDisease === 'ht') {
+    const diag = (document.getElementById('fill-ht-diag') && document.getElementById('fill-ht-diag').value || '').trim()
+    const sbp = (document.getElementById('fill-sbp') && document.getElementById('fill-sbp').value || '').trim()
+    const dbp = (document.getElementById('fill-dbp') && document.getElementById('fill-dbp').value || '').trim()
+    if (!diag) { showFillErr('请选择高血压具体诊断'); return }
+    if (!sbp || !dbp) { showFillErr('请填写收缩压与舒张压'); return }
+    const bp = `${sbp}/${dbp}`
+    const htPayload = { diagLabel: diag, sbp, dbp, bpLine: bp }
+    closeAllModal()
+    addLog('→ 入参完善，生成诊疗方案（高血压）')
+    if (planGenMode === 'ai') {
+      await runAiDeepHypertensionOutput(htPayload)
+    } else {
+      await runTreeHypertensionOutput(htPayload)
+    }
+    return
+  }
+
+  if (selectedDisease === 'chd') {
+    const diag = (document.getElementById('fill-chd-diag') && document.getElementById('fill-chd-diag').value || '').trim()
+    const ldl = (document.getElementById('fill-ldl-chd') && document.getElementById('fill-ldl-chd').value || '').trim()
+    if (!diag) { showFillErr('请选择冠心病具体诊断'); return }
+    if (!ldl) { showFillErr('请填写低密度脂蛋白 LDL-C'); return }
+    const chdPayload = { diagLabel: diag, ldl }
+    closeAllModal()
+    addLog('→ 入参完善，生成诊疗方案（冠心病）')
+    await runTreeChdOutput(chdPayload)
+    return
+  }
+
+  if (selectedDisease === 'stroke') {
+    const diag = (document.getElementById('fill-stroke-diag') && document.getElementById('fill-stroke-diag').value || '').trim()
+    const ldl = (document.getElementById('fill-ldl-stroke') && document.getElementById('fill-ldl-stroke').value || '').trim()
+    if (!diag) { showFillErr('请选择脑卒中具体诊断'); return }
+    if (!ldl) { showFillErr('请填写低密度脂蛋白 LDL-C'); return }
+    const strokePayload = { diagLabel: diag, ldl }
+    closeAllModal()
+    addLog('→ 入参完善，生成诊疗方案（脑卒中）')
+    if (planGenMode === 'ai') {
+      await runAiDeepStrokeOutput(strokePayload)
+    } else {
+      await runTreeStrokeOutput(strokePayload)
+    }
+    return
+  }
+
+  showFillErr('未知病种，请重新选择')
+}
+async function showHistory() {
+  addMsg("查看我和该患者的历史对话", 'user')
+  await sleep(300)
+  addLog('→ 读取患者对话历史')
+  const loading = addMsg('加载中...', 'assistant typing')
+  await sleep(1000)
+  loading.remove()
+  await type(addMsg('', 'assistant'), `【历史对话（张三）】
+2025-03-20：生成生活处方
+2025-03-21：推荐检验检查
+2025-03-23：完善血压血糖 → 生成高血压诊疗方案
+
+上下文已全部保留，可继续追问。`)
+}
+
+function collectArchiveInput() {
+  const get = (selector, fallback = '--') => {
+    const el = document.querySelector(selector)
+    return el ? el.textContent.trim() : fallback
+  }
+  return {
+    patient: get('.patient-summary', '当前接诊患者：张三'),
+    diagnosis: [
+      get('#sec-condition tbody tr:nth-child(2) td:nth-child(1)', '高血压'),
+      get('#sec-condition tbody tr:nth-child(3) td:nth-child(1)', '肥胖')
+    ],
+    bp: get('#sec-check tbody tr:nth-child(7) td:nth-child(3)', '150/100mmHg'),
+    fbg: get('#sec-check tbody tr:nth-child(11) td:nth-child(3)', '6.8mmol/L'),
+    pbg: get('#sec-check tbody tr:nth-child(12) td:nth-child(3)', '8.9mmol/L'),
+    hba1c: get('#sec-check tbody tr:nth-child(13) td:nth-child(3)', '7.8%'),
+    ldl: get('#sec-check tbody tr:nth-child(16) td:nth-child(3)', '3.51mmol/L'),
+    meds: '缬沙坦 80mg qd；二甲双胍 0.5g tid（历史记录）',
+    lifestyle: '偏重米饭，运动不足，吸烟20年（2支/天）'
+  }
+}
+
+function buildArchiveSummary(input, followup) {
+  const focus = followup || '优先控制血压与糖化指标，降低心脑血管风险。'
+  return `患者：${input.patient}
+
+【病情分析】
+1) 多病共存：${input.diagnosis.join('、')}，当前代谢与血压均未达标。
+2) 心血管风险：血压 ${input.bp}、LDL ${input.ldl}，提示动脉粥样硬化风险升高。
+3) 血糖控制：空腹 ${input.fbg}、餐后 ${input.pbg}、糖化 ${input.hba1c}，提示近3月总体控制欠佳。
+
+【关键指标】
+- 血压：${input.bp}（目标建议 <130/80）
+- 糖化血红蛋白：${input.hba1c}（目标建议 <7.0%）
+- LDL-C：${input.ldl}（目标建议 <2.6 mmol/L）
+
+【历史用药情况】
+- ${input.meds}
+- 生活方式相关：${input.lifestyle}
+
+【本次追问结论】
+${focus}
+
+【建议下一步】
+1. 2周内复测家庭血压（晨/晚）并回传。
+2. 4-8周复查糖化、血脂、肾功能；评估依从性与不良反应。
+3. 若连续两次随访仍不达标，考虑上级门诊联合管理。`
+}
+
+async function runArchiveFlow() {
+  const input = collectArchiveInput()
+  addMsg('读取健康档案并生成AI病情小结', 'user')
+  await sleep(250)
+  addLog('→ 调用 🦞 OpenClaw：archive.fetch')
+  addLog('→ 数据映射：病情概况/检查提醒/历史用药/生活习惯')
+  const loading = addMsg('正在获取档案并构建分析入参...', 'assistant typing')
+  await sleep(900)
+  loading.remove()
+  addActionMsg('已完成档案获取。是否先做一次病情追问，再输出最终分析？', [
+    {
+      label: '先追问后分析',
+      onClick: async () => {
+        addLog('→ 🦞 OpenClaw 追问：clarify.intent')
+        const qLoading = addMsg('正在生成病情追问...', 'assistant typing')
+        await sleep(800)
+        qLoading.remove()
+        await type(addMsg('', 'assistant'), '追问建议：\n1) 最近2周家庭血压晨晚均值大概是多少？\n2) 二甲双胍是否有胃肠道不适影响服药依从性？\n3) 夜尿/下肢水肿近1个月是否加重？')
+        await sleep(350)
+        addMsg('补充：近期晨起血压约148/96，服药偶有漏服，夜尿2次/晚。', 'user')
+        addLog('→ 🦞 OpenClaw 分析：summary.generate')
+        const sLoading = addMsg('结合追问结果生成病情小结...', 'assistant typing')
+        await sleep(900)
+        sLoading.remove()
+        const body = addClawSummaryCard('AI病情小结（🦞 OpenClaw）')
+        await type(body, buildArchiveSummary(input, '近期存在漏服与夜尿症状，需优先提升依从性并强化血压管理。'))
+      }
+    },
+    {
+      label: '直接输出分析',
+      onClick: async () => {
+        addLog('→ 🦞 OpenClaw 分析：summary.generate（direct）')
+        const sLoading = addMsg('基于档案直接生成病情小结...', 'assistant typing')
+        await sleep(900)
+        sLoading.remove()
+        const body = addClawSummaryCard('AI病情小结（🦞 OpenClaw）')
+        await type(body, buildArchiveSummary(input))
+      }
+    }
+  ])
+}
+
+async function runRiskAssessmentFlow() {
+  const input = collectArchiveInput()
+  addMsg('慢病风险评估', 'user')
+  await sleep(250)
+  addLog('→ 调用 🦞 OpenClaw：risk.profile')
+  addLog('→ 风险分层：已患病控制标签 + 未患病风险标签')
+  const loading = addMsg('正在计算风险分层与标签...', 'assistant typing')
+  await sleep(900)
+  loading.remove()
+  addRiskAssessmentCard(input)
+}
+
+const tasks = [
+  {},
+  { q:"读取健康档案", log:"调用 Skill：健康档案读取", a:`【健康档案】
+血压：145/92 mmHg 血糖：7.8 mmol/L
+用药：缬沙坦 80mg qd` },
+  { q:"慢病风险评估", log:"调用 Skill：风险预测", a:`【风险评估】
+血压、血糖控制不达标
+心脑血管风险：中度` },
+  { q:"生成生活处方", log:"调用 Skill：生活处方", a:`【生活处方】
+低盐＜5g，低糖，主食定量
+快走30分钟/天，5次/周` },
+  { q:"转诊建议", log:"调用 Skill：转诊判断", a:`【转诊建议】
+当前无需转诊
+3个月控制不佳 → 上级医院` },
+  {},
+  { q:"推荐检验检查", log:"调用 Skill：检查推荐", a:`【推荐检查】
+血常规、肝肾功能、电解质、尿微量白蛋白、心电图` },
+  {},
+  { q:"临床报告解读", log:"调用 Skill：报告解读", a:`【报告解读】
+血压偏高，血糖异常
+心电图无明显缺血
+需加强干预` }
+]
+async function run(i) {
+  if (i === 1) {
+    await runArchiveFlow()
+    return
+  }
+  if (i === 2) {
+    await runRiskAssessmentFlow()
+    return
+  }
+  if (i === 6) {
+    await runCheckRecommendationFlow()
+    return
+  }
+  const t = tasks[i]
+  if (!t || !t.q) return
+  addMsg(t.q, 'user')
+  await sleep(300)
+  addLog('→ ' + t.log)
+  const loading = addMsg('处理中...', 'assistant typing')
+  await sleep(1000)
+  loading.remove()
+  await type(addMsg('', 'assistant'), t.a)
+}
+
+// 医生自由模式
+async function askGuide() {
+  addMsg("高血压合并糖尿病最新指南", 'user')
+  await sleep(300)
+  addLog('→ 医生自由提问（不绑患者）')
+  const loading = addMsg('检索指南...', 'assistant typing')
+  await sleep(1200)
+  loading.remove()
+  await type(addMsg('', 'assistant'), `【2024 高血压+糖尿病指南要点】
+1. 血压目标＜130/80
+2. 优先使用RAS阻断剂
+3. SGLT-2抑制剂可降低心肾事件
+4. 每年至少评估一次靶器官损害`)
+}
+async function queryDrug() {
+  addMsg("查询：缬沙坦氨氯地平片（I）说明书要点", 'user')
+  await sleep(300)
+  addLog('→ 药品查询（演示）')
+  const loading = addMsg('检索药品信息...', 'assistant typing')
+  await sleep(1000)
+  loading.remove()
+  await type(addMsg('', 'assistant'), `【药品查询 · 演示结果】
+通用名：缬沙坦氨氯地平片（I）
+适应症：原发性高血压（单药控制不佳时的联合治疗）。
+常见规格：每片含缬沙坦80mg + 氨氯地平5mg（以实际说明书为准）。
+注意：妊娠禁用；双侧肾动脉狭窄、严重肝功能不全慎用；用药期间监测血压、血钾与肾功能。
+
+提示：正式环境可对接医院药品目录与说明书全文检索。`)
+}
+async function createTask() {
+  addLog('→ 龙虾创建任务（任务能力）')
+  const guide = addMsg('', 'assistant')
+  await type(guide, `【创建任务｜录入引导】
+请先在底部输入框写清以下要素，再发送或继续点本按钮走示例：
+① 任务主题（要解决什么问题）
+② 期望产出（综述 / 要点列表 / 对比表等）
+③ 截止时间
+④ 可选：检索范围（指南 / 文献）
+
+示例一句：「整理2025糖尿病新药适应症对比，本周五前要表格」`)
+  await sleep(400)
+  addMsg("帮我创建任务：整理2025糖尿病新药", 'user')
+  await sleep(300)
+  const loading = addMsg('任务创建中...', 'assistant typing')
+  await sleep(1200)
+  loading.remove()
+  await type(addMsg('', 'assistant'), `✅ 任务已创建（演示）
+任务名称：整理2025糖尿病新药
+状态：待完成
+预计完成时间：2025-03-26
+龙虾将按任务说明自动检索文献并生成总结（演示）。`)
+}
+async function subscribe() {
+  addMsg("订阅：高血压、糖尿病指南更新推送", 'user')
+  await sleep(300)
+  addLog('→ 订阅资讯更新')
+  const loading = addMsg('订阅中...', 'assistant typing')
+  await sleep(1000)
+  loading.remove()
+  await type(addMsg('', 'assistant'), `✅ 订阅成功
+订阅主题：高血压、糖尿病指南更新
+推送方式：站内消息
+下次更新将第一时间推送给您。`)
+}
+async function myTasks() {
+  addMsg("查看我的任务", 'user')
+  await sleep(300)
+  addLog('→ 读取医生任务列表')
+  const loading = addMsg('加载中...', 'assistant typing')
+  await sleep(1000)
+  loading.remove()
+  await type(addMsg('', 'assistant'), `【我的任务】
+1. 整理2025糖尿病新药 → 待完成
+2. 汇总SGLT-2抑制剂研究 → 已完成
+3. 慢病管理指南更新 → 已订阅
+
+龙虾会持续执行并提醒。`)
+}
+</script>
+</body>
+</html>
