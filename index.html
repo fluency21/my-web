@@ -158,7 +158,12 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .assistant-action-btn.primary{background:#2f6ee5;border-color:#2f6ee5;color:#fff}
 .claw-summary{background:#f7f9ff;border:1px solid #dbe4ff;padding:12px;border-radius:12px}
 .claw-card-title{font-size:16px;font-weight:700;color:#29447a;margin-bottom:8px;line-height:1.35}
-.claw-card-body{white-space:pre-wrap;color:#2f3c56;font-size:13px;line-height:1.5}
+.claw-card-body{white-space:normal;color:#2f3c56;font-size:13px;line-height:1.45}
+.claw-card-body--pre{white-space:pre-wrap}
+.claw-section-title{font-size:13px;font-weight:700;color:#2f466f;margin:6px 0 4px}
+.claw-kv{display:grid;grid-template-columns:86px 1fr;gap:6px;align-items:start;margin:2px 0}
+.claw-kv .k{font-size:12px;color:#5a6a86}
+.claw-kv .v{font-size:12px;color:#2f3c56;line-height:1.45}
 .risk-card{background:#f7f9ff;border:1px solid #dbe4ff;white-space:normal;padding:12px}
 .risk-group{margin-top:8px}
 .risk-group-title{font-size:12px;font-weight:700;color:#3b4f73;margin-bottom:6px}
@@ -169,7 +174,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .risk-tag.yellow{background:#fff8e9;color:#b87912;border-color:#f0d39c}
 .risk-tag.blue{background:#eef4ff;color:#2f63d6;border-color:#bdd0ff}
 .risk-tag.purple{background:#f3efff;color:#6f44c9;border-color:#d5c5ff}
-.risk-note{margin-top:8px;padding-top:8px;border-top:1px dashed #d9e1f7;color:#4f5e79;font-size:12px;line-height:1.45}
+.risk-note{margin-top:6px;padding-top:6px;border-top:1px dashed #d9e1f7;color:#4f5e79;font-size:12px;line-height:1.4}
 .check-card{background:#f7f9ff;border:1px solid #dbe4ff;padding:12px;border-radius:12px;white-space:normal}
 .check-tabs{display:flex;gap:18px;border-bottom:1px solid #dfe6f7;margin:6px 0 10px}
 .check-tab{padding:0 2px 8px;font-size:12px;color:#61728f;cursor:pointer}
@@ -203,13 +208,20 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .skill-exec-trace-body .log{max-height:130px;overflow-y:auto}
 .skill-exec-hint{font-size:10px;color:#94a3b8;margin:0 0 6px;padding:0 2px}
 #log-skill .log-item{font-size:11px;line-height:1.45;color:#475569;word-break:break-word}
-.skill-inline-fill-card{background:#f8fafc;border:1px solid #dbe4f0;border-radius:10px;padding:12px;margin-top:6px;max-width:100%}
-.skill-inline-fill-title{font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:8px}
-.skill-inline-fill-hint{font-size:11px;color:#64748b;margin-bottom:10px;line-height:1.45}
-.skill-inline-fill-card .fill-row{margin-bottom:8px}
-.skill-inline-fill-card .fill-row label{display:block;font-size:12px;color:#334055;margin-bottom:4px}
-.skill-inline-fill-card .fill-row input,.skill-inline-fill-card .fill-row select{width:100%;padding:8px;border-radius:6px;border:1px solid #dbe2ee;font-size:13px}
-.skill-inline-fill-submit{margin-top:12px;width:100%;padding:10px;border:none;border-radius:8px;background:#2f6ee5;color:#fff;font-size:14px;font-weight:600;cursor:pointer}
+.skill-push-card{background:linear-gradient(180deg,#f8fbff,#f1f6ff);border:1px solid #d7e4ff;border-radius:10px;padding:10px 11px;white-space:normal}
+.skill-push-title{font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:6px}
+.skill-push-meta{font-size:11px;color:#6b7b95;margin-bottom:6px}
+.skill-push-list{margin:0;padding-left:16px;color:#334155;font-size:12px;line-height:1.45}
+.skill-push-list li{margin:2px 0}
+.btn.btn-push{background:#eef4ff;color:#245fcf;border:1px solid #bdd0ff}
+.btn.btn-push:hover{background:#e4eeff}
+.skill-inline-fill-card{background:#f8fafc;border:1px solid #dbe4f0;border-radius:10px;padding:8px 9px;margin-top:4px;max-width:100%;white-space:normal;line-height:1.35}
+.skill-inline-fill-title{font-size:12px;font-weight:700;color:#1e3a5f;margin-bottom:6px}
+.skill-inline-fill-hint{font-size:10px;color:#64748b;margin-bottom:7px;line-height:1.35}
+.skill-inline-fill-card .fill-row{margin-bottom:5px}
+.skill-inline-fill-card .fill-row label{display:block;font-size:11px;color:#334055;margin-bottom:3px}
+.skill-inline-fill-card .fill-row input,.skill-inline-fill-card .fill-row select{width:100%;height:32px;padding:5px 8px;border-radius:6px;border:1px solid #dbe2ee;font-size:12px}
+.skill-inline-fill-submit{margin-top:7px;width:100%;height:32px;padding:0 10px;border:none;border-radius:7px;background:#2f6ee5;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
 .skill-inline-fill-submit:hover{background:#2563c9}
 #tab-lobster .content{display:flex;align-items:stretch;min-height:0;height:500px}
 #tab-lobster .chat-area{min-height:0}
@@ -229,10 +241,10 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .typing::after{content:"...";animation:typing 1s infinite}
 @keyframes typing{0%{content:"."}50%{content:"..."}100%{content:"."}}
 .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);display:none;justify-content:center;align-items:center}
-.modal-content{background:#fff;border-radius:8px;width:380px;padding:20px}
-.modal-title{font-weight:bold;margin-bottom:10px}
-.modal-btns{display:flex;gap:8px;margin-top:16px}
-.modal-btn{flex:1;padding:8px;border-radius:6px;border:none;cursor:pointer}
+.modal-content{background:#fff;border-radius:8px;width:360px;padding:14px}
+.modal-title{font-weight:bold;font-size:14px;margin-bottom:8px}
+.modal-btns{display:flex;gap:8px;margin-top:10px}
+.modal-btn{flex:1;height:34px;padding:0 10px;border-radius:6px;border:none;cursor:pointer;font-size:12px}
 .primary{background:#007bff;color:white}
 .disease-modal-step{display:none}
 .disease-modal-step.active{display:block}
@@ -243,10 +255,10 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .modal-pill-btn.active{background:#d6e8ff;border-color:#9ec5ff;font-weight:600}
 .modal-back{font-size:12px;color:#2f6ee5;cursor:pointer;background:none;border:none;padding:0;margin-bottom:10px}
 .fill-block{display:none;margin-top:10px}
-.fill-hint{font-size:11px;color:#6b778c;margin:0 0 8px;line-height:1.4}
-.fill-row{margin-bottom:8px}
-.fill-row label{display:block;font-size:12px;color:#334055;margin-bottom:4px}
-.fill-row input,.fill-row select{width:100%;padding:8px;border-radius:6px;border:1px solid #dbe2ee}
+.fill-hint{font-size:10px;color:#6b778c;margin:0 0 6px;line-height:1.35}
+.fill-row{margin-bottom:6px}
+.fill-row label{display:block;font-size:11px;color:#334055;margin-bottom:3px}
+.fill-row input,.fill-row select{width:100%;height:32px;padding:5px 8px;border-radius:6px;border:1px solid #dbe2ee;font-size:12px}
 .fill-error{color:#c0392b;font-size:12px;margin-top:6px;display:none}
 .ai-deep-card{background:#f7f9ff;border:1px solid #dbe4ff;border-radius:12px;padding:12px;max-width:100%;white-space:normal}
 .ai-deep-card .claw-card-title{font-size:15px;font-weight:700;color:#29447a;margin-bottom:8px}
@@ -811,6 +823,10 @@ body{background:#f5f7fa;padding:20px;margin:0}
             <div class="group">📝 任务（Skill）</div>
             <button class="btn" onclick="createTaskSkill()">创建任务</button>
             <button class="btn" onclick="myTasksSkill()">我的任务</button>
+            <div class="group">🔔 主动推送（Skill）</div>
+            <button class="btn btn-push" onclick="subscribeSkillMode()">订阅指南更新（Skill）</button>
+            <button class="btn btn-push" onclick="simulateGuidelinePush()">模拟指南更新推送</button>
+            <button class="btn btn-push" onclick="simulateDrugPush()">模拟新药速递推送</button>
           </div>
         </div>
         <div class="skill-exec-trace">
@@ -1061,6 +1077,7 @@ function sendLobsterChat() {
   }, 650)
 }
 let currentSkillMode = 'patient'
+let skillDoctorIntroShown = false
 function switchSkillMode(mode) {
   activeOutputTarget = 'skill'
   currentSkillMode = mode
@@ -1084,6 +1101,10 @@ function switchSkillMode(mode) {
     modeDoctor.classList.add('active')
     patientBtns.style.display = 'none'
     doctorBtns.style.display = 'flex'
+    if (!skillDoctorIntroShown) {
+      skillDoctorIntroShown = true
+      appendSkillBubble('WeClaw', '已进入医生自由模式（Skill）：建议用「创建任务/订阅推送」形成持续协作，我会在任务完成时主动给你推送结果卡片。')
+    }
   }
 }
 async function sendSkillChat() {
@@ -1523,6 +1544,17 @@ async function createTaskSkill() {
   await sleep(200)
   addLog('→ Skill Router：task_create')
   await createTask()
+  await sleep(700)
+  addLog('→ Skill Push：task.completed')
+  addSkillPushCard(
+    '任务完成通知（Skill）',
+    [
+      '你订阅的「高血压合并糖尿病指南更新」任务已完成摘要。',
+      '新增要点：降压目标分层、SGLT-2 适用人群、肾脏保护证据更新。',
+      '已生成“门诊可转述版本 + 医生决策版”两份内容。'
+    ],
+    '来源：任务中心 · 刚刚'
+  )
 }
 async function myTasksSkill() {
   activeOutputTarget = 'skill'
@@ -1544,6 +1576,63 @@ async function requestSkillInSkillTab() {
   await sleep(200)
   addLog('→ Skill Router：capability_request')
   await requestSkill()
+}
+function addSkillPushCard(title, lines, meta) {
+  const wrap = document.createElement('div')
+  wrap.className = 'msg assistant skill-push-card'
+  wrap.innerHTML = `
+    <div class="skill-push-title">${escapeHtml(title)}</div>
+    <div class="skill-push-meta">${escapeHtml(meta || '来源：Skill推送')}</div>
+    <ul class="skill-push-list">${(lines || []).map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul>
+  `
+  const chat = document.getElementById('chat-skill')
+  if (chat) {
+    chat.appendChild(wrap)
+    chat.scrollTop = 99999
+  }
+}
+async function subscribeSkillMode() {
+  activeOutputTarget = 'skill'
+  addMsg('订阅：高血压、糖尿病指南更新 + 新药速递（Skill）', 'user')
+  addLog('→ Skill Router：subscription.create')
+  const loading = addMsg('正在配置推送规则…', 'assistant typing')
+  await sleep(700)
+  loading.remove()
+  addSkillPushCard(
+    '订阅已生效（Skill）',
+    [
+      '推送频率：工作日 09:00 汇总 + 重大更新实时推送',
+      '覆盖范围：指南共识、药监批准新药、关键循证更新',
+      '可在“医生自由模式（Skill）”内直接追问“这条更新如何用于当前门诊”。'
+    ],
+    '来源：订阅中心 · 刚刚'
+  )
+}
+async function simulateGuidelinePush() {
+  activeOutputTarget = 'skill'
+  addLog('→ Skill Push：guideline.update')
+  addSkillPushCard(
+    '指南更新推送（模拟）',
+    [
+      '《高血压合并糖尿病管理建议（2026更新）》已发布。',
+      '新增：老年合并多病患者降压分层与随访节奏建议。',
+      '门诊动作建议：将“高风险患者2周复评”加入随访模板。'
+    ],
+    '来源：指南监测 · 09:03'
+  )
+}
+async function simulateDrugPush() {
+  activeOutputTarget = 'skill'
+  addLog('→ Skill Push：new_drug.digest')
+  addSkillPushCard(
+    '新药速递推送（模拟）',
+    [
+      '本周新增 1 条慢病相关新药信息（降糖方向）。',
+      '关注点：适应症边界、肾功能分层用法、医保支付状态。',
+      '建议：可点“药品查询（Skill）”生成门诊用药提醒话术。'
+    ],
+    '来源：新药雷达 · 09:05'
+  )
 }
 function toggleSkillExecTrace() {
   const body = document.getElementById('skill-exec-trace-body')
@@ -1697,7 +1786,7 @@ function addClawSummaryCard(titleText) {
   title.className = 'claw-card-title'
   title.textContent = titleText
   const body = document.createElement('div')
-  body.className = 'claw-card-body'
+  body.className = 'claw-card-body claw-card-body--pre'
   card.appendChild(title)
   card.appendChild(body)
   const chat = getActiveChat()
