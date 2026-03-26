@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<title>慢病工作台 - 龙虾智能问答（截图版）</title>
+<title>慢病工作台 - 智能助手智能问答（截图版）</title>
 <style>
 *{box-sizing:border-box;font-family:system-ui, sans-serif}
 body{background:#f5f7fa;padding:20px;margin:0}
@@ -105,6 +105,8 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .guide-pagination{display:flex;justify-content:flex-end;align-items:center;gap:8px;padding:8px 2px 2px;font-size:11px;color:#657287}
 .guide-page-btn{width:20px;height:20px;border:1px solid #d9e1ee;border-radius:2px;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:#4b5b75}
 .guide-page-btn.active{background:#2f6ee5;color:#fff;border-color:#2f6ee5}
+.skill-plan-list{margin:8px 0 0 18px;padding:0;color:#40516d;font-size:12px;line-height:1.6}
+.skill-plan-list li{margin:2px 0}
 .ref-page{padding:10px;background:#f4f6fa;max-height:560px;overflow:auto}
 .ref-card{background:#fff;border:1px solid #e8edf4;border-radius:4px}
 .ref-subtabs{display:flex;gap:0;border-bottom:1px solid #e9eef6}
@@ -189,12 +191,38 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .panel-body-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-right:4px;margin-right:-4px}
 .panel-log-wrap{flex-shrink:0;border-top:1px solid #e5e7eb;margin-top:8px;padding-top:10px;display:flex;flex-direction:column;gap:6px;min-height:0;max-height:42%}
 .panel-log-wrap .log{max-height:140px;overflow-y:auto;word-break:break-word}
+#chat-skill .msg.assistant.skill-bubble{background:linear-gradient(180deg,#fafcff,#f3f7fd);border:1px solid #e2ebf7;border-radius:14px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+#chat-skill .msg.assistant.skill-bubble .skill-bubble-title{font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:6px}
+#chat-skill .msg.assistant.skill-bubble .skill-bubble-body{font-size:13px;color:#334155;line-height:1.55;white-space:pre-wrap}
+#chat-skill .msg.assistant.assistant-card.skill-choice-card{border-color:#dbe8fa;background:linear-gradient(180deg,#fbfdff,#f5f9ff)}
+#chat-skill .msg.assistant.assistant-card.skill-choice-card > div:first-child{font-size:13px;font-weight:600;color:#1e3a5f}
+.skill-exec-trace{border-top:1px solid #e8edf2;margin-top:8px;padding-top:8px;flex-shrink:0}
+.skill-exec-trace-toggle{width:100%;text-align:left;padding:8px 10px;border:1px solid #dbe4f0;border-radius:8px;background:#fff;font-size:12px;color:#475569;cursor:pointer}
+.skill-exec-trace-toggle:hover{background:#f8fafc}
+.skill-exec-trace-body{margin-top:8px}
+.skill-exec-trace-body .log{max-height:130px;overflow-y:auto}
+.skill-exec-hint{font-size:10px;color:#94a3b8;margin:0 0 6px;padding:0 2px}
+#log-skill .log-item{font-size:11px;line-height:1.45;color:#475569;word-break:break-word}
+.skill-inline-fill-card{background:#f8fafc;border:1px solid #dbe4f0;border-radius:10px;padding:12px;margin-top:6px;max-width:100%}
+.skill-inline-fill-title{font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:8px}
+.skill-inline-fill-hint{font-size:11px;color:#64748b;margin-bottom:10px;line-height:1.45}
+.skill-inline-fill-card .fill-row{margin-bottom:8px}
+.skill-inline-fill-card .fill-row label{display:block;font-size:12px;color:#334055;margin-bottom:4px}
+.skill-inline-fill-card .fill-row input,.skill-inline-fill-card .fill-row select{width:100%;padding:8px;border-radius:6px;border:1px solid #dbe2ee;font-size:13px}
+.skill-inline-fill-submit{margin-top:12px;width:100%;padding:10px;border:none;border-radius:8px;background:#2f6ee5;color:#fff;font-size:14px;font-weight:600;cursor:pointer}
+.skill-inline-fill-submit:hover{background:#2563c9}
 #tab-lobster .content{display:flex;align-items:stretch;min-height:0;height:500px}
 #tab-lobster .chat-area{min-height:0}
 .btns{display:flex;flex-direction:column;gap:8px}
 .btn{padding:9px 12px;background:#007bff;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;text-align:left}
 .btn:disabled{background:#ccc;cursor:not-allowed}
 .group{font-size:12px;color:#666;margin:8px 0 4px 2px}
+.panel-section-general{margin-top:14px;padding-top:14px;border-top:1px dashed #cfd8e3}
+.panel-section-general .group-general{font-size:11px;color:#64748b;font-weight:600;margin-top:0;letter-spacing:0.02em}
+.panel-general-hint{font-size:10px;color:#94a3b8;line-height:1.4;margin:0 0 10px;padding:0 2px}
+.btn.btn-general{background:#fff;color:#334155;border:1px solid #cbd5e1;font-size:13px;font-weight:500;box-shadow:0 1px 0 rgba(15,23,42,.04)}
+.btn.btn-general:hover{background:#f8fafc;border-color:#94a3b8;color:#1e293b}
+.btn.btn-general:active{background:#f1f5f9}
 .log-title{font-size:13px;font-weight:500;margin-bottom:6px}
 .log{font-size:12px;color:#333;line-height:1.4}
 .log-item{margin-bottom:4px}
@@ -295,7 +323,10 @@ body{background:#f5f7fa;padding:20px;margin:0}
     <div class="tab" onclick="switchTab('guide')">慢病管理</div>
     <div class="tab" onclick="switchTab('referral')">双向转诊</div>
     <div class="tab" onclick="switchTab('lobster')">
-      <span class="qa-label">🦞 智能问答</span>
+      <span class="qa-label">智能问答</span>
+    </div>
+    <div class="tab" onclick="switchTab('lobster-skill')">
+      <span class="qa-label">🧠 智能问答skill版</span>
     </div>
   </div>
 
@@ -679,7 +710,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
     </div>
   </div>
 
-  <!-- 龙虾智能问答 Tab -->
+  <!-- 智能助手智能问答 Tab -->
   <div id="tab-lobster" class="tab-content">
     <div class="mode-bar">
       <div class="mode-btn active" id="mode-patient" onclick="switchMode('patient')">
@@ -709,11 +740,15 @@ body{background:#f5f7fa;padding:20px;margin:0}
           <button class="btn" onclick="run(8)">临床报告解读</button>
           <button class="btn" onclick="run(3)">生成生活处方</button>
           <button class="btn" onclick="run(4)">转诊建议判断</button>
+          <div class="panel-section-general">
+            <div class="group group-general">⚙️ 通用</div>
+            <p class="panel-general-hint">会话记录与个性化技能，与档案评估、诊疗路径类能力不同。</p>
+            <button type="button" class="btn btn-general" onclick="showHistory()">查看历史对话</button>
+            <button type="button" class="btn btn-general" onclick="requestSkill()">申请定制技能</button>
+          </div>
           <div class="group">🧩 扩展能力</div>
           <button class="btn" disabled>病历质控（开发中）</button>
-          <button class="btn" disabled>用药审查（开发中）</button>
-          <button class="btn" onclick="showHistory()">查看历史对话</button>
-          <button class="btn" onclick="requestSkill()">申请定制技能</button>
+          <button class="btn" disabled>辅助诊断（开发中）</button>
         </div>
         <div id="doctor-btns" class="btns" style="display:none">
           <div class="group">💬 智能问答</div>
@@ -730,8 +765,61 @@ body{background:#f5f7fa;padding:20px;margin:0}
         </div>
         </div>
         <div class="panel-log-wrap">
-          <div class="log-title">龙虾工作流日志</div>
+          <div class="log-title">智能助手工作流日志</div>
           <div id="log" class="log"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 智能问答 Skill 版 Tab -->
+  <div id="tab-lobster-skill" class="tab-content">
+    <div class="mode-bar">
+      <div class="mode-btn active" id="mode-skill-patient" onclick="switchSkillMode('patient')">当前患者对话（Skill）</div>
+      <div class="mode-btn" id="mode-skill-doctor" onclick="switchSkillMode('doctor')">医生自由模式（Skill）</div>
+    </div>
+    <div class="content" style="display:flex">
+      <div class="chat-area">
+        <div class="chat skill-chat" id="chat-skill"></div>
+        <div class="chat-compose">
+          <input type="text" id="lobster-skill-input" class="chat-input" placeholder="Skill版输入消息，按 Enter 或点击发送…" autocomplete="off" onkeydown="if(event.key==='Enter'){event.preventDefault();sendSkillChat()}">
+          <button type="button" class="chat-send-btn" onclick="sendSkillChat()">发送</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-body-scroll">
+          <div id="patient-skill-btns" class="btns">
+            <div class="group">📊 档案与评估（Skill）</div>
+            <button class="btn" onclick="runSkill(1)">读取健康档案</button>
+            <button class="btn" onclick="runSkill(2)">慢病风险评估</button>
+            <div class="group">💊 诊疗辅助（Skill）</div>
+            <button class="btn" onclick="runSkill(6)">推荐检验检查</button>
+            <button class="btn" onclick="runSkillPlan()">推荐诊疗方案</button>
+            <button class="btn" onclick="runSkill(8)">临床报告解读</button>
+            <button class="btn" onclick="runSkill(3)">生成生活处方</button>
+            <button class="btn" onclick="runSkill(4)">转诊建议判断</button>
+            <div class="panel-section-general">
+              <div class="group group-general">⚙️ 通用（Skill）</div>
+              <button type="button" class="btn btn-general" onclick="showSkillHistory()">查看历史对话</button>
+              <button type="button" class="btn btn-general" onclick="requestSkillInSkillTab()">申请扩展技能</button>
+            </div>
+          </div>
+          <div id="doctor-skill-btns" class="btns" style="display:none">
+            <div class="group">💬 智能问答（Skill）</div>
+            <button class="btn" onclick="askGuideSkill()">问问指南</button>
+            <button class="btn" onclick="queryDrugSkill()">药品查询</button>
+            <div class="group">📝 任务（Skill）</div>
+            <button class="btn" onclick="createTaskSkill()">创建任务</button>
+            <button class="btn" onclick="myTasksSkill()">我的任务</button>
+          </div>
+        </div>
+        <div class="skill-exec-trace">
+          <p class="skill-exec-hint">主对话只呈现任务结论与交互；过程追踪默认收起，避免「工作流刷屏」。</p>
+          <button type="button" class="skill-exec-trace-toggle" id="skill-exec-trace-btn" onclick="toggleSkillExecTrace()">执行追踪 ▼</button>
+          <div id="skill-exec-trace-body" class="skill-exec-trace-body" style="display:none">
+            <div class="log-title">执行追踪（可读摘要）</div>
+            <div id="log-skill" class="log"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -914,11 +1002,18 @@ function switchTab(tab) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'))
   event.currentTarget.classList.add('active')
   document.getElementById('tab-' + tab).classList.add('active')
+  activeOutputTarget = tab === 'lobster-skill' ? 'skill' : 'main'
 }
 
 // 模式切换
 let currentMode = 'patient'
+let activeOutputTarget = 'main'
+/** Skill 版与主 Tab 共用能力时，结构化卡片/打字动画要落到当前活跃会话 */
+function getActiveChat() {
+  return document.getElementById(activeOutputTarget === 'skill' ? 'chat-skill' : 'chat')
+}
 function switchMode(mode) {
+  activeOutputTarget = 'main'
   currentMode = mode
   const chat = document.getElementById('chat')
   const log = document.getElementById('log')
@@ -960,10 +1055,521 @@ function sendLobsterChat() {
     loading.remove()
     const short = v.length > 200 ? v.slice(0, 200) + '…' : v
     const reply = currentMode === 'doctor'
-      ? `【龙虾回复（演示）】已收到您的消息：\n${short}\n\n自由模式下对话不关联患者档案；可继续输入追问，或使用右侧「问问指南」「药品查询」等能力。`
-      : `【龙虾回复（演示）】已记录与当前患者上下文相关的追问：\n${short}\n\n可结合右侧技能生成结构化结果（读档案、风险评估、推荐检查等）。`
+      ? `【智能助手回复（演示）】已收到您的消息：\n${short}\n\n自由模式下对话不关联患者档案；可继续输入追问，或使用右侧「问问指南」「药品查询」等能力。`
+      : `【智能助手回复（演示）】已记录与当前患者上下文相关的追问：\n${short}\n\n可结合右侧技能生成结构化结果（读档案、风险评估、推荐检查等）。`
     await type(addMsg('', 'assistant'), reply)
   }, 650)
+}
+let currentSkillMode = 'patient'
+function switchSkillMode(mode) {
+  activeOutputTarget = 'skill'
+  currentSkillMode = mode
+  const modePatient = document.getElementById('mode-skill-patient')
+  const modeDoctor = document.getElementById('mode-skill-doctor')
+  const patientBtns = document.getElementById('patient-skill-btns')
+  const doctorBtns = document.getElementById('doctor-skill-btns')
+  const input = document.getElementById('lobster-skill-input')
+  if (input) {
+    input.placeholder = mode === 'doctor'
+      ? 'Skill自由模式提问（不绑患者）...'
+      : 'Skill当前患者模式提问...'
+  }
+  if (mode === 'patient') {
+    modePatient.classList.add('active')
+    modeDoctor.classList.remove('active')
+    patientBtns.style.display = 'flex'
+    doctorBtns.style.display = 'none'
+  } else {
+    modePatient.classList.remove('active')
+    modeDoctor.classList.add('active')
+    patientBtns.style.display = 'none'
+    doctorBtns.style.display = 'flex'
+  }
+}
+async function sendSkillChat() {
+  activeOutputTarget = 'skill'
+  const el = document.getElementById('lobster-skill-input')
+  const v = (el && el.value || '').trim()
+  if (!v) return
+  el.value = ''
+  addMsg(v, 'user')
+  addLog('→ Skill对话输入：' + (v.length > 48 ? v.slice(0, 48) + '…' : v))
+  const loading = addMsg('正在理解你的意图…', 'assistant typing')
+  await sleep(650)
+  loading.remove()
+  const short = v.length > 220 ? v.slice(0, 220) + '…' : v
+  const tail = currentSkillMode === 'doctor'
+    ? '需要指南检索、药品说明或建任务时，直接点右侧能力即可，我会按任务方式接续。'
+    : '需要读档案、做风险评估或开检查建议时，点右侧能力我会接着往下做。'
+  await type(addMsg('', 'assistant'), `已收到：${short}\n\n${tail}`)
+}
+async function runSkill(i) {
+  activeOutputTarget = 'skill'
+  const names = { 1: '读取健康档案', 2: '慢病风险评估', 3: '生成生活处方', 4: '转诊建议判断', 6: '推荐检验检查', 8: '临床报告解读' }
+  appendSkillBubble(
+    'WeClaw',
+    '已进入新版 Skill 流程：我会先给出「计划/入参/输出结构」，再执行并回填结果；对话只呈现结论与必要追问，过程默认收在右侧「执行追踪」。'
+  )
+  await sleep(140)
+  addLog('→ Skill Router：' + i)
+  if (i === 1) return await runSkillArchiveFlow()
+  if (i === 2) return await runSkillRiskAssessmentFlow()
+  if (i === 6) return await runSkillCheckRecommendationFlow()
+  if (i === 3) return await runSkillLifestylePrescriptionFlow()
+  if (i === 4) return await runSkillReferralAdviceFlow()
+  if (i === 8) return await runSkillClinicalReportFlow()
+  appendSkillBubble('WeClaw', '该能力暂未接入新版 Skill 流程：' + (names[i] || ('#' + i)) + '。')
+}
+
+function addSkillPlanCard(title, bullets) {
+  const div = document.createElement('div')
+  div.className = 'msg assistant risk-card'
+  div.innerHTML = `
+    <div class="claw-card-title">${title}</div>
+    <ul class="skill-plan-list">
+      ${bullets.map(s => `<li>${escapeHtml(s)}</li>`).join('')}
+    </ul>
+  `
+  const chat = document.getElementById('chat-skill')
+  if (chat) {
+    chat.appendChild(div)
+    chat.scrollTop = 99999
+  }
+  return div
+}
+
+function escapeHtml(s) {
+  return String(s)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;')
+}
+
+async function runSkillArchiveFlow() {
+  activeOutputTarget = 'skill'
+  addMsg('读取健康档案', 'user')
+  addSkillPlanCard('读取健康档案（Skill）· 计划', [
+    '绑定：健康档案 Tab 结构化字段（病情概况/检查提醒/用药/生活习惯）',
+    '输出：1 页「档案摘要」+ 关键缺失项提示（可继续追问补全）',
+    '特色：只把摘要放在对话里；字段提取与链路在执行追踪可见'
+  ])
+  await sleep(220)
+  addLog('→ 调用 🦞 OpenClaw：archive.fetch')
+  addLog('→ 入参：collectArchiveInput() + record.tab.extract')
+  const loading = addMsg('正在汇总档案摘要…', 'assistant typing')
+  await sleep(900)
+  loading.remove()
+  const input = collectArchiveInput()
+  const body = addClawSummaryCard('档案摘要（🦞 OpenClaw · Skill）')
+  await type(body, buildArchiveSummary(input))
+  addActionMsg('下一步要我怎么继续？', [
+    { label: '生成病情小结（直接分析）', onClick: async () => { await runArchiveFlow() } },
+    { label: '先出追问清单（再分析）', onClick: async () => { await runArchiveFlow() } }
+  ])
+}
+
+async function runSkillRiskAssessmentFlow() {
+  activeOutputTarget = 'skill'
+  addMsg('慢病风险评估', 'user')
+  addSkillPlanCard('慢病风险评估（Skill）· 计划', [
+    '先分层：已患病控制标签（红/黄标）+ 未患病风险（CVD10/ASCVD）',
+    '再解释：每个标签给出 1 句依据（来自档案指标）',
+    '特色：卡片化标签 + 可追问“某一标签的依据/下一步建议”'
+  ])
+  await sleep(220)
+  await runRiskAssessmentFlow()
+  addActionMsg('要继续追问哪一类？', [
+    { label: '解释“糖尿病红标”的依据', onClick: async () => { appendSkillBubble('WeClaw', '依据来自：血糖/糖化/并发症与依从性信息（演示）。你也可以补充最新监测值我会重算。') } },
+    { label: '只看未患病风险（CVD10/ASCVD）', onClick: async () => { appendSkillBubble('WeClaw', '我会按年龄/血压/血脂/吸烟等字段计算分层（演示）。当前档案缺项会提示你补。') } }
+  ])
+}
+
+async function runSkillCheckRecommendationFlow() {
+  activeOutputTarget = 'skill'
+  addMsg('推荐检验检查', 'user')
+  addSkillPlanCard('推荐检验检查（Skill）· 计划', [
+    '先给医保上报相关检查：支持「待检/全部/异常项」切换',
+    '再支持单病种追问：高血压/糖尿病/多病综合 → 推荐检查 + 查看缺项',
+    '特色：清单可执行（查看缺项/查看更多），不刷屏底层过程'
+  ])
+  await sleep(240)
+  await runCheckRecommendationFlow()
+}
+
+async function runSkillLifestylePrescriptionFlow() {
+  activeOutputTarget = 'skill'
+  addMsg('生成生活处方', 'user')
+  addSkillPlanCard('生成生活处方（Skill）· 计划', [
+    '先识别当前主要目标：控压/控糖/减重/戒烟/睡眠',
+    '输出“1 周可执行处方”：饮食 + 运动 + 监测 + 复诊触发条件',
+    '特色：给出可直接复制给患者的版本 + 医生版要点'
+  ])
+  addLog('→ 调用 🦞 OpenClaw：lifestyle.rx')
+  const loading = addMsg('正在生成可执行生活处方…', 'assistant typing')
+  await sleep(900)
+  loading.remove()
+  const input = collectArchiveInput()
+  const div = document.createElement('div')
+  div.className = 'msg assistant risk-card'
+  div.innerHTML = `
+    <div class="claw-card-title">生活处方（🦞 OpenClaw · Skill）</div>
+    <div class="claw-card-body">
+      <div class="claw-section-title">给患者（可复制）</div>
+      <div class="claw-kv"><div class="k">饮食</div><div class="v">限盐＜5g/天；主食定量；含糖饮料 0；每餐先吃蔬菜。</div></div>
+      <div class="claw-kv"><div class="k">运动</div><div class="v">快走 30 分钟/天，≥5 天/周；餐后加 10 分钟步行。</div></div>
+      <div class="claw-kv"><div class="k">监测</div><div class="v">家庭血压晨/晚各 1 次（连续 7 天）；血糖按医嘱补测。</div></div>
+      <div class="claw-section-title" style="margin-top:10px">给医生（要点）</div>
+      <div style="font-size:12px;color:#40516d;line-height:1.55">
+        重点：依从性与夜尿提示需评估利尿/睡眠；结合档案指标（血压${escapeHtml(input.bp||'—')}、血糖${escapeHtml(input.bg||'—')}）设定 2 周复评节点。
+      </div>
+    </div>
+  `
+  const chat = document.getElementById('chat-skill')
+  if (chat) {
+    chat.appendChild(div)
+    chat.scrollTop = 99999
+  }
+  addActionMsg('要我把它改成更“医嘱口吻”还是更“患者口吻”？', [
+    { label: '更适合患者阅读', onClick: async () => { appendSkillBubble('WeClaw', '我会把术语替换成患者可懂的表达，并加上 3 条注意事项（演示）。') } },
+    { label: '更适合医生随访', onClick: async () => { appendSkillBubble('WeClaw', '我会按随访模板拆成：目标-执行-监测-触发转诊（演示）。') } }
+  ])
+}
+
+async function runSkillReferralAdviceFlow() {
+  activeOutputTarget = 'skill'
+  addMsg('转诊建议判断', 'user')
+  addSkillPlanCard('转诊建议判断（Skill）· 计划', [
+    '判断：是否需要转诊（急/非急）+ 推荐科室/检查准备',
+    '说明：给出 3 条“触发转诊条件”，便于随访时直接用',
+    '特色：一页结论 + 可追问“为何不转/转哪/缺项是什么”'
+  ])
+  addLog('→ 调用 🦞 OpenClaw：referral.triage')
+  const loading = addMsg('正在生成转诊分诊建议…', 'assistant typing')
+  await sleep(850)
+  loading.remove()
+  const div = document.createElement('div')
+  div.className = 'msg assistant risk-card'
+  div.innerHTML = `
+    <div class="claw-card-title">转诊建议（🦞 OpenClaw · Skill）</div>
+    <div class="claw-card-body">
+      <div class="claw-kv"><div class="k">当前结论</div><div class="v"><strong>暂不需紧急转诊</strong>；建议 2~4 周内复评控制情况。</div></div>
+      <div class="claw-kv"><div class="k">优先处理</div><div class="v">强化降压依从性；评估夜尿/水肿原因；完善血脂/肾功能缺项。</div></div>
+      <div class="claw-section-title" style="margin-top:10px">触发转诊条件（示例）</div>
+      <ul style="margin:6px 0 0 16px;color:#40516d;font-size:12px;line-height:1.6">
+        <li>家庭血压连续 7 天晨晚均值 ≥ 160/100 或出现头痛胸闷等症状</li>
+        <li>糖化持续升高或出现低血糖/酮症风险提示</li>
+        <li>肾功能恶化、蛋白尿明显增加或出现进行性水肿</li>
+      </ul>
+    </div>
+  `
+  const chat = document.getElementById('chat-skill')
+  if (chat) {
+    chat.appendChild(div)
+    chat.scrollTop = 99999
+  }
+  addActionMsg('要不要我按“上级医院/科室”给出更具体建议？', [
+    { label: '给出推荐科室与检查准备', onClick: async () => { appendSkillBubble('WeClaw', '我会按心内/内分泌/肾内三条路径给出准备清单（演示）。') } },
+    { label: '只输出给患者的解释话术', onClick: async () => { appendSkillBubble('WeClaw', '我会把结论转成 1 段患者可理解的话术（演示）。') } }
+  ])
+}
+
+async function runSkillClinicalReportFlow() {
+  activeOutputTarget = 'skill'
+  addMsg('临床报告解读', 'user')
+  addSkillPlanCard('临床报告解读（Skill）· 计划', [
+    '先识别报告类型（检验/影像/心电图）与关键异常项',
+    '输出：异常项解释 + 风险提示 + 下一步动作（复查/补检/用药调整建议）',
+    '特色：可一键追问“某一异常项是什么意思/缺项如何补齐”'
+  ])
+  addLog('→ 调用 🦞 OpenClaw：report.interpret')
+  const loading = addMsg('正在生成报告解读摘要…', 'assistant typing')
+  await sleep(900)
+  loading.remove()
+  const div = document.createElement('div')
+  div.className = 'msg assistant risk-card'
+  div.innerHTML = `
+    <div class="claw-card-title">报告解读（🦞 OpenClaw · Skill）</div>
+    <div class="claw-card-body">
+      <div class="claw-kv"><div class="k">一句话结论</div><div class="v">以代谢风险为主：血压/血糖控制偏高，需强化随访与监测。</div></div>
+      <div class="claw-kv"><div class="k">关键异常（示例）</div><div class="v">血压偏高、血糖偏高；其余项目待补齐（如 LDL-C、尿微量白蛋白）。</div></div>
+      <div class="claw-kv"><div class="k">下一步建议</div><div class="v">补齐血脂与肾损害筛查；2 周复评家庭血压；必要时调整方案。</div></div>
+    </div>
+  `
+  const chat = document.getElementById('chat-skill')
+  if (chat) {
+    chat.appendChild(div)
+    chat.scrollTop = 99999
+  }
+  addActionMsg('想追问哪一项？', [
+    { label: '解释 LDL-C 与目标值', onClick: async () => { appendSkillBubble('WeClaw', '我会给出 LDL-C 目标分层，并结合 ASCVD 风险解释（演示）。') } },
+    { label: '查看缺项清单（建议补检）', onClick: async () => { appendSkillBubble('WeClaw', '我会列出缺项：血脂/肾功能/尿微量白蛋白/眼底等，并标注优先级（演示）。') } }
+  ])
+}
+function skillRemoveInlineFill() {
+  const root = document.getElementById('skill-inline-fill-root')
+  if (root) root.remove()
+}
+function syncSkillFormToFillModal() {
+  const pairs = [
+    ['skill-fill-dm-diag', 'fill-dm-diag'],
+    ['skill-fill-fbg', 'fill-fbg'],
+    ['skill-fill-post', 'fill-post'],
+    ['skill-fill-hba1c', 'fill-hba1c'],
+    ['skill-fill-ht-diag', 'fill-ht-diag'],
+    ['skill-fill-sbp', 'fill-sbp'],
+    ['skill-fill-dbp', 'fill-dbp'],
+    ['skill-fill-chd-diag', 'fill-chd-diag'],
+    ['skill-fill-ldl-chd', 'fill-ldl-chd'],
+    ['skill-fill-stroke-diag', 'fill-stroke-diag'],
+    ['skill-fill-ldl-stroke', 'fill-ldl-stroke']
+  ]
+  pairs.forEach(([a, b]) => {
+    const src = document.getElementById(a)
+    const dst = document.getElementById(b)
+    if (src && dst) dst.value = src.value
+  })
+}
+function confirmSkillFillSubmit() {
+  activeOutputTarget = 'skill'
+  hideFillErr()
+  syncSkillFormToFillModal()
+  confirmFill()
+}
+function skillBuildInlineFillHtml() {
+  if (selectedDisease === 'dm') {
+    return `
+      <div class="skill-inline-fill-title">请完善入参（糖尿病）</div>
+      <div class="skill-inline-fill-hint">血糖指标至少填写一项：空腹 / 餐后2h / 糖化血红蛋白</div>
+      <div class="fill-row"><label>糖尿病具体诊断 <span style="color:#c0392b">*</span></label>
+        <select id="skill-fill-dm-diag">
+          <option value="">请选择</option>
+          <option value="2型糖尿病">2型糖尿病</option>
+          <option value="2型糖尿病伴多个并发症">2型糖尿病伴多个并发症</option>
+          <option value="2型糖尿病性肾病">2型糖尿病性肾病</option>
+          <option value="糖尿病合并高血压">糖尿病合并高血压</option>
+          <option value="妊娠期糖尿病（既往史）">妊娠期糖尿病（既往史）</option>
+        </select>
+      </div>
+      <div class="fill-row"><label>空腹血糖（mmol/L）</label><input id="skill-fill-fbg" type="text" placeholder="如：6.8"></div>
+      <div class="fill-row"><label>餐后2小时血糖（mmol/L）</label><input id="skill-fill-post" type="text" placeholder="如：9.1"></div>
+      <div class="fill-row"><label>糖化血红蛋白（%）</label><input id="skill-fill-hba1c" type="text" placeholder="如：7.6"></div>
+      <div id="skill-fill-err-msg" style="display:none;color:#c0392b;font-size:12px;margin-top:8px"></div>
+      <button type="button" class="skill-inline-fill-submit" onclick="confirmSkillFillSubmit()">提交生成方案</button>`
+  }
+  if (selectedDisease === 'ht') {
+    return `
+      <div class="skill-inline-fill-title">请完善入参（高血压）</div>
+      <div class="fill-row"><label>高血压具体诊断 <span style="color:#c0392b">*</span></label>
+        <select id="skill-fill-ht-diag">
+          <option value="">请选择</option>
+          <option value="原发性高血压">原发性高血压</option>
+          <option value="高血压2级">高血压2级</option>
+          <option value="高血压3级">高血压3级</option>
+          <option value="高血压合并2型糖尿病">高血压合并2型糖尿病</option>
+          <option value="高血压合并高脂血症">高血压合并高脂血症</option>
+        </select>
+      </div>
+      <div class="fill-row"><label>收缩压（mmHg） <span style="color:#c0392b">*</span></label><input id="skill-fill-sbp" type="text" placeholder="如：150"></div>
+      <div class="fill-row"><label>舒张压（mmHg） <span style="color:#c0392b">*</span></label><input id="skill-fill-dbp" type="text" placeholder="如：100"></div>
+      <div id="skill-fill-err-msg" style="display:none;color:#c0392b;font-size:12px;margin-top:8px"></div>
+      <button type="button" class="skill-inline-fill-submit" onclick="confirmSkillFillSubmit()">提交生成方案</button>`
+  }
+  if (selectedDisease === 'chd') {
+    return `
+      <div class="skill-inline-fill-title">请完善入参（冠心病）</div>
+      <div class="fill-row"><label>冠心病具体诊断 <span style="color:#c0392b">*</span></label>
+        <select id="skill-fill-chd-diag">
+          <option value="">请选择</option>
+          <option value="稳定型心绞痛">稳定型心绞痛</option>
+          <option value="急性冠脉综合征（恢复期）">急性冠脉综合征（恢复期）</option>
+          <option value="陈旧性心肌梗死">陈旧性心肌梗死</option>
+          <option value="冠脉支架术后">冠脉支架术后</option>
+          <option value="缺血性心肌病">缺血性心肌病</option>
+        </select>
+      </div>
+      <div class="fill-row"><label>低密度脂蛋白 LDL-C（mmol/L） <span style="color:#c0392b">*</span></label><input id="skill-fill-ldl-chd" type="text" placeholder="如：2.03"></div>
+      <div id="skill-fill-err-msg" style="display:none;color:#c0392b;font-size:12px;margin-top:8px"></div>
+      <button type="button" class="skill-inline-fill-submit" onclick="confirmSkillFillSubmit()">提交生成方案</button>`
+  }
+  if (selectedDisease === 'stroke') {
+    return `
+      <div class="skill-inline-fill-title">请完善入参（脑卒中）</div>
+      <div class="fill-row"><label>脑卒中具体诊断 <span style="color:#c0392b">*</span></label>
+        <select id="skill-fill-stroke-diag">
+          <option value="">请选择</option>
+          <option value="脑梗死（恢复期）">脑梗死（恢复期）</option>
+          <option value="短暂性脑缺血发作（TIA）">短暂性脑缺血发作（TIA）</option>
+          <option value="脑出血（恢复期）">脑出血（恢复期）</option>
+          <option value="蛛网膜下腔出血（恢复期）">蛛网膜下腔出血（恢复期）</option>
+          <option value="脑卒中后遗症期">脑卒中后遗症期</option>
+        </select>
+      </div>
+      <div class="fill-row"><label>低密度脂蛋白 LDL-C（mmol/L） <span style="color:#c0392b">*</span></label><input id="skill-fill-ldl-stroke" type="text" placeholder="如：2.03"></div>
+      <div id="skill-fill-err-msg" style="display:none;color:#c0392b;font-size:12px;margin-top:8px"></div>
+      <button type="button" class="skill-inline-fill-submit" onclick="confirmSkillFillSubmit()">提交生成方案</button>`
+  }
+  return '<div class="skill-inline-fill-hint">未知病种</div>'
+}
+function skillAppendInlineFillForm() {
+  skillRemoveInlineFill()
+  activeOutputTarget = 'skill'
+  const wrap = document.createElement('div')
+  wrap.className = 'msg assistant'
+  wrap.id = 'skill-inline-fill-root'
+  const card = document.createElement('div')
+  card.className = 'skill-inline-fill-card'
+  card.innerHTML = skillBuildInlineFillHtml()
+  wrap.appendChild(card)
+  const chat = document.getElementById('chat-skill')
+  if (chat) {
+    chat.appendChild(wrap)
+    chat.scrollTop = 99999
+  }
+}
+async function confirmSkillPlanAfterDisease() {
+  activeOutputTarget = 'skill'
+  addMsg(buildPlanUserMessage(), 'user')
+  await sleep(300)
+  addLog('→ 调用 Skill：诊疗方案推荐')
+  addLog(`→ 模式：${planGenMode === 'tree' ? '决策树' : 'AI深度思考'}；病种：${selectedDisease}`)
+  addLog('→ 检查入参')
+  const hint = appendSkillBubble('WeClaw', '正在核对档案与入参，缺什么我会在下面表单里让你补全。')
+  await sleep(1100)
+  if (hint && hint.parentNode) hint.remove()
+  if (selectedDisease === 'dm') {
+    addMsg('⚠️ 请选择糖尿病具体诊断；空腹血糖、餐后血糖、糖化血红蛋白至少填写一项。', 'assistant')
+  } else if (selectedDisease === 'ht') {
+    addMsg('⚠️ 请选择高血压具体诊断，并填写收缩压与舒张压。', 'assistant')
+  } else if (selectedDisease === 'chd' || selectedDisease === 'stroke') {
+    addMsg('⚠️ 请选择具体诊断，并填写低密度脂蛋白 LDL-C。', 'assistant')
+  } else {
+    addMsg('⚠️ 请完善入参。', 'assistant')
+  }
+  await sleep(400)
+  syncFillModalForDisease()
+  skillAppendInlineFillForm()
+}
+async function skillPlanStepChooseMode() {
+  activeOutputTarget = 'skill'
+  addActionMsg('想怎么生成方案？选一个，我们再选具体病种。', [
+    {
+      label: '决策树（指南规则）',
+      onClick: () => {
+        planGenMode = 'tree'
+        selectedDisease = 'ht'
+        skillPlanStepChooseDiseaseTree()
+      }
+    },
+    {
+      label: 'AI深度思考（专病模型）',
+      onClick: () => {
+        planGenMode = 'ai'
+        selectedDisease = 'ht'
+        skillPlanStepChooseDiseaseAi()
+      }
+    }
+  ])
+}
+function skillPlanStepChooseDiseaseTree() {
+  activeOutputTarget = 'skill'
+  addActionMsg('按指南规则走决策树——要选哪个病种？', [
+    { label: '推荐高血压诊疗方案', onClick: () => { selectedDisease = 'ht'; void confirmSkillPlanAfterDisease() } },
+    { label: '推荐糖尿病诊疗方案', onClick: () => { selectedDisease = 'dm'; void confirmSkillPlanAfterDisease() } },
+    { label: '推荐冠心病诊疗方案', onClick: () => { selectedDisease = 'chd'; void confirmSkillPlanAfterDisease() } },
+    { label: '推荐脑卒中诊疗方案', onClick: () => { selectedDisease = 'stroke'; void confirmSkillPlanAfterDisease() } }
+  ])
+}
+function skillPlanStepChooseDiseaseAi() {
+  activeOutputTarget = 'skill'
+  addActionMsg('用专病模型深度推演——先定病种：', [
+    { label: '调用专病模型推荐【高血压】诊疗方案', onClick: () => { selectedDisease = 'ht'; void confirmSkillPlanAfterDisease() } },
+    { label: '调用专病模型推荐【糖尿病】诊疗方案', onClick: () => { selectedDisease = 'dm'; void confirmSkillPlanAfterDisease() } },
+    { label: '调用专病模型推荐【脑卒中】诊疗方案', onClick: () => { selectedDisease = 'stroke'; void confirmSkillPlanAfterDisease() } }
+  ])
+}
+async function startSkillPlanSession() {
+  activeOutputTarget = 'skill'
+  appendSkillBubble('WeClaw', '好，我们来做诊疗方案推荐：先选生成方式，再选病种，档案参数都在对话里填，不用弹窗打断。')
+  await sleep(250)
+  addLog('→ skill.session plan.start')
+  await skillPlanStepChooseMode()
+}
+async function runSkillPlan() {
+  activeOutputTarget = 'skill'
+  addMsg('推荐诊疗方案', 'user')
+  await sleep(200)
+  addLog('→ Skill Router：plan_recommendation')
+  await startSkillPlanSession()
+}
+async function askGuideSkill() {
+  activeOutputTarget = 'skill'
+  appendSkillBubble('WeClaw', '我先在指南与循证要点里检索，稍后给你可直接转述患者的结论。')
+  await sleep(200)
+  addLog('→ Skill Router：guide_qa')
+  await askGuide()
+}
+async function queryDrugSkill() {
+  activeOutputTarget = 'skill'
+  appendSkillBubble('WeClaw', '我按说明书与要点做药品信息整理，避免堆技术日志在对话里。')
+  await sleep(200)
+  addLog('→ Skill Router：drug_lookup')
+  await queryDrug()
+}
+async function createTaskSkill() {
+  activeOutputTarget = 'skill'
+  appendSkillBubble('WeClaw', '我会把你的任务登记成可跟进的待办（演示），重点在结论与截止时间。')
+  await sleep(200)
+  addLog('→ Skill Router：task_create')
+  await createTask()
+}
+async function myTasksSkill() {
+  activeOutputTarget = 'skill'
+  appendSkillBubble('WeClaw', '我把任务列表拉给你，用条目呈现，不展开底层步骤。')
+  await sleep(200)
+  addLog('→ Skill Router：task_list')
+  await myTasks()
+}
+async function showSkillHistory() {
+  activeOutputTarget = 'skill'
+  appendSkillBubble('WeClaw', '历史记录以时间线摘要给你；如需核对细节可再问我。')
+  await sleep(200)
+  addLog('→ Skill Router：conversation_history')
+  await showHistory()
+}
+async function requestSkillInSkillTab() {
+  activeOutputTarget = 'skill'
+  appendSkillBubble('WeClaw', '收到，我会把你的能力需求登记为扩展技能申请（演示）。')
+  await sleep(200)
+  addLog('→ Skill Router：capability_request')
+  await requestSkill()
+}
+function toggleSkillExecTrace() {
+  const body = document.getElementById('skill-exec-trace-body')
+  const btn = document.getElementById('skill-exec-trace-btn')
+  if (!body || !btn) return
+  const show = body.style.display === 'none'
+  body.style.display = show ? 'block' : 'none'
+  btn.textContent = show ? '执行追踪 ▲' : '执行追踪 ▼'
+}
+function appendSkillBubble(title, body) {
+  const wrap = document.createElement('div')
+  wrap.className = 'msg assistant skill-bubble'
+  const t = document.createElement('div')
+  t.className = 'skill-bubble-title'
+  t.textContent = title
+  const b = document.createElement('div')
+  b.className = 'skill-bubble-body'
+  b.textContent = body
+  wrap.appendChild(t)
+  wrap.appendChild(b)
+  const chat = document.getElementById('chat-skill')
+  if (chat) {
+    chat.appendChild(wrap)
+    chat.scrollTop = 99999
+  }
+  return wrap
 }
 function switchReferralSubtab(tab) {
   document.getElementById('ref-tab-book').classList.toggle('active', tab === 'book')
@@ -973,24 +1579,67 @@ function switchReferralSubtab(tab) {
 }
 
 // 通用工具
+/** Skill 版侧栏：可读摘要（避免把「函数调用/DSL」刷到用户眼前；细节默认收在「执行追踪」） */
+function formatSkillLogFriendly(raw) {
+  const s = String(raw)
+  if (s.startsWith('→ Skill Router：')) {
+    const k = s.slice('→ Skill Router：'.length).trim()
+    if (/^\d+$/.test(k)) {
+      const numMap = { 1: '读取健康档案', 2: '慢病风险评估', 3: '生成生活处方', 4: '转诊建议判断', 6: '推荐检验检查', 8: '临床报告解读' }
+      return '· 已受理：' + (numMap[k] || ('#' + k))
+    }
+    const map = {
+      plan_recommendation: '诊疗方案推荐',
+      guide_qa: '指南问答',
+      drug_lookup: '药品查询',
+      task_create: '创建任务',
+      task_list: '任务列表',
+      conversation_history: '历史对话',
+      capability_request: '扩展能力申请'
+    }
+    return '· 已受理：' + (map[k] || k)
+  }
+  if (s.startsWith('→ Skill对话输入：')) return '· 你输入：' + s.slice('→ Skill对话输入：'.length).trim()
+  if (s.startsWith('→ 调用 Skill：')) return '· 开始执行：' + s.slice('→ 调用 Skill：'.length).trim()
+  if (s.startsWith('→ 调用 🦞 OpenClaw：')) return '· 后台计算：' + s.slice('→ 调用 🦞 OpenClaw：'.length).trim()
+  if (s.startsWith('→ 🦞 OpenClaw：')) return '· 后台：' + s.slice('→ 🦞 OpenClaw：'.length).trim()
+  if (s.startsWith('→ 🦞 OpenClaw 追问：')) return '· 追问：' + s.slice('→ 🦞 OpenClaw 追问：'.length).trim()
+  if (s.startsWith('→ 🦞 OpenClaw 分析：')) return '· 分析：' + s.slice('→ 🦞 OpenClaw 分析：'.length).trim()
+  if (s.startsWith('→ 入参：')) return '· 绑定数据：' + s.slice('→ 入参：'.length).trim()
+  if (s.startsWith('→ 模式：')) return '· 当前上下文：' + s.slice('→ 模式：'.length).trim()
+  if (s.trim() === '→ 检查入参') return '· 校验入参…'
+  if (s.startsWith('→ 入参完善，生成诊疗方案（') && s.endsWith('）')) {
+    const inner = s.slice('→ 入参完善，生成诊疗方案（'.length, -1)
+    return '· 入参齐全，生成方案：' + inner
+  }
+  if (s.startsWith('→ 用户输入：')) return '· 自由输入：' + s.slice('→ 用户输入：'.length).trim()
+  if (s.startsWith('→ skill.session plan.start')) return '· 已开启诊疗方案会话'
+  if (s.startsWith('→ ')) return '· ' + s.slice(2).trim()
+  return s
+}
 function addLog(text) {
   const item = document.createElement('div')
   item.className = 'log-item'
-  item.textContent = text
-  document.getElementById('log').appendChild(item)
+  item.textContent = activeOutputTarget === 'skill' ? formatSkillLogFriendly(text) : text
+  const targetId = activeOutputTarget === 'skill' ? 'log-skill' : 'log'
+  const el = document.getElementById(targetId)
+  if (el) el.appendChild(item)
 }
 function addMsg(text, cls) {
   const div = document.createElement('div')
   div.className = 'msg ' + cls
   div.textContent = text
-  const chat = document.getElementById('chat')
-  chat.appendChild(div)
-  chat.scrollTop = 9999
+  const targetId = activeOutputTarget === 'skill' ? 'chat-skill' : 'chat'
+  const chat = document.getElementById(targetId)
+  if (chat) {
+    chat.appendChild(div)
+    chat.scrollTop = 9999
+  }
   return div
 }
 function addActionMsg(promptText, actions) {
   const div = document.createElement('div')
-  div.className = 'msg assistant assistant-card'
+  div.className = 'msg assistant assistant-card' + (activeOutputTarget === 'skill' ? ' skill-choice-card' : '')
   const p = document.createElement('div')
   p.textContent = promptText
   div.appendChild(p)
@@ -1008,9 +1657,11 @@ function addActionMsg(promptText, actions) {
     row.appendChild(btn)
   })
   div.appendChild(row)
-  const chat = document.getElementById('chat')
-  chat.appendChild(div)
-  chat.scrollTop = 9999
+  const chat = document.getElementById(activeOutputTarget === 'skill' ? 'chat-skill' : 'chat')
+  if (chat) {
+    chat.appendChild(div)
+    chat.scrollTop = 9999
+  }
   return div
 }
 function addRiskAssessmentCard(input) {
@@ -1035,7 +1686,7 @@ function addRiskAssessmentCard(input) {
       <div><strong>建议：</strong>优先纳入红黄灯管理，2周复评；强化降脂与生活方式干预，必要时上级专科联合管理。</div>
     </div>
   `
-  const chat = document.getElementById('chat')
+  const chat = getActiveChat()
   chat.appendChild(div)
   chat.scrollTop = 9999
 }
@@ -1049,7 +1700,7 @@ function addClawSummaryCard(titleText) {
   body.className = 'claw-card-body'
   card.appendChild(title)
   card.appendChild(body)
-  const chat = document.getElementById('chat')
+  const chat = getActiveChat()
   chat.appendChild(card)
   chat.scrollTop = 9999
   return body
@@ -1115,7 +1766,7 @@ function addCheckRecommendationCard(type) {
         《市医保结算中心关于选定糖尿病门特健康管理事项关键指标数据的通知》
       </div>` : '<div class="check-refer"><a class="check-link" href="javascript:void(0)">查看更多</a></div>'}
   `
-  const chat = document.getElementById('chat')
+  const chat = getActiveChat()
   chat.appendChild(card)
   chat.scrollTop = 9999
 
@@ -1135,7 +1786,7 @@ async function runCheckRecommendationFlow() {
   await sleep(250)
   addLog('→ 调用 🦞 OpenClaw：check.recommend')
   addLog('→ 入参：健康档案 + 医保上报关键指标 + 缺项规则')
-  const loading = addMsg('正在生成推荐检查清单...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在生成检查清单…' : '正在生成推荐检查清单...', 'assistant typing')
   await sleep(900)
   loading.remove()
   addCheckRecommendationCard('insurance')
@@ -1146,7 +1797,7 @@ async function runCheckRecommendationFlow() {
   actionRow.className = 'quick-actions'
   actionRow.innerHTML = '<button class="quick-btn" data-disease="高血压">单独推荐高血压检查</button><button class="quick-btn" data-disease="糖尿病">单独推荐糖尿病检查</button><button class="quick-btn" data-disease="多病综合">推荐多病综合检查</button>'
   actions.appendChild(actionRow)
-  const chat = document.getElementById('chat')
+  const chat = getActiveChat()
   chat.appendChild(actions)
   chat.scrollTop = 9999
   actions.querySelectorAll('.quick-btn').forEach(btn => {
@@ -1155,7 +1806,7 @@ async function runCheckRecommendationFlow() {
       const disease = btn.getAttribute('data-disease')
       addMsg(`追问：单独推荐${disease}检查`, 'user')
       addLog(`→ 🦞 OpenClaw 追问：check.recommend.${disease}`)
-      const l2 = addMsg('正在生成单病种待检项与缺项...', 'assistant typing')
+      const l2 = addMsg(activeOutputTarget === 'skill' ? '正在整理单病种待检项…' : '正在生成单病种待检项与缺项...', 'assistant typing')
       await sleep(850)
       l2.remove()
       addCheckRecommendationCard(disease)
@@ -1168,7 +1819,8 @@ async function type(node, txt) {
   return new Promise(r => {
     const it = setInterval(() => {
       node.textContent = txt.slice(0, ++i)
-      document.getElementById('chat').scrollTop = 9999
+      const c = getActiveChat()
+      if (c) c.scrollTop = 9999
       if (i >= txt.length) { clearInterval(it); r() }
     }, 16)
   })
@@ -1208,7 +1860,7 @@ async function requestSkill() {
   addMsg("我需要定制技能：心功能评估", "user")
   await sleep(300)
   addLog("→ 提交技能定制申请")
-  const loading = addMsg("提交中...", "assistant typing")
+  const loading = addMsg(activeOutputTarget === 'skill' ? "正在提交申请…" : "提交中...", "assistant typing")
   await sleep(1200)
   loading.remove()
   await type(addMsg("", "assistant"), `✅ 申请已提交
@@ -1290,8 +1942,16 @@ async function confirmPlanDisease() {
 function hideFillErr() {
   const el = document.getElementById('fillErrMsg')
   if (el) { el.style.display = 'none'; el.textContent = '' }
+  const sk = document.getElementById('skill-fill-err-msg')
+  if (sk) { sk.style.display = 'none'; sk.textContent = '' }
 }
 function showFillErr(msg) {
+  const sk = document.getElementById('skill-fill-err-msg')
+  if (activeOutputTarget === 'skill' && sk) {
+    sk.textContent = msg
+    sk.style.display = 'block'
+    return
+  }
   const el = document.getElementById('fillErrMsg')
   if (el) { el.textContent = msg; el.style.display = 'block' }
 }
@@ -1656,8 +2316,8 @@ function addChdPlanCard(chdPayload, opts) {
     ${buildChdSupportingSuggestionsHtml()}
     <div class="ai-deep-foot">${m.foot}</div>
   `
-  document.getElementById('chat').appendChild(card)
-  document.getElementById('chat').scrollTop = 99999
+  getActiveChat().appendChild(card)
+  getActiveChat().scrollTop = 99999
 }
 function addAiDeepHypertensionPlanCard(htPayload, opts) {
   const m = planCardModeCopy(opts)
@@ -1697,8 +2357,8 @@ function addAiDeepHypertensionPlanCard(htPayload, opts) {
     ${buildHtSupportingSuggestionsHtml()}
     <div class="ai-deep-foot">${m.foot}</div>
   `
-  document.getElementById('chat').appendChild(card)
-  document.getElementById('chat').scrollTop = 99999
+  getActiveChat().appendChild(card)
+  getActiveChat().scrollTop = 99999
 }
 function addAiDeepStrokePlanCard(strokePayload, opts) {
   const m = planCardModeCopy(opts)
@@ -1737,8 +2397,8 @@ function addAiDeepStrokePlanCard(strokePayload, opts) {
     ${buildStrokeSupportingSuggestionsHtml()}
     <div class="ai-deep-foot">${m.foot}</div>
   `
-  document.getElementById('chat').appendChild(card)
-  document.getElementById('chat').scrollTop = 99999
+  getActiveChat().appendChild(card)
+  getActiveChat().scrollTop = 99999
 }
 function addAiDeepDiabetesPlanCard(dmPayload, opts) {
   const m = planCardModeCopy(opts)
@@ -1777,54 +2437,54 @@ function addAiDeepDiabetesPlanCard(dmPayload, opts) {
     ${buildSupportingSuggestionsHtml()}
     <div class="ai-deep-foot">${m.foot}</div>
   `
-  document.getElementById('chat').appendChild(card)
-  document.getElementById('chat').scrollTop = 99999
+  getActiveChat().appendChild(card)
+  getActiveChat().scrollTop = 99999
 }
 async function runAiDeepDiabetesOutput(dmPayload) {
   addLog('→ 🦞 OpenClaw：plan.deep_think + support_bundle')
-  const loading = addMsg('AI医生助手正在进行深度思考…', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在综合方案要点…' : 'AI医生助手正在进行深度思考…', 'assistant typing')
   await sleep(1400)
   loading.remove()
   addAiDeepDiabetesPlanCard(dmPayload)
 }
 async function runAiDeepHypertensionOutput(htPayload) {
   addLog('→ 🦞 OpenClaw：plan.deep_think + support_bundle')
-  const loading = addMsg('AI医生助手正在进行深度思考…', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在综合方案要点…' : 'AI医生助手正在进行深度思考…', 'assistant typing')
   await sleep(1400)
   loading.remove()
   addAiDeepHypertensionPlanCard(htPayload)
 }
 async function runAiDeepStrokeOutput(strokePayload) {
   addLog('→ 🦞 OpenClaw：plan.deep_think + support_bundle')
-  const loading = addMsg('AI医生助手正在进行深度思考…', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在综合方案要点…' : 'AI医生助手正在进行深度思考…', 'assistant typing')
   await sleep(1400)
   loading.remove()
   addAiDeepStrokePlanCard(strokePayload)
 }
 async function runTreeDiabetesOutput(dmPayload) {
   addLog('→ 🦞 OpenClaw：plan.decision_tree + support_bundle')
-  const loading = addMsg('生成方案中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在按规则生成方案…' : '生成方案中...', 'assistant typing')
   await sleep(1100)
   loading.remove()
   addAiDeepDiabetesPlanCard(dmPayload, { decisionTree: true })
 }
 async function runTreeHypertensionOutput(htPayload) {
   addLog('→ 🦞 OpenClaw：plan.decision_tree + support_bundle')
-  const loading = addMsg('生成方案中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在按规则生成方案…' : '生成方案中...', 'assistant typing')
   await sleep(1100)
   loading.remove()
   addAiDeepHypertensionPlanCard(htPayload, { decisionTree: true })
 }
 async function runTreeStrokeOutput(strokePayload) {
   addLog('→ 🦞 OpenClaw：plan.decision_tree + support_bundle')
-  const loading = addMsg('生成方案中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在按规则生成方案…' : '生成方案中...', 'assistant typing')
   await sleep(1100)
   loading.remove()
   addAiDeepStrokePlanCard(strokePayload, { decisionTree: true })
 }
 async function runTreeChdOutput(chdPayload) {
   addLog('→ 🦞 OpenClaw：plan.decision_tree + support_bundle')
-  const loading = addMsg('生成方案中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在按规则生成方案…' : '生成方案中...', 'assistant typing')
   await sleep(1100)
   loading.remove()
   addChdPlanCard(chdPayload, { decisionTree: true })
@@ -1903,7 +2563,7 @@ async function showHistory() {
   addMsg("查看我和该患者的历史对话", 'user')
   await sleep(300)
   addLog('→ 读取患者对话历史')
-  const loading = addMsg('加载中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在拉取历史记录…' : '加载中...', 'assistant typing')
   await sleep(1000)
   loading.remove()
   await type(addMsg('', 'assistant'), `【历史对话（张三）】
@@ -1968,22 +2628,22 @@ async function runArchiveFlow() {
   await sleep(250)
   addLog('→ 调用 🦞 OpenClaw：archive.fetch')
   addLog('→ 数据映射：病情概况/检查提醒/历史用药/生活习惯')
-  const loading = addMsg('正在获取档案并构建分析入参...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在读取档案并整理要点…' : '正在获取档案并构建分析入参...', 'assistant typing')
   await sleep(900)
   loading.remove()
-  addActionMsg('已完成档案获取。是否先做一次病情追问，再输出最终分析？', [
+  addActionMsg(activeOutputTarget === 'skill' ? '档案已就绪。要先追问几句再出小结，还是直接给结论？' : '已完成档案获取。是否先做一次病情追问，再输出最终分析？', [
     {
       label: '先追问后分析',
       onClick: async () => {
         addLog('→ 🦞 OpenClaw 追问：clarify.intent')
-        const qLoading = addMsg('正在生成病情追问...', 'assistant typing')
+        const qLoading = addMsg(activeOutputTarget === 'skill' ? '正在生成追问…' : '正在生成病情追问...', 'assistant typing')
         await sleep(800)
         qLoading.remove()
         await type(addMsg('', 'assistant'), '追问建议：\n1) 最近2周家庭血压晨晚均值大概是多少？\n2) 二甲双胍是否有胃肠道不适影响服药依从性？\n3) 夜尿/下肢水肿近1个月是否加重？')
         await sleep(350)
         addMsg('补充：近期晨起血压约148/96，服药偶有漏服，夜尿2次/晚。', 'user')
         addLog('→ 🦞 OpenClaw 分析：summary.generate')
-        const sLoading = addMsg('结合追问结果生成病情小结...', 'assistant typing')
+        const sLoading = addMsg(activeOutputTarget === 'skill' ? '正在生成病情小结…' : '结合追问结果生成病情小结...', 'assistant typing')
         await sleep(900)
         sLoading.remove()
         const body = addClawSummaryCard('AI病情小结（🦞 OpenClaw）')
@@ -1994,7 +2654,7 @@ async function runArchiveFlow() {
       label: '直接输出分析',
       onClick: async () => {
         addLog('→ 🦞 OpenClaw 分析：summary.generate（direct）')
-        const sLoading = addMsg('基于档案直接生成病情小结...', 'assistant typing')
+        const sLoading = addMsg(activeOutputTarget === 'skill' ? '正在生成病情小结…' : '基于档案直接生成病情小结...', 'assistant typing')
         await sleep(900)
         sLoading.remove()
         const body = addClawSummaryCard('AI病情小结（🦞 OpenClaw）')
@@ -2010,7 +2670,7 @@ async function runRiskAssessmentFlow() {
   await sleep(250)
   addLog('→ 调用 🦞 OpenClaw：risk.profile')
   addLog('→ 风险分层：已患病控制标签 + 未患病风险标签')
-  const loading = addMsg('正在计算风险分层与标签...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在计算风险分层…' : '正在计算风险分层与标签...', 'assistant typing')
   await sleep(900)
   loading.remove()
   addRiskAssessmentCard(input)
@@ -2057,7 +2717,7 @@ async function run(i) {
   addMsg(t.q, 'user')
   await sleep(300)
   addLog('→ ' + t.log)
-  const loading = addMsg('处理中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在整理结论…' : '处理中...', 'assistant typing')
   await sleep(1000)
   loading.remove()
   await type(addMsg('', 'assistant'), t.a)
@@ -2068,7 +2728,7 @@ async function askGuide() {
   addMsg("高血压合并糖尿病最新指南", 'user')
   await sleep(300)
   addLog('→ 医生自由提问（不绑患者）')
-  const loading = addMsg('检索指南...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在检索指南要点…' : '检索指南...', 'assistant typing')
   await sleep(1200)
   loading.remove()
   await type(addMsg('', 'assistant'), `【2024 高血压+糖尿病指南要点】
@@ -2081,7 +2741,7 @@ async function queryDrug() {
   addMsg("查询：缬沙坦氨氯地平片（I）说明书要点", 'user')
   await sleep(300)
   addLog('→ 药品查询（演示）')
-  const loading = addMsg('检索药品信息...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在整理药品说明…' : '检索药品信息...', 'assistant typing')
   await sleep(1000)
   loading.remove()
   await type(addMsg('', 'assistant'), `【药品查询 · 演示结果】
@@ -2093,33 +2753,45 @@ async function queryDrug() {
 提示：正式环境可对接医院药品目录与说明书全文检索。`)
 }
 async function createTask() {
-  addLog('→ 龙虾创建任务（任务能力）')
+  addLog('→ 智能助手创建任务（任务能力）')
   const guide = addMsg('', 'assistant')
-  await type(guide, `【创建任务｜录入引导】
+  let taskGuide
+  if (activeOutputTarget === 'skill') {
+    taskGuide = `先把任务说清楚，我再帮你登记（演示）：
+① 要解决什么问题
+② 期望产出（要点 / 表格等）
+③ 截止时间
+④ 可选：检索范围（指南 / 文献）
+
+示例：「整理2025糖尿病新药适应症对比，本周五前要表格」`
+  } else {
+    taskGuide = `【创建任务｜录入引导】
 请先在底部输入框写清以下要素，再发送或继续点本按钮走示例：
 ① 任务主题（要解决什么问题）
 ② 期望产出（综述 / 要点列表 / 对比表等）
 ③ 截止时间
 ④ 可选：检索范围（指南 / 文献）
 
-示例一句：「整理2025糖尿病新药适应症对比，本周五前要表格」`)
+示例一句：「整理2025糖尿病新药适应症对比，本周五前要表格」`
+  }
+  await type(guide, taskGuide)
   await sleep(400)
   addMsg("帮我创建任务：整理2025糖尿病新药", 'user')
   await sleep(300)
-  const loading = addMsg('任务创建中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在登记任务…' : '任务创建中...', 'assistant typing')
   await sleep(1200)
   loading.remove()
   await type(addMsg('', 'assistant'), `✅ 任务已创建（演示）
 任务名称：整理2025糖尿病新药
 状态：待完成
 预计完成时间：2025-03-26
-龙虾将按任务说明自动检索文献并生成总结（演示）。`)
+智能助手将按任务说明自动检索文献并生成总结（演示）。`)
 }
 async function subscribe() {
   addMsg("订阅：高血压、糖尿病指南更新推送", 'user')
   await sleep(300)
   addLog('→ 订阅资讯更新')
-  const loading = addMsg('订阅中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在处理订阅…' : '订阅中...', 'assistant typing')
   await sleep(1000)
   loading.remove()
   await type(addMsg('', 'assistant'), `✅ 订阅成功
@@ -2131,7 +2803,7 @@ async function myTasks() {
   addMsg("查看我的任务", 'user')
   await sleep(300)
   addLog('→ 读取医生任务列表')
-  const loading = addMsg('加载中...', 'assistant typing')
+  const loading = addMsg(activeOutputTarget === 'skill' ? '正在加载任务…' : '加载中...', 'assistant typing')
   await sleep(1000)
   loading.remove()
   await type(addMsg('', 'assistant'), `【我的任务】
@@ -2139,7 +2811,7 @@ async function myTasks() {
 2. 汇总SGLT-2抑制剂研究 → 已完成
 3. 慢病管理指南更新 → 已订阅
 
-龙虾会持续执行并提醒。`)
+智能助手会持续执行并提醒。`)
 }
 </script>
 </body>
