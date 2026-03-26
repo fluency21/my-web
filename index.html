@@ -294,25 +294,42 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .detail-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #eee}
 .detail-title{font-size:15px;font-weight:600}
 .detail-close{border:none;background:#fff;font-size:20px;line-height:1;cursor:pointer;color:#666}
-.detail-body{padding:0;overflow:auto;flex:1;background:#f4f5f7}
-.patient-card{padding:10px 10px 14px;color:#2f3542}
-.patient-head{display:flex;align-items:center;gap:9px;margin-bottom:6px}
-.avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#cfe2ff,#d9dde6)}
-.patient-name{font-size:16px;font-weight:700;line-height:1.15}
-.patient-age{font-size:12px;font-weight:600;color:#4b5563}
-.pair-row{display:flex;align-items:center;justify-content:space-between;margin:6px 0}
-.pair-label{font-size:13px;font-weight:700;color:#4b5563}
-.pill{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:13px;border:1px solid #6ea8ff;color:#2f6ee5;background:#eef5ff;font-size:13px;font-weight:700}
+.detail-body{padding:10px;overflow:auto;flex:1;background:#f3f5f8}
+.patient-card{position:relative;padding:0;color:#2f3542}
+.patient-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;background:#fff;border:1px solid #e5e9f1;border-radius:10px;padding:10px}
+.patient-head-main{flex:1;min-width:0}
+.patient-head-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:46%}
+.patient-head-extra{width:100%;text-align:right;font-size:11px;color:#6b7280;margin-top:2px}
+.patient-status-badge{position:absolute;top:0;left:0;display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:10px 0 10px 0;background:#eaf3ff;color:#2f6ee5;border:1px solid #bfd6ff;border-top:none;border-left:none;font-size:11px;font-weight:700}
+.pill.strong-warn{background:#fff2f2;border-color:#ef9a9a;color:#c62828;font-weight:800}
+.pill.strong-risk{background:#fff7e8;border-color:#f1c27a;color:#b26a00;font-weight:800}
+.avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#cfe2ff,#d9dde6)}
+.patient-name{font-size:18px;font-weight:700;line-height:1.1}
+.patient-age{font-size:13px;font-weight:600;color:#5b6577}
+.patient-sub{font-size:12px;color:#6b7280;margin-top:3px}
+.portrait-card{background:#fff;border:1px solid #e5e9f1;border-radius:10px;padding:10px;margin-bottom:8px}
+.portrait-title{font-size:13px;font-weight:700;color:#1f2f4a;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.portrait-title::before{content:"";width:4px;height:12px;border-radius:2px;background:#4c8ffb}
+.pair-row{display:flex;align-items:center;justify-content:space-between;margin:5px 0}
+.pair-label{font-size:12px;font-weight:600;color:#5b6577}
+.pair-value{font-size:12px;color:#2f3542}
+.pill{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:12px;border:1px solid #6ea8ff;color:#2f6ee5;background:#eef5ff;font-size:12px;font-weight:700}
 .pill.warn{border-color:#f6b26b;background:#fff6ed;color:#e58a2a}
-.section-title{margin:12px 0 5px;font-size:15px;font-weight:800;display:flex;align-items:center;gap:7px;color:#111827}
-.section-title::before{content:"✚";font-size:10px;width:15px;height:15px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#4c8ffb;color:#fff}
-.section-title.info::before{content:"i";font-weight:700}
-.line-text{font-size:13px;line-height:1.35;margin:4px 0;color:#2f3542}
-.line-strong{font-size:17px;font-weight:800;line-height:1}
-.link-more{margin-left:auto;font-size:13px;color:#2f6ee5;text-decoration:none}
-.note-box{width:100%;min-height:100px;border:1px solid #d4d8de;border-radius:6px;padding:9px 10px;font-size:13px;line-height:1.35;color:#374151;resize:vertical;background:#f8f9fb}
-.save-wrap{display:flex;justify-content:center;margin-top:12px}
-.save-btn{min-width:82px;height:30px;border:none;border-radius:6px;background:#4c8ffb;color:#fff;font-size:14px;font-weight:700;cursor:pointer}
+.pill.muted{border-color:#b7c5de;background:#f4f7fc;color:#4f6487}
+.tag-row{display:flex;flex-wrap:wrap;gap:6px}
+.combo-row{display:flex;flex-wrap:wrap;gap:6px}
+.combo-pill{display:inline-flex;align-items:center;height:24px;padding:0 10px;border-radius:13px;border:1px solid #bcd0f3;background:#f6f9ff;color:#2f4f86;font-size:12px;font-weight:700}
+.combo-pill.main{border-color:#7fa9ef;background:#eaf2ff;color:#204a8c}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
+.metric-item{background:#f7f9fd;border:1px solid #e6ebf5;border-radius:8px;padding:7px}
+.metric-k{font-size:11px;color:#6b7280}
+.metric-v{font-size:20px;font-weight:700;color:#25324a;line-height:1.1;margin-top:2px}
+.metric-u{font-size:11px;color:#6b7280}
+.risk-list{margin:0;padding-left:16px;font-size:12px;line-height:1.5;color:#334155}
+.risk-list li{margin:3px 0}
+.note-box{width:100%;min-height:72px;border:1px solid #d4d8de;border-radius:7px;padding:8px 9px;font-size:12px;line-height:1.35;color:#374151;resize:vertical;background:#f8f9fb}
+.save-wrap{display:flex;justify-content:center;margin-top:9px}
+.save-btn{min-width:88px;height:32px;border:none;border-radius:8px;background:#3c7df0;color:#fff;font-size:13px;font-weight:700;cursor:pointer}
 </style>
 </head>
 <body>
@@ -846,44 +863,78 @@ body{background:#f5f7fa;padding:20px;margin:0}
 <div id="detailOverlay" class="detail-overlay" onclick="closePatientDetail()"></div>
 <div id="detailDrawer" class="detail-drawer" aria-hidden="true">
   <div class="detail-header">
-    <div class="detail-title">患者详情</div>
+    <div class="detail-title">患者画像</div>
     <button class="detail-close" onclick="closePatientDetail()">×</button>
   </div>
   <div class="detail-body">
     <div class="patient-card">
+      <div class="patient-status-badge">接诊中</div>
       <div class="patient-head">
         <div class="avatar"></div>
-        <div>
+        <div class="patient-head-main">
           <div class="patient-name">刘平</div>
           <div class="patient-age">男 56岁</div>
         </div>
+        <div class="patient-head-tags">
+          <span class="pill strong-risk">高费用</span>
+          <span class="pill strong-warn">待解约</span>
+          <div class="patient-head-extra">剩余药量：12天</div>
+        </div>
       </div>
 
-      <div class="pair-row"><div class="pair-label">家庭签约</div><span class="pill">已签约</span></div>
-      <div class="pair-row"><div class="pair-label">糖人头签约</div><span class="pill">未签约</span></div>
-      <div class="pair-row"><div class="pair-label">大人头签约</div><span class="pill">已签约</span></div>
-      <div class="line-text">签约机构 天津市西青区中北镇社区卫生服务中心</div>
-      <div class="pair-row"><div class="pair-label">减重签约</div><span class="pill">服务结束</span></div>
-      <div class="pair-row"><div class="pair-label">糖尿病缓解门诊</div><span class="pill">未开通</span></div>
+      <div class="portrait-card">
+        <div class="portrait-title">基础画像</div>
+        <div class="pair-row"><div class="pair-label">签约机构</div><div class="pair-value">天津市西青区中北镇社区卫生服务中心</div></div>
+        <div class="tag-row">
+          <span class="pill">家庭签约</span>
+          <span class="pill">大人头签约</span>
+          <span class="pill muted">糖人头未签约</span>
+          <span class="pill muted">减重服务结束</span>
+        </div>
+      </div>
 
-      <div class="section-title">确诊疾病</div>
-      <div class="line-text">肥胖</div>
-      <div class="line-text">高血压 <span class="line-strong">1.1</span>年</div>
+      <div class="portrait-card">
+        <div class="portrait-title">疾病与风险标签</div>
+        <div class="tag-row">
+          <span class="pill warn">高血压 1.1年</span>
+          <span class="pill muted">肥胖</span>
+          <span class="pill muted">糖尿病缓解门诊未开通</span>
+          <span class="pill warn">高血压分标：红标</span>
+        </div>
+      </div>
 
-      <div class="section-title">治疗情况 <a class="link-more" href="javascript:void(0)">查看全部</a></div>
+      <div class="portrait-card">
+        <div class="portrait-title">核心指标</div>
+        <div class="metric-grid">
+          <div class="metric-item"><div class="metric-k">BMI</div><div class="metric-v">27.7</div><div class="metric-u">超重</div></div>
+          <div class="metric-item"><div class="metric-k">体重</div><div class="metric-v">80.0</div><div class="metric-u">kg</div></div>
+          <div class="metric-item"><div class="metric-k">腰围</div><div class="metric-v">90.0</div><div class="metric-u">cm</div></div>
+        </div>
+      </div>
 
-      <div class="section-title">体型</div>
-      <div class="line-text">BMI： <span class="line-strong">27.7</span> 超重</div>
-      <div class="line-text">体重： <span class="line-strong">80.0</span></div>
-      <div class="line-text">腰围： <span class="line-strong">90.0</span></div>
+      <div class="portrait-card">
+        <div class="portrait-title">当前治疗方案</div>
+        <div class="combo-row">
+          <span class="combo-pill main">缬沙坦 80mg qd</span>
+          <span class="combo-pill main">二甲双胍 0.5g tid</span>
+          <span class="combo-pill">阿托伐他汀 20mg qn</span>
+        </div>
+      </div>
 
-      <div class="section-title">重点关注</div>
-      <div class="pair-row"><div class="pair-label">AI分析:</div><span class="pill warn">高血压</span></div>
-      <div class="pair-row"><div class="pair-label">AI分组:</div><span class="pill">暂无分组</span></div>
+      <div class="portrait-card">
+        <div class="portrait-title">重点问题与建议</div>
+        <ul class="risk-list">
+          <li>当前主要关注：血压控制与体重管理。</li>
+          <li>建议 2 周复评家庭血压与依从性，必要时上级联合管理。</li>
+          <li>可继续完善糖代谢相关签约与长期随访路径。</li>
+        </ul>
+      </div>
 
-      <div class="section-title info">备注</div>
-      <textarea class="note-box">用药不良反应导致焦虑</textarea>
-      <div class="save-wrap"><button class="save-btn">保存</button></div>
+      <div class="portrait-card">
+        <div class="portrait-title">随访备注</div>
+        <textarea class="note-box">用药不良反应导致焦虑</textarea>
+        <div class="save-wrap"><button class="save-btn">保存</button></div>
+      </div>
     </div>
   </div>
 </div>
