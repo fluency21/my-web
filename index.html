@@ -5,28 +5,223 @@
 <title>慢病工作台 - 智能助手智能问答（截图版）</title>
 <style>
 *{box-sizing:border-box;font-family:system-ui, sans-serif}
-body{background:#f5f7fa;padding:20px;margin:0}
+:root{--cmc-main-h:min(580px,calc(96vh - 188px))}
+body{background:#dfe6ef;margin:0;padding:0}
 .container{max-width:960px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08)}
-.header{padding:16px;border-bottom:1px solid #eee}
+.container.cmc-inner{max-width:none;margin:0;border-radius:0;box-shadow:none;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.his-stage{background:#e8edf2;min-height:100vh;display:flex;flex-direction:column;font-size:12px;color:#2c3e50}
+.his-menubar{background:#f0f4f8;border-bottom:1px solid #c5d3e0;padding:6px 10px;display:flex;gap:4px;flex-wrap:wrap}
+.his-mi{padding:4px 10px;color:#345}
+.his-banner{background:#d8eefc;border-bottom:1px solid #9ec9e8;padding:8px 12px}
+.his-banner-row{font-size:13px}
+.his-dept{color:#1976d2}
+.his-diag{margin-top:4px;font-size:12px;color:#455a64}
+.his-toolbar{background:#f7f9fc;border-bottom:1px solid #d6deea;padding:6px 10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.his-tb{height:26px;padding:0 10px;border:1px solid #b8c9d6;background:#fff;border-radius:2px;font-size:12px;cursor:pointer;color:#344}
+.his-entry{border-color:#1e88e5;color:#0d47a1;font-weight:700;background:#e3f2fd}
+.his-tb-muted{margin-left:auto;color:#78909c;font-size:11px}
+.his-main{display:flex;flex:1;min-height:0}
+.his-nav{width:140px;background:#eef2f7;border-right:1px solid #d4dce6;padding:8px 0;flex-shrink:0}
+.his-nav-h{font-size:11px;font-weight:700;color:#546e7a;padding:4px 10px}
+.his-nav-i{padding:6px 12px;font-size:12px;cursor:pointer;color:#37474f}
+.his-nav-i.active{background:#fff;border-left:3px solid #1976d2}
+.his-content{flex:1;padding:10px 12px;overflow:auto;background:#f5f7fa}
+.his-pane-h{font-size:12px;font-weight:700;margin-bottom:6px;color:#37474f}
+.his-table{width:100%;border-collapse:collapse;font-size:11px;background:#fff;border:1px solid #e0e6ed}
+.his-table th,.his-table td{border:1px solid #e8edf3;padding:4px 6px;text-align:left}
+.his-table th{background:#eef2f7;font-weight:700}
+.his-small{margin-top:8px}
+.his-abn{color:#c62828;font-weight:700}
+.his-foot{padding:6px 12px;background:#e8edf0;border-top:1px solid #cfd8dc;font-size:11px;color:#546e7a}
+.cmc-overlay{position:fixed;inset:0;background:rgba(15,35,55,.48);z-index:1000;display:none;align-items:center;justify-content:center;padding:12px;box-sizing:border-box}
+.cmc-overlay.is-open{display:flex}
+.cmc-modal{background:#fff;border-radius:4px;box-shadow:0 12px 48px rgba(0,0,0,.25);max-width:min(1180px,100%);width:100%;max-height:96vh;display:flex;flex-direction:column;overflow:hidden}
+.cmc-modal-titlebar{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg,#2b6adb,#1e5bb8);color:#fff;padding:6px 10px;font-size:13px;gap:10px;flex-shrink:0}
+.cmc-titlebar-tool{border:none;background:rgba(255,255,255,.14);color:#e8f4ff;font-size:11px;padding:4px 12px;border-radius:4px;cursor:pointer;font-family:inherit;white-space:nowrap}
+.cmc-titlebar-tool:hover{background:rgba(255,255,255,.24)}
+.cmc-titlebar-tool.is-active{background:rgba(255,255,255,.32);font-weight:700;box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.cmc-titlebar-right{display:flex;align-items:center;gap:6px;margin-left:auto;flex-shrink:0}
+.cmc-titlebar-actions{display:flex;align-items:center;gap:1px}
+.cmc-winbtn{width:28px;height:26px;border:none;background:transparent;color:#fff;font-size:16px;line-height:1;cursor:pointer;border-radius:3px;display:inline-flex;align-items:center;justify-content:center}
+.cmc-winbtn:hover{background:rgba(255,255,255,.12)}
+.cmc-winbtn--icon{font-size:13px;font-weight:600}
+.cmc-overlay.cmc-overlay--max{padding:0;align-items:stretch;justify-content:stretch}
+.cmc-modal.cmc-modal--max{max-width:none;width:100%;max-height:none;height:100%;border-radius:0;margin:0}
+.cmc-toast-host{position:fixed;top:48px;left:50%;transform:translateX(-50%);z-index:1105;pointer-events:none}
+.cmc-toast{background:#1e293b;color:#fff;padding:8px 16px;border-radius:8px;font-size:12px;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s}
+.cmc-toast.is-visible{opacity:1}
+.deval-page{padding:12px;background:#f4f6fa;min-height:var(--cmc-main-h);max-height:var(--cmc-main-h);overflow-y:auto;box-sizing:border-box}
+.deval-intro{font-size:11px;color:#64748b;line-height:1.5;margin:0 0 12px;padding:8px 10px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;border-left:3px solid #2563eb}
+.deval-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:900px){.deval-grid{grid-template-columns:1fr}}
+.deval-card{background:#fff;border:1px solid #e8edf4;border-radius:6px;padding:10px 12px}
+.deval-card--wide{grid-column:1/-1}
+.deval-card-h{font-size:13px;font-weight:700;color:#1e3a5f;margin:0 0 6px}
+.deval-card-h::before{content:"▍";color:#2563eb;margin-right:4px;font-weight:400}
+.deval-card-desc{font-size:11px;color:#64748b;margin:0 0 8px;line-height:1.45}
+.deval-stat{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin:6px 0;padding:6px 8px;background:#f8fafc;border-radius:4px}
+.deval-k{color:#64748b}
+.deval-v{font-weight:700;color:#1e3a5f}
+.deval-pill{font-size:11px;padding:6px 8px;border-radius:4px;margin-top:6px;line-height:1.4}
+.deval-pill.ok{background:#ecfdf5;color:#047857;border:1px solid #a7f3d0}
+.deval-pill.warn{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.deval-list{margin:6px 0 0;padding-left:16px;font-size:11px;color:#475569;line-height:1.5}
+.deval-foot{font-size:10px;color:#94a3b8;margin-top:10px;padding-top:8px;border-top:1px dashed #e2e8f0}
+.cmc-subtabs{display:flex;gap:0;border-bottom:1px solid #e9eef6;background:#f6f8fc;padding:0 8px}
+.cmc-subtab{padding:8px 14px;font-size:12px;color:#4f5d74;cursor:pointer;background:transparent;border:none;border-bottom:2px solid transparent;font-family:inherit}
+.cmc-subtab:hover{color:#2f6ee5}
+.cmc-subtab.active{color:#2f6ee5;font-weight:700;border-bottom-color:#2f6ee5}
+.cmc-subpanel{display:none}
+.cmc-subpanel.active{display:block}
+.my-patients-page{padding:10px;background:#f4f6fa;min-height:var(--cmc-main-h);max-height:var(--cmc-main-h);overflow:hidden;display:flex;flex-direction:column;box-sizing:border-box}
+.my-patients-card{background:#fff;border:1px solid #e8edf4;border-radius:4px;padding:8px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.my-patients-hd{font-size:12px;font-weight:700;color:#20304a;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid #edf1f6;flex-shrink:0}
+.my-patients-hd::before{content:"▍";color:#4a86ff;margin-right:4px}
+.my-patients-filter{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:10px;font-size:11px;flex-shrink:0}
+.my-patients-filter .g-input{min-width:140px}
+.my-patients-scroll{flex:1;min-height:0;overflow:auto;margin-top:4px;border:1px solid #e8edf4;border-radius:4px}
+.my-patients-table{width:100%;border-collapse:collapse;font-size:11px}
+.my-patients-table th{background:#edf2fa;color:#32445f;font-weight:700;padding:6px;border:1px solid #e7edf6;text-align:left}
+.my-patients-table th:nth-child(4){min-width:96px;white-space:nowrap}
+.my-patients-table th:last-child{min-width:200px}
+.my-patients-table td{padding:6px;border:1px solid #eef2f7;color:#3d4b60}
+.my-patients-ops{white-space:normal;vertical-align:middle;line-height:1.5}
+.my-patients-ops .mp-op{display:inline-block;margin:2px 4px 2px 0;padding:4px 8px;font-size:10px;border:1px solid #b8d4f6;background:#f0f7ff;color:#1e5bb8;border-radius:3px;cursor:pointer;font-family:inherit}
+.my-patients-ops .mp-op:hover{background:#e3f0ff;border-color:#7eb3e8}
+.rx-page{position:relative;background:#f8fafc;padding:8px;padding-bottom:80px;min-height:var(--cmc-main-h);max-height:var(--cmc-main-h);overflow-y:auto;font-size:11px;box-sizing:border-box}
+.rx-topbar{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid #e2e8f0;padding:6px 10px;border-radius:4px;margin-bottom:6px;flex-wrap:wrap;gap:8px}
+.rx-brand{font-weight:800;color:#1e3a5f;font-size:14px}
+.rx-visit-type{font-size:11px;color:#78909c}
+.rx-toolbar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#fff;border:1px solid #e2e8f0;padding:6px 8px;border-radius:4px;margin-bottom:6px}
+.rx-tb{height:28px;padding:0 10px;border:1px solid #cfd8dc;background:#fff;border-radius:3px;font-size:11px;cursor:pointer}
+.rx-tb.primary{background:#1976d2;color:#fff;border-color:#1565c0}
+.rx-pres-note{margin-left:auto;font-size:11px;color:#c62828}
+.rx-grid{background:#fff;border:1px solid #e2e8f0;padding:8px;border-radius:4px;margin-bottom:6px}
+.rx-grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px 12px;align-items:center}
+.rx-lab{font-size:11px;color:#546e7a}
+.rx-inp{height:26px;border:1px solid #cfd8dc;border-radius:3px;padding:0 6px;font-size:11px;min-width:0;width:100%}
+.rx-diag-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rx-tag{display:inline-flex;align-items:center;gap:4px;background:#fff9c4;border:1px solid #ffe082;padding:2px 8px;border-radius:3px;font-size:11px;margin-top:4px}
+.rx-hints{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
+.rx-hint{background:#fff;border:1px solid #e0e0e0;border-radius:4px;padding:6px 8px;font-size:11px;color:#37474f;flex:1;min-width:200px}
+.rx-hint.blue{border-left:3px solid #1976d2}
+.rx-hint.red{border-left:3px solid #c62828}
+.rx-add-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;align-items:end;background:#fff;border:1px solid #e2e8f0;padding:8px;border-radius:4px;margin-bottom:6px}
+.rx-detail-tabs{display:flex;gap:0;border-bottom:1px solid #e9eef6;background:#fff;padding:0 8px;font-size:11px}
+.rx-dtab{padding:6px 10px;cursor:pointer}
+.rx-dtab.active{color:#1976d2;font-weight:700;border-bottom:2px solid #1976d2}
+.rx-legend{display:flex;gap:12px;padding:4px 8px;font-size:10px;color:#64748b}
+.rx-legend .sw{display:inline-block;width:12px;height:12px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.rx-legend .sw.b{background:#e3f2fd;border:1px solid #90caf9}
+.rx-legend .sw.n{background:#fff;border:1px solid #ccc}
+.rx-table-wrap{overflow:auto;border:1px solid #e2e8f0;background:#fff;border-radius:0 0 4px 4px}
+.rx-table{width:100%;border-collapse:collapse;font-size:10px}
+.rx-table th,.rx-table td{border:1px solid #e8edf3;padding:4px 6px;text-align:left;white-space:nowrap}
+.rx-table th{background:#eef2f7;font-weight:700}
+.rx-row-base{background:#e3f2fd}
+.rx-drug-row{cursor:pointer;transition:background .15s}
+.rx-drug-row:hover{background:#f0f7ff}
+.rx-drug-row.rx-selected{background:#bbdefb;outline:2px solid #1976d2;outline-offset:-2px}
+.rx-plugin-note{margin:0 0 8px;font-size:11px;color:#78909c;line-height:1.45;padding:6px 8px;background:#f5f9fc;border:1px dashed #c5d9e8;border-radius:4px}
+.ai-doc-fab{position:fixed;right:20px;bottom:24px;z-index:950;width:58px;height:58px;padding:0;border:none;border-radius:50%;cursor:pointer;background:linear-gradient(135deg,#8ecafe,#c2b1ff);box-shadow:0 4px 18px rgba(30,60,120,.38);display:flex;align-items:center;justify-content:center;transition:transform .15s,box-shadow .15s}
+.ai-fab-stack{display:flex;flex-direction:column;align-items:center;gap:4px}
+.ai-fab-stack .ai-doc-fab{position:relative;right:auto;bottom:auto;left:auto;top:auto;z-index:auto}
+.ai-fab-tip-count{font-size:11px;font-weight:700;color:#fff;background:linear-gradient(180deg,#ef5350,#c62828);padding:2px 7px;border-radius:10px;line-height:1.15;min-width:18px;text-align:center;box-shadow:0 2px 6px rgba(198,40,40,.35);border:1px solid rgba(255,255,255,.75)}
+#aiFabHisStack{position:fixed;right:20px;bottom:24px;z-index:1025}
+.ai-doc-fab:hover{transform:scale(1.06);box-shadow:0 6px 22px rgba(30,60,120,.45)}
+.ai-doc-fab:focus{outline:2px solid #fff;outline-offset:2px}
+.ai-doc-fab-img{width:44px;height:44px;border-radius:50%;object-fit:cover;display:block;box-shadow:inset 0 0 0 2px rgba(255,255,255,.85)}
+#tab-prescription .ai-fab-stack--rx{position:absolute;left:auto;right:16px;bottom:14px;top:auto;z-index:6;display:none;box-shadow:none}
+#tab-prescription .ai-fab-stack--rx .ai-doc-fab{box-shadow:0 4px 16px rgba(30,60,120,.32)}
+#tab-prescription .ai-fab-stack--rx.is-visible{display:flex !important}
+.ai-doc-fab--pulse{animation:aiFabPulse 2s ease-in-out infinite}
+@keyframes aiFabPulse{0%,100%{box-shadow:0 4px 18px rgba(30,60,120,.38)}50%{box-shadow:0 4px 22px rgba(46,160,255,.65)}}
+.ai-tips-backdrop{position:fixed;inset:0;background:rgba(15,35,55,.4);z-index:1220;display:none}
+.ai-tips-backdrop.is-open{display:block}
+.ai-tips-panel{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:1230;width:min(460px,94vw);max-height:min(82vh,560px);overflow:auto;background:#fff;border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.2);display:none;flex-direction:column}
+.ai-tips-panel.is-open{display:flex !important}
+.ai-tips-head{display:flex;align-items:flex-start;gap:10px;padding:14px 16px;border-bottom:1px solid #e8edf4}
+.ai-tips-head .ai-tips-ico{flex-shrink:0;width:48px;height:48px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,#8ecafe,#c2b1ff);box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.ai-tips-head .ai-tips-ico img{width:100%;height:100%;object-fit:cover}
+.ai-tips-title{font-size:15px;font-weight:700;color:#1e3a5f}
+.ai-tips-sub{font-size:11px;color:#78909c;margin-top:2px}
+.ai-tips-close{margin-left:auto;border:none;background:transparent;font-size:20px;line-height:1;cursor:pointer;color:#90a4ae;padding:0 4px}
+.ai-tips-close:hover{color:#455a64}
+.ai-tips-body{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.ai-tip-card{font-size:12px;line-height:1.5;padding:12px 14px;border-radius:8px;border:1px solid #e0e0e0;display:flex;flex-direction:column;align-items:stretch;gap:0}
+.ai-tip-card-headrow{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+.ai-tip-card-text{flex:1;min-width:0}
+.ai-tip-section{padding-top:10px;margin-top:8px;border-top:1px dashed #e8ecf0}
+.ai-tip-card-headrow + .ai-tip-section{padding-top:0;margin-top:0;border-top:none}
+.ai-tip-sec-lbl{font-size:10px;color:#90a4ae;font-weight:600;margin:0 0 6px;letter-spacing:.02em}
+.ai-tip-pills{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 6px}
+.ai-tip-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;background:#eceff1;color:#455a64}
+.ai-tip-card--highcost .ai-tip-pill{background:#ffcdd2;color:#b71c1c}
+.ai-tip-card--warn .ai-tip-pill{background:#fff8e1;color:#e65100}
+.ai-tip-card--info .ai-tip-pill{background:#e3f2fd;color:#1565c0}
+.ai-tip-do{margin:0 0 8px;font-size:12px;color:#37474f;line-height:1.55}
+.ai-tip-benefit{margin:0;font-size:11px;color:#546e7a;line-height:1.55}
+.ai-tip-perf-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:12px;color:#37474f}
+.ai-tip-perf-val{font-weight:700;color:#2e7d32;font-size:13px}
+.ai-tip-card-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:12px;padding-top:10px;border-top:1px solid #eceff1;width:100%;box-sizing:border-box}
+.ai-tip-card .ai-tips-btn{height:28px;padding:0 10px;font-size:11px;white-space:nowrap}
+.ai-tip-card--info{background:#f5fbff;border-left:4px solid #1976d2}
+.ai-tip-card--warn{background:#fffdf5;border-left:4px solid #f9a825}
+.ai-tip-card--highcost{border:1px solid #ef9a9a;border-left:4px solid #c62828;background:#fff5f5}
+.ai-tip-cost-title{color:#b71c1c;font-weight:700;font-size:13px;margin:0}
+.ai-tip-headline{font-size:13px;font-weight:700;margin:0;color:#1e3a5f}
+.ai-tip-headline--warn{color:#e65100}
+.ai-tip-headline--info{color:#1565c0}
+.ai-tip-drug-compare{margin:0;padding:0}
+.ai-tip-drug-line{margin:6px 0 0;font-size:11px;line-height:1.55;color:#37474f}
+.ai-tip-drug-line:first-of-type{margin-top:4px}
+.ai-tip-lbl{color:#c62828;font-weight:600;display:inline-block;min-width:5em;vertical-align:top}
+.ai-tip-drug-list{color:#1e3a5f}
+.rx-ai-toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:1020;max-width:min(420px,92vw);background:#1b5e20;color:#fff;padding:10px 18px;border-radius:10px;font-size:12px;line-height:1.45;box-shadow:0 6px 20px rgba(0,0,0,.22);display:none;text-align:center}
+.rx-ai-toast.is-visible{display:block}
+.ai-tip-card .tip-ico{flex-shrink:0;font-size:14px}
+.ai-tips-btn{height:32px;padding:0 14px;border-radius:6px;border:1px solid #cfd8dc;background:#fff;font-size:12px;cursor:pointer;color:#37474f}
+.ai-tips-btn.primary{background:#1976d2;color:#fff;border-color:#1976d2}
+.rx-med-assist-bar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:1215;display:none;align-items:center;gap:12px;padding:10px 16px;background:#fff;border:1px solid #90caf9;border-radius:999px;box-shadow:0 8px 28px rgba(25,118,210,.25);font-size:12px;color:#37474f;max-width:96vw}
+.rx-med-assist-bar.is-visible{display:flex}
+.rx-med-assist-btn{height:30px;padding:0 14px;border:none;border-radius:999px;background:linear-gradient(135deg,#1976d2,#1565c0);color:#fff;font-size:12px;font-weight:600;cursor:pointer}
+.rx-med-assist-x{width:28px;height:28px;border:none;background:#f5f5f5;border-radius:50%;cursor:pointer;font-size:16px;line-height:1;color:#78909c}
+.med-assist-modal{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:1240;display:none;align-items:center;justify-content:center;padding:16px}
+.med-assist-modal.is-open{display:flex}
+.med-assist-inner{background:#fff;border-radius:12px;width:min(400px,100%);padding:16px;box-shadow:0 12px 40px rgba(0,0,0,.2)}
+.med-assist-inner h4{margin:0 0 8px;font-size:15px;color:#1e3a5f}
+.med-assist-inner p{font-size:12px;color:#455a64;line-height:1.55;margin:0 0 10px}
+.med-assist-inner ul{margin:0;padding-left:18px;font-size:12px;color:#37474f;line-height:1.5}
+.header{padding:10px 14px 12px;border-bottom:1px solid #e8edf2;background:linear-gradient(180deg,#fafbfc 0%,#fff 100%)}
+.header-meta{display:flex;align-items:center;justify-content:flex-start;gap:10px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #edf1f6}
 .header-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
-.doctor-info{font-size:12px;color:#5f6d82;text-align:right;white-space:nowrap}
-.patient-info{background:#f8f9fa;padding:12px 16px;border-radius:8px;font-size:14px;margin-top:8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-top--slim{justify-content:space-between}
+.doctor-info{font-size:11px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.patient-info{background:#f4f7fa;padding:8px 10px;border-radius:6px;font-size:12px;margin-top:0;border:1px solid #e8edf2;display:flex;align-items:center;justify-content:space-between;gap:10px}
 #header-patient-info.is-hidden{display:none !important}
+.patient-info-main{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;min-width:0;flex:1}
 .patient-summary{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.patient-more{color:#007bff;font-size:13px;cursor:pointer;flex-shrink:0}
+.patient-hl{font-size:11px;color:#475569;white-space:nowrap;flex-shrink:0}
+.hl-level{display:inline-block;padding:1px 8px;border-radius:10px;font-size:11px;font-weight:700;line-height:1.25;vertical-align:middle}
+.hl-level--urgent{background:#ffebee;color:#b71c1c;border:1px solid #ef9a9a}
+.hl-level--focus{background:#fff3e0;color:#e65100;border:1px solid #ffb74d}
+.hl-level--low{background:#e8f5e9;color:#1b5e20;border:1px solid #81c784}
+.my-patients-table .hl-level{font-size:10px;padding:2px 8px}
+.patient-more{color:#2563eb;font-size:11px;cursor:pointer;flex-shrink:0;font-weight:500;white-space:nowrap}
 .patient-more:hover{text-decoration:underline}
 .tabs{display:flex;background:#f9f9f9;border-bottom:1px solid #eee}
 .tab{padding:14px 20px;cursor:pointer;font-size:14px;display:flex;align-items:center;gap:8px}
 .tab.active{color:#007bff;font-weight:500;border-bottom:2px solid #007bff;background:#fff}
 .qa-label{display:inline-flex;align-items:center;gap:4px}
-.mode-bar{display:flex;gap:10px;padding:10px 16px;border-bottom:1px solid #eee}
-.mode-btn{padding:6px 14px;border-radius:20px;border:1px solid #ccc;background:#fff;cursor:pointer}
-.mode-btn.active{background:#007bff;color:white;border-color:#007bff}
+.mode-bar{display:flex;gap:8px;padding:8px 12px;border-bottom:1px solid #e8edf2;background:#fafbfc;align-items:center}
+.mode-btn{padding:6px 12px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;color:#334155;font-size:12px;font-weight:500;cursor:pointer;line-height:1.25;transition:background .15s,border-color .15s,box-shadow .15s}
+.mode-btn:hover{background:#f8fafc;border-color:#94a3b8}
+.mode-btn.active{background:#2563eb;color:#fff;border-color:#2563eb;box-shadow:0 1px 2px rgba(37,99,235,.22)}
 .content{height:500px;overflow:hidden}
 .tab-content{display:none;height:100%}
 .tab-content.active{display:block}
 .screenshot{width:100%;height:100%;object-fit:contain}
-.workbench-page{padding:10px;background:#f4f6fa;display:flex;flex-direction:column;gap:8px;max-height:560px;overflow:auto}
+.workbench-page{padding:10px;background:#f4f6fa;display:flex;flex-direction:column;gap:8px;min-height:var(--cmc-main-h);max-height:var(--cmc-main-h);overflow-y:auto}
 .wb-card{background:#fff;border:1px solid #e8edf4;border-radius:4px}
 .wb-title{padding:8px 10px;font-size:12px;font-weight:700;color:#20304a;border-bottom:1px solid #edf1f6}
 .wb-title::before{content:"▍";color:#4a86ff;margin-right:4px}
@@ -59,7 +254,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .wb-table th{background:#edf2fa;color:#32445f;font-weight:700;padding:6px;border:1px solid #e7edf6;text-align:left}
 .wb-table td{padding:7px 6px;border:1px solid #eef2f7;color:#3d4b60}
 .wb-empty{text-align:center;color:#97a1af}
-.record-page{padding:10px;background:#f4f6fa;max-height:560px;overflow:auto}
+.record-page{padding:10px;background:#f4f6fa;min-height:var(--cmc-main-h);max-height:var(--cmc-main-h);overflow-y:auto}
 .record-layout{display:grid;grid-template-columns:1fr 130px;gap:10px;align-items:start}
 .record-main{display:flex;flex-direction:column;gap:10px}
 .record-card{background:#fff;border:1px solid #e8edf4;border-radius:4px}
@@ -85,7 +280,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .record-index-title{font-size:13px;font-weight:700;color:#2f3d56;margin-bottom:6px}
 .record-index a{display:block;font-size:11px;color:#43526b;text-decoration:none;padding:4px 0}
 .record-index a:hover{color:#2f6ee5}
-.guide-page{padding:10px;background:#f4f6fa;max-height:560px;overflow:auto}
+.guide-page{padding:10px;background:#f4f6fa;min-height:var(--cmc-main-h);max-height:var(--cmc-main-h);overflow-y:auto}
 .guide-card{background:#fff;border:1px solid #e8edf4;border-radius:4px;padding:8px}
 .guide-tabs{display:flex;gap:18px;font-size:11px;color:#5a667b;padding:2px 2px 10px}
 .guide-tab{cursor:pointer}
@@ -107,15 +302,15 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .guide-page-btn.active{background:#2f6ee5;color:#fff;border-color:#2f6ee5}
 .skill-plan-list{margin:8px 0 0 18px;padding:0;color:#40516d;font-size:12px;line-height:1.6}
 .skill-plan-list li{margin:2px 0}
-.ref-page{padding:10px;background:#f4f6fa;max-height:560px;overflow:auto}
-.ref-card{background:#fff;border:1px solid #e8edf4;border-radius:4px}
-.ref-subtabs{display:flex;gap:0;border-bottom:1px solid #e9eef6}
+.ref-page{padding:10px;background:#f4f6fa;min-height:var(--cmc-main-h);max-height:var(--cmc-main-h);overflow:hidden;display:flex;flex-direction:column;box-sizing:border-box}
+.ref-card{background:#fff;border:1px solid #e8edf4;border-radius:4px;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.ref-subtabs{display:flex;gap:0;border-bottom:1px solid #e9eef6;flex-shrink:0}
 .ref-subtab{padding:8px 14px;font-size:11px;color:#4f5d74;cursor:pointer;background:#f7f9fd;border-right:1px solid #e9eef6}
 .ref-subtab.active{background:#fff;color:#12a06f;font-weight:700}
 .ref-pane{display:none}
-.ref-pane.active{display:block}
-.ref-book-top{display:flex;justify-content:flex-end;padding:8px 10px;font-size:11px;color:#6b778c}
-.ref-book-wrap{padding:8px 10px 16px}
+.ref-pane.active{display:flex;flex-direction:column;flex:1;min-height:0;overflow:hidden}
+.ref-book-top{display:flex;justify-content:flex-end;padding:8px 10px;font-size:11px;color:#6b778c;flex-shrink:0}
+.ref-book-wrap{flex:1;min-height:0;overflow:auto;padding:8px 10px 16px}
 .ref-label{font-size:11px;color:#44526b;font-weight:700;margin-bottom:8px}
 .ref-radio-row{display:flex;gap:16px;align-items:center;margin-bottom:46px}
 .ref-radio-row label{font-size:12px;color:#7b8798}
@@ -129,7 +324,9 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .ref-actions{grid-column:span 6;display:flex;justify-content:flex-end;gap:8px}
 .ref-btn{height:28px;border-radius:3px;border:1px solid #d6deea;background:#fff;color:#3a4b66;font-size:11px;padding:0 12px;cursor:pointer}
 .ref-btn.primary{background:#10a37f;color:#fff;border-color:#10a37f}
-.ref-table-wrap{padding:0 10px 10px}
+.ref-table-wrap{padding:0 10px 10px;flex:1;min-height:0;overflow:auto}
+#ref-pane-log > .record-title,
+#ref-pane-log .ref-filter{flex-shrink:0}
 .ref-table{width:100%;border-collapse:collapse;font-size:11px}
 .ref-table th{background:#edf2fa;color:#32445f;font-weight:700;padding:6px;border:1px solid #e7edf6;text-align:left;white-space:nowrap;font-size:10px}
 .ref-table td{padding:7px 6px;border:1px solid #eef2f7;color:#3d4b60;font-size:10px}
@@ -140,12 +337,12 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .chat-input{flex:1;min-width:0;height:40px;border:1px solid #dbe2ee;border-radius:10px;padding:0 14px;font-size:14px;color:#1f2937;background:#fff}
 .chat-input::placeholder{color:#9aa5b5}
 .chat-input:focus{outline:none;border-color:#2f6ee5;box-shadow:0 0 0 3px rgba(47,110,229,.12)}
-.chat-send-btn{height:40px;padding:0 18px;border-radius:10px;border:none;background:#2f6ee5;color:#fff;font-size:14px;font-weight:600;cursor:pointer;flex-shrink:0}
-.chat-send-btn:hover{background:#2563c9}
+.chat-send-btn{height:36px;padding:0 14px;border-radius:6px;border:none;background:#2563eb;color:#fff;font-size:12px;font-weight:600;cursor:pointer;flex-shrink:0;box-shadow:0 1px 2px rgba(37,99,235,.2)}
+.chat-send-btn:hover{background:#1d4ed8}
 .doctor-hint{font-size:11px;color:#6b778c;line-height:1.5;margin:0 0 10px;padding:8px 10px;background:#f4f7fb;border-radius:8px;border:1px solid #e8edf4}
 .doctor-subscribe-wrap{margin-top:12px;padding-top:12px;border-top:1px dashed #d0d8e4}
 .doctor-subscribe-wrap .doctor-subscribe-label{font-size:11px;color:#8b95a8;margin:0 0 6px}
-.btn.btn-subscribe{background:#f8fafc;color:#64748b;border:1px dashed #cbd5e1;font-weight:500;font-size:12px}
+.btn.btn-subscribe{background:#f8fafc;color:#64748b;border:1px dashed #cbd5e1;font-weight:500;font-size:12px;border-radius:6px}
 .btn.btn-subscribe:hover{background:#f1f5f9;color:#475569}
 .msg{max-width:80%;padding:10px 14px;border-radius:14px;line-height:1.5}
 .user{background:#007bff;color:white;align-self:flex-end}
@@ -154,8 +351,10 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .assistant-card{padding:14px 16px;border-radius:12px}
 .assistant-card > div:first-child{font-size:17px;line-height:1.4;font-weight:600;color:#2f3c56;margin-bottom:10px}
 .assistant-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:2px}
-.assistant-action-btn{border:1px solid #cbd8f5;background:#fff;color:#2f5db3;border-radius:16px;height:34px;padding:0 14px;font-size:12px;font-weight:600;cursor:pointer}
-.assistant-action-btn.primary{background:#2f6ee5;border-color:#2f6ee5;color:#fff}
+.assistant-action-btn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:6px;min-height:32px;height:auto;padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;line-height:1.3}
+.assistant-action-btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.assistant-action-btn.primary:hover{background:#1d4ed8}
+.assistant-action-btn:not(.primary):hover{background:#f8fafc;border-color:#94a3b8}
 .claw-summary{background:#f7f9ff;border:1px solid #dbe4ff;padding:12px;border-radius:12px}
 .claw-card-title{font-size:16px;font-weight:700;color:#29447a;margin-bottom:8px;line-height:1.35}
 .claw-card-body{white-space:normal;color:#2f3c56;font-size:13px;line-height:1.45}
@@ -189,10 +388,11 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .check-row-warn .check-link{color:#d94b4b}
 .check-refer{margin-top:10px;font-size:12px;color:#44526b;line-height:1.5}
 .quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-.quick-btn{border:1px solid #d7e0f2;background:#fff;color:#2f6ee5;border-radius:18px;height:34px;padding:0 14px;font-size:12px;cursor:pointer}
+.quick-btn{border:1px solid #cbd5e1;background:#fff;color:#2563eb;border-radius:6px;min-height:32px;height:auto;padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;line-height:1.3}
+.quick-btn:hover{background:#eff6ff;border-color:#93c5fd}
 .quick-action-card{background:#e9f0ff;border:1px solid #dbe4ff;white-space:normal;padding:10px 12px;border-radius:12px}
 .quick-action-card .quick-actions{margin-top:0}
-.panel{width:260px;flex:0 0 260px;min-width:260px;border-left:1px solid #eee;padding:12px;background:#fafbfc;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.panel{width:200px;flex:0 0 200px;min-width:200px;border-left:1px solid #e8edf2;padding:8px 10px;background:#f8fafc;display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .panel-body-scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding-right:4px;margin-right:-4px}
 .panel-log-wrap{flex-shrink:0;border-top:1px solid #e5e7eb;margin-top:8px;padding-top:10px;display:flex;flex-direction:column;gap:6px;min-height:0;max-height:42%}
 .panel-log-wrap .log{max-height:140px;overflow-y:auto;word-break:break-word}
@@ -213,8 +413,8 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .skill-push-meta{font-size:11px;color:#6b7b95;margin-bottom:6px}
 .skill-push-list{margin:0;padding-left:16px;color:#334155;font-size:12px;line-height:1.45}
 .skill-push-list li{margin:2px 0}
-.btn.btn-push{background:#eef4ff;color:#245fcf;border:1px solid #bdd0ff}
-.btn.btn-push:hover{background:#e4eeff}
+.btn.btn-push{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;font-size:12px;font-weight:500;border-radius:6px}
+.btn.btn-push:hover{background:#dbeafe;border-color:#93c5fd}
 .skill-inline-fill-card{background:#f8fafc;border:1px solid #dbe4f0;border-radius:10px;padding:8px 9px;margin-top:4px;max-width:100%;white-space:normal;line-height:1.35}
 .skill-inline-fill-title{font-size:12px;font-weight:700;color:#1e3a5f;margin-bottom:6px}
 .skill-inline-fill-hint{font-size:10px;color:#64748b;margin-bottom:7px;line-height:1.35}
@@ -224,15 +424,18 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .skill-inline-fill-submit{margin-top:7px;width:100%;height:32px;padding:0 10px;border:none;border-radius:7px;background:#2f6ee5;color:#fff;font-size:12px;font-weight:600;cursor:pointer}
 .skill-inline-fill-submit:hover{background:#2563c9}
 #tab-lobster .content{display:flex;align-items:stretch;min-height:0;height:500px}
+#tab-lobster-skill .content{display:flex;align-items:stretch;min-height:0;height:500px}
 #tab-lobster .chat-area{min-height:0}
-.btns{display:flex;flex-direction:column;gap:8px}
-.btn{padding:9px 12px;background:#007bff;color:white;border:none;border-radius:6px;cursor:pointer;font-size:14px;text-align:left}
-.btn:disabled{background:#ccc;cursor:not-allowed}
+.btns{display:flex;flex-direction:column;gap:6px}
+.btn{padding:7px 10px;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px;font-weight:500;text-align:left;line-height:1.35;transition:background .15s,box-shadow .15s}
+.btn:hover{background:#1d4ed8;box-shadow:0 1px 2px rgba(37,99,235,.2)}
+.btn:active{background:#1e40af}
+.btn:disabled{background:#cbd5e1;cursor:not-allowed;box-shadow:none}
 .group{font-size:12px;color:#666;margin:8px 0 4px 2px}
 .panel-section-general{margin-top:14px;padding-top:14px;border-top:1px dashed #cfd8e3}
 .panel-section-general .group-general{font-size:11px;color:#64748b;font-weight:600;margin-top:0;letter-spacing:0.02em}
 .panel-general-hint{font-size:10px;color:#94a3b8;line-height:1.4;margin:0 0 10px;padding:0 2px}
-.btn.btn-general{background:#fff;color:#334155;border:1px solid #cbd5e1;font-size:13px;font-weight:500;box-shadow:0 1px 0 rgba(15,23,42,.04)}
+.btn.btn-general{background:#fff;color:#334155;border:1px solid #cbd5e1;font-size:12px;font-weight:500;box-shadow:0 1px 0 rgba(15,23,42,.04)}
 .btn.btn-general:hover{background:#f8fafc;border-color:#94a3b8;color:#1e293b}
 .btn.btn-general:active{background:#f1f5f9}
 .log-title{font-size:13px;font-weight:500;margin-bottom:6px}
@@ -240,7 +443,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .log-item{margin-bottom:4px}
 .typing::after{content:"...";animation:typing 1s infinite}
 @keyframes typing{0%{content:"."}50%{content:"..."}100%{content:"."}}
-.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);display:none;justify-content:center;align-items:center}
+.modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.3);display:none;justify-content:center;align-items:center;z-index:1200}
 .modal-content{background:#fff;border-radius:8px;width:360px;padding:14px}
 .modal-title{font-weight:bold;font-size:14px;margin-bottom:8px}
 .modal-btns{display:flex;gap:8px;margin-top:10px}
@@ -288,8 +491,8 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .support-block li{margin:2px 0}
 .support-more{font-size:11px;color:#2f6ee5;margin-top:6px;cursor:pointer}
 .ai-deep-foot{font-size:10px;color:#8b95a8;margin-top:10px;padding-top:8px;border-top:1px dashed #d9e3f5}
-.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);display:none;z-index:99}
-.detail-drawer{position:fixed;top:0;right:-340px;width:340px;max-width:92vw;height:100%;background:#fff;box-shadow:-2px 0 12px rgba(0,0,0,0.15);z-index:100;transition:right .25s ease;display:flex;flex-direction:column}
+.detail-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.3);display:none;z-index:1210}
+.detail-drawer{position:fixed;top:0;right:-340px;width:340px;max-width:92vw;height:100%;background:#fff;box-shadow:-2px 0 12px rgba(0,0,0,0.15);z-index:1211;transition:right .25s ease;display:flex;flex-direction:column}
 .detail-drawer.open{right:0}
 .detail-header{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #eee}
 .detail-title{font-size:15px;font-weight:600}
@@ -297,7 +500,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .detail-body{padding:10px;overflow:auto;flex:1;background:#f3f5f8}
 .patient-card{position:relative;padding:0;color:#2f3542}
 .patient-head{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;background:#fff;border:1px solid #e5e9f1;border-radius:10px;padding:10px}
-.patient-head-main{flex:1;min-width:0}
+.patient-head-main{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;gap:2px}
 .patient-head-tags{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:46%}
 .patient-head-extra{width:100%;text-align:right;font-size:11px;color:#6b7280;margin-top:2px}
 .patient-status-badge{position:absolute;top:0;left:0;display:inline-flex;align-items:center;height:22px;padding:0 10px;border-radius:10px 0 10px 0;background:#eaf3ff;color:#2f6ee5;border:1px solid #bfd6ff;border-top:none;border-left:none;font-size:11px;font-weight:700}
@@ -306,6 +509,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
 .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#cfe2ff,#d9dde6)}
 .patient-name{font-size:18px;font-weight:700;line-height:1.1}
 .patient-age{font-size:13px;font-weight:600;color:#5b6577}
+.patient-hl-row{margin-top:8px;font-size:12px;color:#4b5563;line-height:1.4}
 .patient-sub{font-size:12px;color:#6b7280;margin-top:3px}
 .portrait-card{background:#fff;border:1px solid #e5e9f1;border-radius:10px;padding:10px;margin-bottom:8px}
 .portrait-title{font-size:13px;font-weight:700;color:#1f2f4a;margin-bottom:8px;display:flex;align-items:center;gap:6px}
@@ -333,34 +537,109 @@ body{background:#f5f7fa;padding:20px;margin:0}
 </style>
 </head>
 <body>
+<div id="cmcToastHost" class="cmc-toast-host" aria-live="polite"><span id="cmcToast" class="cmc-toast" role="status"></span></div>
 
-<div class="container">
+<div id="his-stage" class="his-stage">
+  <div class="his-menubar">
+    <span class="his-mi">门诊医生</span><span class="his-mi">住院医生</span><span class="his-mi">医嘱管理</span><span class="his-mi">医保支付</span><span class="his-mi">系统</span>
+  </div>
+  <div class="his-banner">
+    <div class="his-banner-row"><strong>李学坤</strong> 男 67岁 ｜ 就诊编号：0003237907 ｜ <span class="his-dept">内分泌调理科</span> ｜ 健康干预等级：<span class="hl-level hl-level--focus">重点</span></div>
+    <div class="his-diag">诊断：2型糖尿病伴血糖控制不佳</div>
+  </div>
+  <div class="his-toolbar">
+    <button type="button" class="his-tb">定位患者</button>
+    <button type="button" class="his-tb">电子凭证</button>
+    <button type="button" class="his-tb his-entry" onclick="openCmcModal()">健共体</button>
+    <button type="button" class="his-tb">住院预约</button>
+    <button type="button" class="his-tb">复诊预约</button>
+    <span class="his-tb-muted">门诊医生站 · 检验结果（演示）</span>
+  </div>
+  <div class="his-main">
+    <aside class="his-nav">
+      <div class="his-nav-h">病历导航</div>
+      <div class="his-nav-i">病历</div>
+      <div class="his-nav-i">门诊记录</div>
+      <div class="his-nav-i active">检验结果</div>
+      <div class="his-nav-i">影像结果</div>
+    </aside>
+    <div class="his-content">
+      <div class="his-pane-h">检验列表</div>
+      <table class="his-table">
+        <thead><tr><th>状态</th><th>项目名称</th><th>检验时间</th><th>报告时间</th></tr></thead>
+        <tbody>
+          <tr><td>已报告</td><td>尿液分析+微量白蛋白</td><td>2023-12-19 09:00</td><td>2023-12-19 14:20</td></tr>
+        </tbody>
+      </table>
+      <div class="his-pane-h" style="margin-top:10px">检验明细</div>
+      <table class="his-table his-small">
+        <thead><tr><th>项目</th><th>结果</th><th>单位</th><th>参考</th></tr></thead>
+        <tbody>
+          <tr><td>白细胞</td><td>阴性</td><td>—</td><td>阴性</td></tr>
+          <tr><td>葡萄糖</td><td class="his-abn">+</td><td>—</td><td>阴性</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="his-foot">王晓飞 · 内科 · 本机 192.168.0.1 · 2023-12-19 09:00</div>
+</div>
+
+<div class="ai-fab-stack" id="aiFabHisStack">
+  <span class="ai-fab-tip-count" data-ai-tip-count>0</span>
+  <button type="button" class="ai-doc-fab ai-doc-fab--pulse" id="aiFabHis" onclick="openAiTipsPanel('his')" title="AI 医生助手（院内）" aria-label="AI 医生助手">
+    <img src="assets/ai-robot-avatar.png" alt="" class="ai-doc-fab-img" width="44" height="44" />
+  </button>
+</div>
+
+<div id="cmc-overlay" class="cmc-overlay" aria-hidden="true" onclick="if(event.target===this)closeCmcModal()">
+  <div class="cmc-modal" role="dialog" aria-labelledby="cmc-modal-title" onclick="event.stopPropagation()">
+    <div class="cmc-modal-titlebar">
+      <span id="cmc-modal-title">健共体 | 天津数字健共体</span>
+      <div class="cmc-titlebar-right">
+        <button type="button" id="cmcLinkDoctorEval" class="cmc-titlebar-tool" onclick="switchTab('doctor-eval', null)" title="医生个人质控与处方评价（与下方接诊患者 Tab 解耦）">质控评价</button>
+        <div class="cmc-titlebar-actions">
+          <button type="button" class="cmc-winbtn cmc-winbtn--icon" onclick="cmcWinSettings()" title="设置">⚙</button>
+          <button type="button" class="cmc-winbtn cmc-winbtn--icon" onclick="cmcWinMinimize()" title="最小化">−</button>
+          <button type="button" class="cmc-winbtn cmc-winbtn--icon" id="cmcWinMaxBtn" onclick="cmcWinMaximize()" title="最大化">□</button>
+          <button type="button" class="cmc-winbtn" onclick="closeCmcModal()" title="关闭">×</button>
+        </div>
+      </div>
+    </div>
+<div class="container cmc-inner">
   <div class="header">
-    <div class="header-top">
-      <h3 style="margin:0">慢病管理工作台</h3>
+    <div class="header-meta">
       <div class="doctor-info">肖红&nbsp;&nbsp;D120105041331&nbsp;&nbsp;天津市东丽医院</div>
     </div>
     <div class="patient-info" id="header-patient-info">
-      <span class="patient-summary">当前接诊患者：张三 男 56岁｜高血压2级、2型糖尿病</span>
-      <span class="patient-more" onclick="openPatientDetail()">查看更多</span>
+      <div class="patient-info-main">
+        <span class="patient-summary">当前接诊患者：李学坤 男 67岁｜就诊编号 0003237907｜内分泌调理科｜2型糖尿病伴血糖控制不佳</span>
+        <span class="patient-hl">健康干预等级：<span class="hl-level hl-level--focus">重点</span></span>
+      </div>
+      <span class="patient-more" onclick="openPatientDetail()" title="查看患者详情">查看更多</span>
     </div>
   </div>
 
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('workbench')">工作台</div>
-    <div class="tab" onclick="switchTab('record')">健康档案</div>
-    <div class="tab" onclick="switchTab('guide')">慢病管理</div>
-    <div class="tab" onclick="switchTab('referral')">双向转诊</div>
-    <div class="tab" onclick="switchTab('lobster')">
+    <div class="tab active" data-tab="workbench" onclick="switchTab('workbench',this)">CMC工作站</div>
+    <div class="tab" data-tab="prescription" onclick="switchTab('prescription',this)">处方开具</div>
+    <div class="tab" data-tab="referral" onclick="switchTab('referral',this)">双向转诊</div>
+    <div class="tab" data-tab="lobster" onclick="switchTab('lobster',this)">
       <span class="qa-label">智能问答</span>
     </div>
-    <div class="tab" onclick="switchTab('lobster-skill')">
+    <div class="tab" data-tab="lobster-skill" onclick="switchTab('lobster-skill',this)">
       <span class="qa-label">🧠 智能问答skill版</span>
     </div>
   </div>
 
-  <!-- 工作台 Tab -->
+  <!-- CMC工作站 Tab（工作台 / 健康档案 / 慢病管理） -->
   <div id="tab-workbench" class="tab-content active">
+    <div class="cmc-subtabs">
+      <button type="button" class="cmc-subtab active" data-cmc-sub="home" onclick="switchCmcSubView('home',this)">工作台</button>
+      <button type="button" class="cmc-subtab" data-cmc-sub="record" onclick="switchCmcSubView('record',this)">健康档案</button>
+      <button type="button" class="cmc-subtab" data-cmc-sub="guide" onclick="switchCmcSubView('guide',this)">慢病管理</button>
+      <button type="button" class="cmc-subtab" data-cmc-sub="mypatients" onclick="switchCmcSubView('mypatients',this)">我的患者</button>
+    </div>
+    <div id="cmc-sub-home" class="cmc-subpanel active">
     <div class="workbench-page">
       <div class="wb-card">
         <div class="wb-title">患者概览</div>
@@ -454,10 +733,9 @@ body{background:#f5f7fa;padding:20px;margin:0}
         </div>
       </div>
     </div>
-  </div>
+    </div>
 
-  <!-- 健康档案 Tab -->
-  <div id="tab-record" class="tab-content">
+    <div id="cmc-sub-record" class="cmc-subpanel">
     <div class="record-page">
       <div class="record-layout">
         <div class="record-main">
@@ -470,7 +748,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
                 </tr>
               </thead>
               <tbody>
-                <tr><td>糖脂异常</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td></tr>
+                <tr><td>2型糖尿病</td><td>伴血糖控制不佳</td><td>2023-06-10</td><td>口干、多饮、乏力</td><td>高血压</td><td>生活方式干预 药物治疗 定期随访</td></tr>
                 <tr><td>高血压</td><td>原发性高血压</td><td>2025-03-04</td><td>淋漓尿, 四肢发凉, 眩晕, 下肢水肿, 头晕, 胸闷</td><td>--</td><td>生活方式改变 药物治疗, 手术治疗, 康复治疗, 替代治疗</td></tr>
                 <tr><td>肥胖</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td><td class="record-muted">--</td></tr>
               </tbody>
@@ -608,10 +886,9 @@ body{background:#f5f7fa;padding:20px;margin:0}
         </aside>
       </div>
     </div>
-  </div>
+    </div>
 
-  <!-- 健康指导 Tab -->
-  <div id="tab-guide" class="tab-content">
+    <div id="cmc-sub-guide" class="cmc-subpanel">
     <div class="guide-page">
       <div class="guide-card">
         <div class="guide-tabs">
@@ -622,7 +899,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
 
         <div class="guide-filter">
           <span class="g-label">姓名</span>
-          <input class="g-input" value="刘平">
+          <input class="g-input" value="李学坤">
           <span class="g-label">状态</span>
           <select class="g-select"><option>全部</option></select>
           <span class="g-label">创建日期</span>
@@ -640,7 +917,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
             </tr>
           </thead>
           <tbody>
-            <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>张振</td><td>2026-03-17 00:00:00</td><td>2026-03-17 13:37:59</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
+            <tr><td>慢病健康管理</td><td>糖尿病,高血压</td><td>张振</td><td>2026-03-17 00:00:00</td><td>2026-03-17 13:37:59</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
             <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>孟丽</td><td>2025-12-05 00:00:00</td><td>2025-12-05 18:38:48</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
             <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>孟丽</td><td>2025-12-05 00:00:00</td><td>2025-12-05 16:38:41</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
             <tr><td>慢病健康管理</td><td>肥胖,高血压</td><td>张振</td><td>--</td><td>2025-12-01 16:44:01</td><td>已发送</td><td><a class="guide-link" href="javascript:void(0)">查看详情</a></td></tr>
@@ -657,6 +934,120 @@ body{background:#f5f7fa;padding:20px;margin:0}
           <a class="guide-page-btn" href="javascript:void(0)">2</a>
           <a class="guide-page-btn" href="javascript:void(0)">3</a>
         </div>
+      </div>
+    </div>
+    </div>
+
+    <div id="cmc-sub-mypatients" class="cmc-subpanel">
+      <div class="my-patients-page">
+        <div class="my-patients-card">
+          <div class="my-patients-hd">我的患者</div>
+          <div class="my-patients-filter">
+            <span class="g-label">姓名</span>
+            <input class="g-input" placeholder="患者姓名">
+            <span class="g-label">病种</span>
+            <select class="g-select"><option>全部</option><option>高血压</option><option>糖尿病</option></select>
+            <span class="g-label">签约状态</span>
+            <select class="g-select"><option>全部</option><option>已签约</option><option>未签约</option></select>
+            <button type="button" class="g-btn primary">查询</button>
+            <button type="button" class="g-btn">重置</button>
+          </div>
+          <div class="my-patients-scroll">
+          <table class="my-patients-table">
+            <thead>
+              <tr>
+                <th>姓名</th><th>性别/年龄</th><th>病种标签</th><th>健康干预等级</th><th>签约机构</th><th>最近随访</th><th>操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>李学坤</td><td>男 / 67岁</td><td>2型糖尿病、血糖控制不佳</td><td><span class="hl-level hl-level--focus">重点</span></td><td>天津市东丽医院（本院）</td><td>2026-03-12</td><td class="my-patients-ops"><button type="button" class="mp-op">邀请复诊</button><button type="button" class="mp-op">设置目标</button><button type="button" class="mp-op">开具指导</button></td></tr>
+              <tr><td>周跃</td><td>女 / 62岁</td><td>糖尿病</td><td><span class="hl-level hl-level--urgent">紧急</span></td><td>东丽区华明社区</td><td>2026-02-28</td><td class="my-patients-ops"><button type="button" class="mp-op">邀请复诊</button><button type="button" class="mp-op">设置目标</button><button type="button" class="mp-op">开具指导</button></td></tr>
+              <tr><td>王学兰</td><td>女 / 58岁</td><td>高血压</td><td><span class="hl-level hl-level--low">较低</span></td><td>东丽区金桥社区</td><td>2026-01-15</td><td class="my-patients-ops"><button type="button" class="mp-op">邀请复诊</button><button type="button" class="mp-op">设置目标</button><button type="button" class="mp-op">开具指导</button></td></tr>
+            </tbody>
+          </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 处方开具 Tab -->
+  <div id="tab-prescription" class="tab-content">
+    <div class="rx-page">
+      <div class="rx-topbar">
+        <div class="rx-brand">中央云药房</div>
+        <span class="rx-visit-type">普通门诊</span>
+      </div>
+      <div class="rx-toolbar">
+        <button type="button" class="rx-tb">历史医嘱</button>
+        <button type="button" class="rx-tb primary">保存</button>
+        <button type="button" class="rx-tb">开具检验检查项目</button>
+        <button type="button" class="rx-tb">开具草药</button>
+        <button type="button" class="rx-tb">处方上传</button>
+        <button type="button" class="rx-tb">合理用药</button>
+        <span class="rx-pres-note">处方信息（*注意：处方有效期3天*）2025-12-25</span>
+      </div>
+      <div class="rx-grid">
+        <div class="rx-grid2">
+          <div><span class="rx-lab">患者姓名</span><input class="rx-inp" value="李学坤"></div>
+          <div><span class="rx-lab">年龄</span><input class="rx-inp" value="67"></div>
+          <div><span class="rx-lab">性别</span><input class="rx-inp" value="男"></div>
+          <div><span class="rx-lab">科室名称</span><input class="rx-inp" value="内分泌调理科"></div>
+          <div><span class="rx-lab">联系电话</span><input class="rx-inp" value=""></div>
+          <div><span class="rx-lab">取药点</span><input class="rx-inp" value="健共体西药房三条石街"></div>
+        </div>
+        <div class="rx-diag-row" style="margin-top:8px">
+          <div>
+            <div class="rx-lab">主诊断筛选</div>
+            <input class="rx-inp" placeholder="输入或选择诊断">
+            <div class="rx-tag">糖尿病 <span style="cursor:pointer">+</span></div>
+          </div>
+          <div>
+            <div class="rx-lab">次要诊断筛选</div>
+            <input class="rx-inp" placeholder="输入或选择诊断">
+          </div>
+        </div>
+      </div>
+      <p class="rx-plugin-note">说明：传统 HIS 处方页内嵌的「糖尿病管理 / 待检项」红框提示由<strong>健共体插件</strong>改为通过右下角 <strong>AI 医生助手</strong>推送（此处不重复嵌入）；接诊后请点机器人查看提示，或在下方明细中<strong>点选药品行</strong>唤起用药助手。</p>
+      <div class="rx-add-row">
+        <div><span class="rx-lab">药品名称</span><input id="rxLineName" class="rx-inp" placeholder="检索"></div>
+        <div><span class="rx-lab">规格</span><input id="rxLineSpec" class="rx-inp"></div>
+        <div><span class="rx-lab">数量</span><input id="rxLineQty" class="rx-inp" value="1"></div>
+        <div><span class="rx-lab">用药剂量</span><input id="rxLineDose" class="rx-inp" value="100mg"></div>
+        <div><span class="rx-lab">用药途径</span><input id="rxLineRoute" class="rx-inp" value="口服"></div>
+        <div><span class="rx-lab">用药频次</span><input id="rxLineFreq" class="rx-inp" value="tid"></div>
+        <div><span class="rx-lab">天数</span><input id="rxLineDays" class="rx-inp" value="1"></div>
+        <div><span class="rx-lab">单价</span><input id="rxLinePrice" class="rx-inp" value=""></div>
+        <div><span class="rx-lab">处方组</span><input id="rxLineGroup" class="rx-inp" value="处方一"></div>
+        <div><button type="button" class="rx-tb primary" style="height:32px">开具</button></div>
+      </div>
+      <div class="rx-detail-tabs">
+        <span class="rx-dtab active">西药/成药明细</span>
+        <span class="rx-dtab">检验项目</span>
+        <span class="rx-dtab">检查项目</span>
+        <span class="rx-dtab">草药明细</span>
+      </div>
+      <div class="rx-legend">
+        <span><span class="sw b"></span>基础药</span>
+        <span><span class="sw n"></span>非基础药</span>
+      </div>
+      <div class="rx-table-wrap">
+        <table class="rx-table">
+          <thead>
+            <tr>
+              <th>序号</th><th>处方号</th><th>国家码</th><th>药品名称</th><th>剂量</th><th>单位</th><th>频次</th><th>天数</th><th>数量</th><th>途径</th><th>单价</th><th>金额</th><th>规格</th><th>发药单位</th>
+            </tr>
+          </thead>
+          <tbody id="rxTableBody">
+            <tr class="rx-row-base rx-drug-row" data-drug="阿卡波糖片" onclick="selectRxDrugRow(event,this)"><td>1</td><td>R001</td><td>—</td><td>阿卡波糖片</td><td>100mg</td><td>mg</td><td>tid</td><td>1</td><td>21</td><td>口服</td><td>2.92</td><td>61.29</td><td>100mg×30</td><td>盒</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ai-fab-stack ai-fab-stack--rx" id="aiFabRxStack">
+        <span class="ai-fab-tip-count" data-ai-tip-count>0</span>
+        <button type="button" class="ai-doc-fab ai-doc-fab--rx" id="aiFabRx" onclick="openAiTipsPanel('rx')" title="AI 医生助手（处方）" aria-label="AI 医生助手">
+          <img src="assets/ai-robot-avatar.png" alt="" class="ai-doc-fab-img" width="44" height="44" />
+        </button>
       </div>
     </div>
   </div>
@@ -716,6 +1107,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
                 </tr>
               </thead>
               <tbody>
+                <tr><td>李学坤</td><td>是</td><td>是</td><td>东丽医院</td><td>138****7907</td><td>血糖控制不佳评估</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽医院</td><td>王晓飞</td><td></td><td>内分泌</td><td></td><td></td></tr>
                 <tr><td>周跃</td><td>是</td><td>是</td><td></td><td>158****9823</td><td>需要前往上级医...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区华...</td><td>孙健</td><td></td><td></td><td></td><td></td></tr>
                 <tr><td>王学兰</td><td>是</td><td></td><td></td><td>139****4276</td><td>需要前往上级医...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区金...</td><td>王雷</td><td></td><td></td><td></td><td></td></tr>
                 <tr><td>张俊伶</td><td>是</td><td></td><td></td><td>185****5862</td><td>需要前往上级医...</td><td>向上转诊</td><td>待分诊</td><td>天津市东丽区金...</td><td>王雷</td><td></td><td></td><td></td><td></td></tr>
@@ -734,6 +1126,43 @@ body{background:#f5f7fa;padding:20px;margin:0}
               <a class="guide-page-btn" href="javascript:void(0)">114</a>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 质控评价（医生评价模型 · 规划演示） -->
+  <div id="tab-doctor-eval" class="tab-content">
+    <div class="deval-page">
+      <p class="deval-intro">以下为<strong>医生评价 / 处方质控模型</strong>的规划展示位（演示数据），从窗口标题栏「质控评价」进入：与业务规划的「处方点评、费用结构、中成药占比、临床建议」对齐；后续可对接实时统计与规则引擎，并与<strong>处方开具</strong>、<strong>健康档案</strong>等数据可对账联动。</p>
+      <div class="deval-grid">
+        <div class="deval-card">
+          <div class="deval-card-h">处方智能点评</div>
+          <p class="deval-card-desc">合理性、相互作用、剂量与临床路径符合度（演示）</p>
+          <div class="deval-stat"><span class="deval-k">本月已评门诊处方</span><span class="deval-v">128 张</span></div>
+          <div class="deval-pill ok">结论摘要：12 例可走集采替代；3 例建议复核联合用药剂量。</div>
+        </div>
+        <div class="deval-card">
+          <div class="deval-card-h">高费用药品占比</div>
+          <p class="deval-card-desc">相对本科室/机构同病种 P50 对比（演示）</p>
+          <div class="deval-stat"><span class="deval-k">本期高费用药金额占比</span><span class="deval-v">18.6%</span></div>
+          <div class="deval-pill warn">提示：高于科室目标阈值 15%，可关注胰岛素类似物与辅助用药结构。</div>
+        </div>
+        <div class="deval-card">
+          <div class="deval-card-h">中成药开药占比</div>
+          <p class="deval-card-desc">门诊中成药人次 / 处方人次（演示）</p>
+          <div class="deval-stat"><span class="deval-k">中成药处方占比</span><span class="deval-v">22%</span></div>
+          <div class="deval-pill ok">与机构「西医为主、中医协同」策略一致；4 例可核对重复功效类别。</div>
+        </div>
+        <div class="deval-card deval-card--wide">
+          <div class="deval-card-h">临床医疗建议（综合）</div>
+          <p class="deval-card-desc">融合指南要点、随访与转诊触发（演示）</p>
+          <ul class="deval-list">
+            <li>强化 2 型糖尿病伴控制不佳患者的家庭血糖与复诊节奏提醒。</li>
+            <li>对合并高血压者：建议完善血脂与肾功能筛查后再调脂方案。</li>
+            <li>高费用人群：优先展示集采路径与患者沟通话术（与接诊智能提示联动）。</li>
+          </ul>
+          <div class="deval-foot">入口说明：本页为<strong>医生维度</strong>质控演示，已从「接诊患者」主 Tab 迁至窗口标题栏「质控评价」；后续可扩展科室看板，或在智能问答 Skill 中追问「我本周质控摘要」。</div>
         </div>
       </div>
     </div>
@@ -857,13 +1286,128 @@ body{background:#f5f7fa;padding:20px;margin:0}
       </div>
     </div>
   </div>
+  </div>
+</div>
+</div>
+
+<!-- 接诊智能提示（插件侧，非 HIS 内嵌） -->
+<div id="aiTipsBackdrop" class="ai-tips-backdrop" onclick="closeAiTipsPanel()"></div>
+<div id="aiTipsPanel" class="ai-tips-panel" role="dialog" aria-modal="true" aria-labelledby="aiTipsTitle">
+  <div class="ai-tips-head">
+    <div class="ai-tips-ico"><img src="assets/ai-robot-avatar.png" alt="" /></div>
+    <div>
+      <div id="aiTipsTitle" class="ai-tips-title">接诊智能提示</div>
+      <div class="ai-tips-sub">健共体插件 · 非 HIS 原生界面</div>
+    </div>
+    <button type="button" class="ai-tips-close" onclick="closeAiTipsPanel()" aria-label="关闭">×</button>
+  </div>
+  <div class="ai-tips-body">
+    <div class="ai-tip-card ai-tip-card--highcost">
+      <div class="ai-tip-card-headrow">
+        <span class="tip-ico" aria-hidden="true">💰</span>
+        <div class="ai-tip-card-text">
+          <div class="ai-tip-cost-title">高费用 · 处方结构优化</div>
+        </div>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">① 患者标签 · 期望您做的事</div>
+        <div class="ai-tip-pills"><span class="ai-tip-pill">高费用</span><span class="ai-tip-pill">处方结构</span></div>
+        <p class="ai-tip-do">在疗效可替代前提下，将方案向<strong>集采 / 高性价比</strong>路径调整，并向患者说明替换理由；可参考下方对照组合。</p>
+        <div class="ai-tip-drug-compare">
+          <p class="ai-tip-drug-line"><span class="ai-tip-lbl">原药品组合：</span><span class="ai-tip-drug-list">阿卡波糖片 100mg tid；格列喹酮片 30mg bid；××沙星胶囊 0.2g bid（演示）</span></p>
+          <p class="ai-tip-drug-line"><span class="ai-tip-lbl">推荐组合（性价比）：</span><span class="ai-tip-drug-list">二甲双胍片(集采) 0.5g bid；达格列净片(集采) 5mg qd（演示）</span></p>
+        </div>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">② 完成后带来的帮助</div>
+        <p class="ai-tip-benefit">患者药费与自付压力更可预期，方案更贴近临床路径与合理用药点评口径，后续调药与随访也有清晰对照基线。</p>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">③ 绩效加分</div>
+        <div class="ai-tip-perf-row"><span class="ai-tip-perf-val">+12 分</span><span>（演示）</span></div>
+      </div>
+      <div class="ai-tip-card-actions">
+        <button type="button" class="ai-tips-btn primary" onclick="applyAiRxPrefill()">一键采纳</button>
+      </div>
+    </div>
+    <div class="ai-tip-card ai-tip-card--warn">
+      <div class="ai-tip-card-headrow">
+        <span class="tip-ico" aria-hidden="true">⚠</span>
+        <div class="ai-tip-card-text">
+          <div class="ai-tip-headline ai-tip-headline--warn">待检与履约提醒</div>
+        </div>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">① 患者标签 · 期望您做的事</div>
+        <div class="ai-tip-pills"><span class="ai-tip-pill">签约履约</span><span class="ai-tip-pill">慢病管理</span><span class="ai-tip-pill">检验检查缺项</span></div>
+        <p class="ai-tip-do">协助患者在院内或随访中<strong>补齐年度履约与慢病管理必需的检验检查</strong>，并记录结果以便连续管理。</p>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">② 完成后带来的帮助</div>
+        <p class="ai-tip-benefit">关键指标补全后，用药与并发症评估更有依据，随访节奏可落地；患者侧也能形成完整的年度健康管理记录。</p>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">③ 绩效加分</div>
+        <div class="ai-tip-perf-row"><span class="ai-tip-perf-val">+8 分</span><span>（演示）</span></div>
+      </div>
+      <div class="ai-tip-card-actions">
+        <button type="button" class="ai-tips-btn primary" onclick="openMedAssistFromPending()">立即查看</button>
+      </div>
+    </div>
+    <div class="ai-tip-card ai-tip-card--info">
+      <div class="ai-tip-card-headrow">
+        <span class="tip-ico" aria-hidden="true">🤖</span>
+        <div class="ai-tip-card-text">
+          <div class="ai-tip-headline ai-tip-headline--info">糖缓解 · 风险评估</div>
+        </div>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">① 患者标签 · 期望您做的事</div>
+        <div class="ai-tip-pills"><span class="ai-tip-pill">糖缓解向</span><span class="ai-tip-pill">慢病增值服务</span></div>
+        <p class="ai-tip-do">为本例患者启动<strong>糖缓解类风险评估</strong>流程，在对话中完成必要追问与结论说明，便于衔接后续干预。</p>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">② 完成后带来的帮助</div>
+        <p class="ai-tip-benefit">评估结果可沉淀为可执行的随访要点；需要连续干预时，患者可获得结构化服务衔接，减少信息断层。</p>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">③ 绩效加分</div>
+        <div class="ai-tip-perf-row"><span class="ai-tip-perf-val">+15 分</span><span>（演示）</span></div>
+      </div>
+      <div class="ai-tip-card-actions">
+        <button type="button" class="ai-tips-btn primary" onclick="aiTipStartSkillEvaluation()">立即评估</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="rxAiToast" class="rx-ai-toast" role="status" aria-live="polite"></div>
+
+<div id="rxMedAssistBar" class="rx-med-assist-bar" role="status">
+  <span id="rxMedAssistLabel">已选药品</span>
+  <button type="button" class="rx-med-assist-btn" onclick="openDrugAssistantModal()">用药助手</button>
+  <button type="button" class="rx-med-assist-x" onclick="clearRxDrugSelection()" aria-label="关闭">×</button>
+</div>
+
+<div id="medAssistModal" class="med-assist-modal" onclick="if(event.target===this)closeMedAssistModal()">
+  <div class="med-assist-inner" onclick="event.stopPropagation()">
+    <h4 id="medAssistTitle">用药助手（演示）</h4>
+    <p id="medAssistLead">基于当前选中药品与患者档案，提供相互作用、剂量与肾功能等提示（演示文案）。</p>
+    <ul id="medAssistList">
+      <li>与二甲双胍联用：注意胃肠道反应与肾功能监测。</li>
+      <li>老年患者：建议从低剂量起始，监测餐后血糖。</li>
+    </ul>
+    <div class="modal-btns" style="margin-top:12px">
+      <button type="button" class="modal-btn primary" onclick="closeMedAssistModal()">关闭</button>
+    </div>
+  </div>
 </div>
 
 <!-- 患者详情侧边栏 -->
 <div id="detailOverlay" class="detail-overlay" onclick="closePatientDetail()"></div>
 <div id="detailDrawer" class="detail-drawer" aria-hidden="true">
   <div class="detail-header">
-    <div class="detail-title">患者画像</div>
+    <div class="detail-title">患者详情</div>
     <button class="detail-close" onclick="closePatientDetail()">×</button>
   </div>
   <div class="detail-body">
@@ -872,8 +1416,9 @@ body{background:#f5f7fa;padding:20px;margin:0}
       <div class="patient-head">
         <div class="avatar"></div>
         <div class="patient-head-main">
-          <div class="patient-name">刘平</div>
-          <div class="patient-age">男 56岁</div>
+          <div class="patient-name">李学坤</div>
+          <div class="patient-age">男 67岁</div>
+          <div class="patient-hl-row">就诊编号 0003237907 · 健康干预等级 <span class="hl-level hl-level--focus">重点</span></div>
         </div>
         <div class="patient-head-tags">
           <span class="pill strong-risk">高费用</span>
@@ -884,7 +1429,7 @@ body{background:#f5f7fa;padding:20px;margin:0}
 
       <div class="portrait-card">
         <div class="portrait-title">基础画像</div>
-        <div class="pair-row"><div class="pair-label">签约机构</div><div class="pair-value">天津市西青区中北镇社区卫生服务中心</div></div>
+        <div class="pair-row"><div class="pair-label">签约机构</div><div class="pair-value">天津市东丽医院 · 内分泌调理科</div></div>
         <div class="tag-row">
           <span class="pill">家庭签约</span>
           <span class="pill">大人头签约</span>
@@ -896,19 +1441,19 @@ body{background:#f5f7fa;padding:20px;margin:0}
       <div class="portrait-card">
         <div class="portrait-title">疾病与风险标签</div>
         <div class="tag-row">
-          <span class="pill warn">高血压 1.1年</span>
-          <span class="pill muted">肥胖</span>
-          <span class="pill muted">糖尿病缓解门诊未开通</span>
-          <span class="pill warn">高血压分标：红标</span>
+          <span class="pill warn">2型糖尿病 · 血糖控制不佳</span>
+          <span class="pill muted">高血压（合并）</span>
+          <span class="pill muted">糖人头签约待完善</span>
+          <span class="pill warn">代谢风险：中高</span>
         </div>
       </div>
 
       <div class="portrait-card">
         <div class="portrait-title">核心指标</div>
         <div class="metric-grid">
-          <div class="metric-item"><div class="metric-k">BMI</div><div class="metric-v">27.7</div><div class="metric-u">超重</div></div>
-          <div class="metric-item"><div class="metric-k">体重</div><div class="metric-v">80.0</div><div class="metric-u">kg</div></div>
-          <div class="metric-item"><div class="metric-k">腰围</div><div class="metric-v">90.0</div><div class="metric-u">cm</div></div>
+          <div class="metric-item"><div class="metric-k">BMI</div><div class="metric-v">26.2</div><div class="metric-u">超重</div></div>
+          <div class="metric-item"><div class="metric-k">体重</div><div class="metric-v">76.0</div><div class="metric-u">kg</div></div>
+          <div class="metric-item"><div class="metric-k">腰围</div><div class="metric-v">92.0</div><div class="metric-u">cm</div></div>
         </div>
       </div>
 
@@ -924,9 +1469,9 @@ body{background:#f5f7fa;padding:20px;margin:0}
       <div class="portrait-card">
         <div class="portrait-title">重点问题与建议</div>
         <ul class="risk-list">
-          <li>当前主要关注：血压控制与体重管理。</li>
-          <li>建议 2 周复评家庭血压与依从性，必要时上级联合管理。</li>
-          <li>可继续完善糖代谢相关签约与长期随访路径。</li>
+          <li>当前主要关注：空腹及餐后血糖偏高，与 HIS 主诊断「2型糖尿病伴血糖控制不佳」一致。</li>
+          <li>建议强化生活方式与用药依从性，2～4 周复评糖化与家庭血糖。</li>
+          <li>合并血压管理：注意低血糖与肾功能监测。</li>
         </ul>
       </div>
 
@@ -1063,13 +1608,235 @@ body{background:#f5f7fa;padding:20px;margin:0}
 </div>
 
 <script>
+function openCmcModal() {
+  var o = document.getElementById('cmc-overlay')
+  if (o) {
+    o.classList.add('is-open')
+    o.setAttribute('aria-hidden', 'false')
+  }
+  tryScheduleAiReceptionTips()
+  updateRxFabVisibility()
+}
+function closeCmcModal() {
+  var o = document.getElementById('cmc-overlay')
+  if (o) {
+    o.classList.remove('is-open')
+    o.classList.remove('cmc-overlay--max')
+    o.setAttribute('aria-hidden', 'true')
+  }
+  var modal = document.querySelector('.cmc-modal')
+  if (modal) modal.classList.remove('cmc-modal--max')
+  var maxBtn = document.getElementById('cmcWinMaxBtn')
+  if (maxBtn) {
+    maxBtn.title = '最大化'
+    maxBtn.textContent = '□'
+  }
+  clearRxDrugSelection()
+  var rxStack = document.getElementById('aiFabRxStack')
+  if (rxStack) rxStack.classList.remove('is-visible')
+}
+function showCmcToast(msg) {
+  var el = document.getElementById('cmcToast')
+  if (!el) return
+  el.textContent = msg
+  el.classList.add('is-visible')
+  if (showCmcToast._t) clearTimeout(showCmcToast._t)
+  showCmcToast._t = setTimeout(function () {
+    el.classList.remove('is-visible')
+    showCmcToast._t = null
+  }, 2400)
+}
+function cmcWinSettings() {
+  showCmcToast('设置：演示入口，可对接主题、消息通知与插件（未接真实配置）')
+}
+function cmcWinMinimize() {
+  showCmcToast('最小化：嵌入客户端时将窗口收到任务栏（浏览器内为演示提示）')
+}
+function cmcWinMaximize() {
+  var m = document.querySelector('.cmc-modal')
+  var o = document.getElementById('cmc-overlay')
+  var b = document.getElementById('cmcWinMaxBtn')
+  if (!m || !o) return
+  var on = m.classList.toggle('cmc-modal--max')
+  o.classList.toggle('cmc-overlay--max', on)
+  if (b) {
+    b.title = on ? '还原' : '最大化'
+    b.textContent = on ? '⧉' : '□'
+  }
+  showCmcToast(on ? '已最大化窗口' : '已还原窗口大小')
+}
+var aiTipsAutoTimer = null
+function tryScheduleAiReceptionTips() {
+  if (sessionStorage.getItem('aiTipsAutoShown') === '1') return
+  sessionStorage.setItem('aiTipsAutoShown', '1')
+  if (aiTipsAutoTimer) clearTimeout(aiTipsAutoTimer)
+  aiTipsAutoTimer = setTimeout(function () {
+    aiTipsAutoTimer = null
+    var p = document.getElementById('aiTipsPanel')
+    if (p && !p.classList.contains('is-open')) openAiTipsPanel('auto')
+  }, 480)
+}
+function openAiTipsPanel(source) {
+  if (aiTipsAutoTimer) {
+    clearTimeout(aiTipsAutoTimer)
+    aiTipsAutoTimer = null
+  }
+  var bd = document.getElementById('aiTipsBackdrop')
+  var p = document.getElementById('aiTipsPanel')
+  if (bd) bd.classList.add('is-open')
+  if (p) p.classList.add('is-open')
+  var hisFab = document.getElementById('aiFabHis')
+  if (hisFab) hisFab.classList.remove('ai-doc-fab--pulse')
+}
+function closeAiTipsPanel() {
+  var bd = document.getElementById('aiTipsBackdrop')
+  var pan = document.getElementById('aiTipsPanel')
+  if (bd) bd.classList.remove('is-open')
+  if (pan) pan.classList.remove('is-open')
+}
+/** 接诊提示「立即评估」→ 健共体 Skill 版 + 慢病风险评估引导流程 */
+async function aiTipStartSkillEvaluation() {
+  closeAiTipsPanel()
+  var o = document.getElementById('cmc-overlay')
+  if (!o || !o.classList.contains('is-open')) openCmcModal()
+  switchTab('lobster-skill', document.querySelector('.tab[data-tab="lobster-skill"]'))
+  switchSkillMode('patient')
+  await sleep(100)
+  await runSkill(2, {
+    riskUserMsg: '接诊提示：请对当前患者做糖缓解向风险评估（增值服务），完成后我需要向患者推荐服务包入口。'
+  })
+}
+function showRxAiToast(msg) {
+  var t = document.getElementById('rxAiToast')
+  if (!t) return
+  t.textContent = msg
+  t.classList.add('is-visible')
+  if (showRxAiToast._timer) clearTimeout(showRxAiToast._timer)
+  showRxAiToast._timer = setTimeout(function () {
+    t.classList.remove('is-visible')
+    showRxAiToast._timer = null
+  }, 3200)
+}
+/** 高费用人群 → 性价比用药：一键回填处方开具页（演示） */
+function applyAiRxPrefill() {
+  closeAiTipsPanel()
+  var o = document.getElementById('cmc-overlay')
+  if (!o || !o.classList.contains('is-open')) openCmcModal()
+  var tabBtn = document.querySelector('.tab[data-tab="prescription"]')
+  switchTab('prescription', tabBtn)
+  var set = function (id, v) {
+    var el = document.getElementById(id)
+    if (el) el.value = v
+  }
+  set('rxLineName', '二甲双胍片(集采)')
+  set('rxLineSpec', '0.5g×60片')
+  set('rxLineQty', '2')
+  set('rxLineDose', '0.5g')
+  set('rxLineRoute', '口服')
+  set('rxLineFreq', 'bid')
+  set('rxLineDays', '14')
+  set('rxLinePrice', '0.06')
+  set('rxLineGroup', '处方一')
+  var tb = document.getElementById('rxTableBody')
+  if (tb) {
+    tb.innerHTML =
+      '<tr class="rx-row-base rx-drug-row" data-drug="二甲双胍片(集采)" onclick="selectRxDrugRow(event,this)">' +
+      '<td>1</td><td>R001</td><td>—</td><td>二甲双胍片(集采)</td><td>0.5g</td><td>g</td><td>bid</td><td>14</td><td>2</td><td>口服</td><td>0.06</td><td>7.20</td><td>0.5g×60</td><td>盒</td></tr>' +
+      '<tr class="rx-row-base rx-drug-row" data-drug="达格列净片(集采)" onclick="selectRxDrugRow(event,this)">' +
+      '<td>2</td><td>R001</td><td>—</td><td>达格列净片(集采)</td><td>5mg</td><td>mg</td><td>qd</td><td>14</td><td>1</td><td>口服</td><td>4.36</td><td>61.04</td><td>5mg×7</td><td>盒</td></tr>'
+  }
+  clearRxDrugSelection()
+  showRxAiToast('已采纳性价比方案并回填（演示）。药费节约可形成机构结余，医生绩效按机构规则结算；可继续编辑处方后保存。')
+}
+function openMedAssistFromPending() {
+  closeAiTipsPanel()
+  var m = document.getElementById('medAssistModal')
+  var t = document.getElementById('medAssistTitle')
+  var lead = document.getElementById('medAssistLead')
+  var ul = document.getElementById('medAssistList')
+  if (t) t.textContent = '待检项与履约监测（演示）'
+  if (lead) lead.textContent = '以下项目对应签约患者年度履约及慢病管理必做监测；医生协助完成可帮助机构履约达标、患者获得连续管理（演示）。'
+  if (ul) {
+    ul.innerHTML = '<li>血脂全套（LDL-C、TG）— 心血管病风险管理</li><li>尿微量白蛋白 / 肾功能 — 糖尿病年度监测</li><li>糖化血红蛋白（近 3 个月）— 控制评价</li><li>眼底检查 — 糖尿病随访履约项</li>'
+  }
+  if (m) m.classList.add('is-open')
+}
+function openDrugAssistantModal() {
+  var tr = document.querySelector('.rx-drug-row.rx-selected')
+  var name = tr ? tr.getAttribute('data-drug') : '—'
+  var m = document.getElementById('medAssistModal')
+  var t = document.getElementById('medAssistTitle')
+  var lead = document.getElementById('medAssistLead')
+  var ul = document.getElementById('medAssistList')
+  if (t) t.textContent = '用药助手 · ' + name
+  if (lead) lead.textContent = '基于「' + name + '」与当前患者（李学坤，67 岁）档案的演示提示，可接入说明书、相互作用与剂量规则引擎。'
+  if (ul) {
+    ul.innerHTML = '<li>与二甲双胍联用：关注胃肠道反应；肾功能 eGFR 偏低时慎用。</li><li>老年患者：建议监测餐后血糖，必要时调整剂量。</li><li>用药依从性：分餐与服药时间提醒可推送至患者端（演示）。</li>'
+  }
+  if (m) m.classList.add('is-open')
+}
+function closeMedAssistModal() {
+  var m = document.getElementById('medAssistModal')
+  if (m) m.classList.remove('is-open')
+}
+function selectRxDrugRow(ev, tr) {
+  if (ev) ev.stopPropagation()
+  document.querySelectorAll('.rx-drug-row').forEach(function (r) { r.classList.remove('rx-selected') })
+  tr.classList.add('rx-selected')
+  var name = tr.getAttribute('data-drug') || ''
+  var label = document.getElementById('rxMedAssistLabel')
+  if (label) label.textContent = '已选「' + name + '」· 可打开用药助手'
+  var bar = document.getElementById('rxMedAssistBar')
+  if (bar) bar.classList.add('is-visible')
+}
+function clearRxDrugSelection() {
+  document.querySelectorAll('.rx-drug-row').forEach(function (r) { r.classList.remove('rx-selected') })
+  var bar = document.getElementById('rxMedAssistBar')
+  if (bar) bar.classList.remove('is-visible')
+}
+function updateRxFabVisibility() {
+  var rxStack = document.getElementById('aiFabRxStack')
+  var o = document.getElementById('cmc-overlay')
+  if (!rxStack || !o || !o.classList.contains('is-open')) return
+  var pane = document.getElementById('tab-prescription')
+  if (pane && pane.classList.contains('active')) rxStack.classList.add('is-visible')
+  else rxStack.classList.remove('is-visible')
+}
+function refreshAiTipsCountBadges() {
+  var n = document.querySelectorAll('#aiTipsPanel .ai-tip-card').length
+  document.querySelectorAll('[data-ai-tip-count]').forEach(function (el) {
+    el.textContent = String(n)
+  })
+}
+function switchCmcSubView(sub, btnEl) {
+  document.querySelectorAll('.cmc-subtab').forEach(function (b) { b.classList.remove('active') })
+  document.querySelectorAll('.cmc-subpanel').forEach(function (p) { p.classList.remove('active') })
+  if (btnEl) btnEl.classList.add('active')
+  else {
+    var b = document.querySelector('.cmc-subtab[data-cmc-sub="' + sub + '"]')
+    if (b) b.classList.add('active')
+  }
+  var map = { home: 'cmc-sub-home', record: 'cmc-sub-record', guide: 'cmc-sub-guide', mypatients: 'cmc-sub-mypatients' }
+  var el = document.getElementById(map[sub])
+  if (el) el.classList.add('active')
+}
+function gotoRxHealthArchive() {
+  switchTab('workbench', document.querySelector('.tab[data-tab="workbench"]'))
+  switchCmcSubView('record')
+}
 // Tab 切换
-function switchTab(tab) {
-  document.querySelectorAll('.tab').forEach(el => el.classList.remove('active'))
-  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'))
-  event.currentTarget.classList.add('active')
-  document.getElementById('tab-' + tab).classList.add('active')
+function switchTab(tab, el) {
+  document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active') })
+  document.querySelectorAll('.tab-content').forEach(function (x) { x.classList.remove('active') })
+  var tabEl = el || document.querySelector('.tab[data-tab="' + tab + '"]')
+  if (tabEl) tabEl.classList.add('active')
+  var pane = document.getElementById('tab-' + tab)
+  if (pane) pane.classList.add('active')
+  var evalLink = document.getElementById('cmcLinkDoctorEval')
+  if (evalLink) evalLink.classList.toggle('is-active', tab === 'doctor-eval')
   activeOutputTarget = tab === 'lobster-skill' ? 'skill' : 'main'
+  if (tab !== 'prescription') clearRxDrugSelection()
+  updateRxFabVisibility()
 }
 
 // 模式切换
@@ -1175,7 +1942,7 @@ async function sendSkillChat() {
     : '需要读档案、做风险评估或开检查建议时，点右侧能力我会接着往下做。'
   await type(addMsg('', 'assistant'), `已收到：${short}\n\n${tail}`)
 }
-async function runSkill(i) {
+async function runSkill(i, opts) {
   activeOutputTarget = 'skill'
   const names = { 1: '读取健康档案', 2: '慢病风险评估', 3: '生成生活处方', 4: '转诊建议判断', 6: '推荐检验检查', 8: '临床报告解读' }
   appendSkillBubble(
@@ -1185,7 +1952,7 @@ async function runSkill(i) {
   await sleep(140)
   addLog('→ Skill Router：' + i)
   if (i === 1) return await runSkillArchiveFlow()
-  if (i === 2) return await runSkillRiskAssessmentFlow()
+  if (i === 2) return await runSkillRiskAssessmentFlow(opts)
   if (i === 6) return await runSkillCheckRecommendationFlow()
   if (i === 3) return await runSkillLifestylePrescriptionFlow()
   if (i === 4) return await runSkillReferralAdviceFlow()
@@ -1242,20 +2009,48 @@ async function runSkillArchiveFlow() {
   ])
 }
 
-async function runSkillRiskAssessmentFlow() {
+async function runSkillRiskAssessmentFlow(opts) {
   activeOutputTarget = 'skill'
-  addMsg('慢病风险评估', 'user')
+  var userMsg = (opts && opts.riskUserMsg) || (typeof opts === 'string' ? opts : '')
+  addMsg(userMsg || '慢病风险评估', 'user')
   addSkillPlanCard('慢病风险评估（Skill）· 计划', [
     '先分层：已患病控制标签（红/黄标）+ 未患病风险（CVD10/ASCVD）',
     '再解释：每个标签给出 1 句依据（来自档案指标）',
-    '特色：卡片化标签 + 可追问“某一标签的依据/下一步建议”'
+    '增值路径：评估结束后可推荐「糖缓解」等服务包，供患者选购连续管理（演示）'
   ])
   await sleep(220)
   await runRiskAssessmentFlow()
-  addActionMsg('要继续追问哪一类？', [
+  addActionMsg('评估已完成。可继续追问分层依据，或为患者推荐增值服务包：', [
     { label: '解释“糖尿病红标”的依据', onClick: async () => { appendSkillBubble('WeClaw', '依据来自：血糖/糖化/并发症与依从性信息（演示）。你也可以补充最新监测值我会重算。') } },
-    { label: '只看未患病风险（CVD10/ASCVD）', onClick: async () => { appendSkillBubble('WeClaw', '我会按年龄/血压/血脂/吸烟等字段计算分层（演示）。当前档案缺项会提示你补。') } }
+    { label: '只看未患病风险（CVD10/ASCVD）', onClick: async () => { appendSkillBubble('WeClaw', '我会按年龄/血压/血脂/吸烟等字段计算分层（演示）。当前档案缺项会提示你补。') } },
+    { label: '推荐糖缓解服务包', onClick: async () => { await showTangHuanjieServicePackageSkill() } }
   ])
+}
+async function showTangHuanjieServicePackageSkill() {
+  activeOutputTarget = 'skill'
+  addLog('→ Skill：value_added.tang_huanjie_package')
+  const chat = document.getElementById('chat-skill')
+  if (!chat) return
+  const div = document.createElement('div')
+  div.className = 'msg assistant risk-card'
+  div.innerHTML = `
+    <div class="claw-card-title">糖缓解服务包（增值服务 · 演示）</div>
+    <div class="claw-card-body" style="font-size:12px;line-height:1.55">
+      <p style="margin:0 0 8px;color:#5a6a86">面向评估后「血糖控制不佳 / 糖尿病红标」等人群，由健共体与机构联合提供的连续管理包（以下为演示结构）。</p>
+      <div class="claw-section-title">包内服务</div>
+      <ul class="skill-plan-list" style="margin-top:4px">
+        <li>12 周饮食与运动处方迭代 + 家庭血糖打卡解读</li>
+        <li>护士/健管师电话随访 4 次 + 复诊前提醒</li>
+        <li>心理与睡眠简要筛查 1 次，必要时转介</li>
+        <li>与门诊方案衔接：不替代医嘱，仅作行为与监测支持</li>
+      </ul>
+      <div class="claw-section-title" style="margin-top:10px">医生端动作（演示）</div>
+      <p style="margin:0;color:#40516d">可向患者展示包说明与知情要点；正式环境对接订单与绩效分成规则。</p>
+    </div>
+  `
+  chat.appendChild(div)
+  chat.scrollTop = 99999
+  appendSkillBubble('WeClaw', '已展开糖缓解服务包说明。若患者有意向，可在正式环境中一键发送签约/购买链接（此处为演示）。')
 }
 
 async function runSkillCheckRecommendationFlow() {
@@ -1600,9 +2395,9 @@ async function createTaskSkill() {
   addSkillPushCard(
     '任务完成通知（Skill）',
     [
-      '你订阅的「高血压合并糖尿病指南更新」任务已完成摘要。',
-      '新增要点：降压目标分层、SGLT-2 适用人群、肾脏保护证据更新。',
-      '已生成“门诊可转述版本 + 医生决策版”两份内容。'
+      '你创建的任务「整理2025糖尿病新药」已完成初版摘要（演示）。',
+      '要点：本年度 NMPA 新批准/新适应症涉及 GLP-1、SGLT-2 等类的对比表提纲，附门诊沟通话术提示。',
+      '与「指南更新」推送区分：本卡片仅对应新药/适应症速递，不含指南条文修订。'
     ],
     '来源：任务中心 · 刚刚'
   )
@@ -1678,9 +2473,9 @@ async function simulateDrugPush() {
   addSkillPushCard(
     '新药速递推送（模拟）',
     [
-      '本周新增 1 条慢病相关新药信息（降糖方向）。',
-      '关注点：适应症边界、肾功能分层用法、医保支付状态。',
-      '建议：可点“药品查询（Skill）”生成门诊用药提醒话术。'
+      '药监动态（演示）：××双靶点 GLP-1/GIP 周制剂新适应症递交上市申请，适用肥胖合并 T2DM 人群边界见说明书草案摘要。',
+      '循证速递：口服 GLP-1 小分子在轻中度肾功能不全亚组的暴露调整建议（会议摘要级）。',
+      '支付与目录：2 个 DPP-4 类仿制药拟纳入下一轮集采，请关注本院药事与替换路径。'
     ],
     '来源：新药雷达 · 09:05'
   )
@@ -2706,7 +3501,7 @@ async function showHistory() {
   const loading = addMsg(activeOutputTarget === 'skill' ? '正在拉取历史记录…' : '加载中...', 'assistant typing')
   await sleep(1000)
   loading.remove()
-  await type(addMsg('', 'assistant'), `【历史对话（张三）】
+  await type(addMsg('', 'assistant'), `【历史对话（李学坤）】
 2025-03-20：生成生活处方
 2025-03-21：推荐检验检查
 2025-03-23：完善血压血糖 → 生成高血压诊疗方案
@@ -2720,10 +3515,10 @@ function collectArchiveInput() {
     return el ? el.textContent.trim() : fallback
   }
   return {
-    patient: get('.patient-summary', '当前接诊患者：张三'),
+    patient: get('.patient-summary', '当前接诊患者：李学坤 男 67岁｜就诊编号 0003237907'),
     diagnosis: [
-      get('#sec-condition tbody tr:nth-child(2) td:nth-child(1)', '高血压'),
-      get('#sec-condition tbody tr:nth-child(3) td:nth-child(1)', '肥胖')
+      get('#sec-condition tbody tr:nth-child(1) td:nth-child(1)', '2型糖尿病'),
+      get('#sec-condition tbody tr:nth-child(2) td:nth-child(1)', '高血压')
     ],
     bp: get('#sec-check tbody tr:nth-child(7) td:nth-child(3)', '150/100mmHg'),
     fbg: get('#sec-check tbody tr:nth-child(11) td:nth-child(3)', '6.8mmol/L'),
@@ -2953,6 +3748,14 @@ async function myTasks() {
 
 智能助手会持续执行并提醒。`)
 }
+;(function initAiReceptionDemo() {
+  function boot() {
+    refreshAiTipsCountBadges()
+    tryScheduleAiReceptionTips()
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot)
+  else boot()
+})()
 </script>
 </body>
 </html>
