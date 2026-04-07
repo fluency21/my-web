@@ -9,6 +9,9 @@
 body{background:#dfe6ef;margin:0;padding:0}
 .container{max-width:960px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08)}
 .container.cmc-inner{max-width:none;margin:0;border-radius:0;box-shadow:none;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.cmc-inner.cmc-inner--doctor-eval-solo{--cmc-main-h:min(640px,calc(96vh - 96px))}
+.cmc-inner.cmc-inner--doctor-eval-solo > .header{display:none !important}
+.cmc-inner.cmc-inner--doctor-eval-solo > .tabs{display:none !important}
 .his-stage{background:#e8edf2;min-height:100vh;display:flex;flex-direction:column;font-size:12px;color:#2c3e50}
 .his-menubar{background:#f0f4f8;border-bottom:1px solid #c5d3e0;padding:6px 10px;display:flex;gap:4px;flex-wrap:wrap}
 .his-mi{padding:4px 10px;color:#345}
@@ -51,6 +54,10 @@ body{background:#dfe6ef;margin:0;padding:0}
 .cmc-toast{background:#1e293b;color:#fff;padding:8px 16px;border-radius:8px;font-size:12px;box-shadow:0 8px 24px rgba(0,0,0,.2);opacity:0;transition:opacity .2s}
 .cmc-toast.is-visible{opacity:1}
 .deval-page{padding:12px;background:#f4f6fa;min-height:var(--cmc-main-h);max-height:var(--cmc-main-h);overflow-y:auto;box-sizing:border-box}
+.deval-backbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:12px;padding:8px 10px;background:#fff;border:1px solid #e2e8f0;border-radius:6px}
+.deval-back-btn{height:28px;padding:0 12px;border:1px solid #2f6ee5;border-radius:4px;background:#fff;font-size:12px;cursor:pointer;color:#1e5bb8;font-family:inherit;font-weight:600}
+.deval-back-btn:hover{background:#f0f7ff}
+.deval-back-hint{font-size:11px;color:#64748b;max-width:min(100%,520px);line-height:1.45}
 .deval-intro{font-size:11px;color:#64748b;line-height:1.5;margin:0 0 12px;padding:8px 10px;background:#fff;border:1px solid #e2e8f0;border-radius:6px;border-left:3px solid #2563eb}
 .deval-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media (max-width:900px){.deval-grid{grid-template-columns:1fr}}
@@ -67,6 +74,8 @@ body{background:#dfe6ef;margin:0;padding:0}
 .deval-pill.warn{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
 .deval-list{margin:6px 0 0;padding-left:16px;font-size:11px;color:#475569;line-height:1.5}
 .deval-foot{font-size:10px;color:#94a3b8;margin-top:10px;padding-top:8px;border-top:1px dashed #e2e8f0}
+.cmc-workbench-subtabs-outer{display:none;flex-direction:column;flex-shrink:0}
+.cmc-workbench-subtabs-outer.is-visible{display:flex}
 .cmc-subtabs{display:flex;gap:0;border-bottom:1px solid #e9eef6;background:#f6f8fc;padding:0 8px}
 .cmc-subtab{padding:8px 14px;font-size:12px;color:#4f5d74;cursor:pointer;background:transparent;border:none;border-bottom:2px solid transparent;font-family:inherit}
 .cmc-subtab:hover{color:#2f6ee5}
@@ -102,6 +111,14 @@ body{background:#dfe6ef;margin:0;padding:0}
 .rx-inp{height:26px;border:1px solid #cfd8dc;border-radius:3px;padding:0 6px;font-size:11px;min-width:0;width:100%}
 .rx-diag-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .rx-tag{display:inline-flex;align-items:center;gap:4px;background:#fff9c4;border:1px solid #ffe082;padding:2px 8px;border-radius:3px;font-size:11px;margin-top:4px}
+.rx-tag.is-selected{cursor:pointer}
+.rx-diag-assist{display:none;margin-top:8px;padding:8px 10px;border:1px solid #cfe2ff;background:#f4f8ff;border-radius:4px;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.rx-diag-assist.is-visible{display:flex}
+.rx-diag-assist-text{font-size:11px;color:#31425f;line-height:1.45}
+.rx-diag-assist-ops{display:flex;gap:8px;align-items:center}
+.rx-diag-assist-btn{height:28px;padding:0 10px;border-radius:4px;border:1px solid #c7d2e2;background:#fff;color:#2f3f5a;font-size:11px;cursor:pointer;font-family:inherit}
+.rx-diag-assist-btn.primary{background:#2f6ee5;border-color:#2f6ee5;color:#fff}
+.rx-diag-assist-btn:hover{filter:brightness(.98)}
 .rx-hints{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px}
 .rx-hint{background:#fff;border:1px solid #e0e0e0;border-radius:4px;padding:6px 8px;font-size:11px;color:#37474f;flex:1;min-width:200px}
 .rx-hint.blue{border-left:3px solid #1976d2}
@@ -154,7 +171,8 @@ body{background:#dfe6ef;margin:0;padding:0}
 .ai-tip-section{padding-top:10px;margin-top:8px;border-top:1px dashed #e8ecf0}
 .ai-tip-card-headrow + .ai-tip-section{padding-top:0;margin-top:0;border-top:none}
 .ai-tip-sec-lbl{font-size:10px;color:#90a4ae;font-weight:600;margin:0 0 6px;letter-spacing:.02em}
-.ai-tip-pills{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 6px}
+.ai-tip-pills{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 4px}
+.ai-tip-expect-lbl{font-size:11px;color:#546e7a;font-weight:600;margin:2px 0 6px;letter-spacing:.02em;line-height:1.4}
 .ai-tip-pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;background:#eceff1;color:#455a64}
 .ai-tip-card--highcost .ai-tip-pill{background:#ffcdd2;color:#b71c1c}
 .ai-tip-card--warn .ai-tip-pill{background:#fff8e1;color:#e65100}
@@ -182,6 +200,22 @@ body{background:#dfe6ef;margin:0;padding:0}
 .ai-tip-card .tip-ico{flex-shrink:0;font-size:14px}
 .ai-tips-btn{height:32px;padding:0 14px;border-radius:6px;border:1px solid #cfd8dc;background:#fff;font-size:12px;cursor:pointer;color:#37474f}
 .ai-tips-btn.primary{background:#1976d2;color:#fff;border-color:#1976d2}
+.rx-quickqa-mask{position:fixed;left:0;top:0;width:0;height:0;background:rgba(12,23,43,.36);z-index:1240;display:none;pointer-events:auto}
+.rx-quickqa-mask.is-open{display:block}
+.rx-quickqa-panel{position:fixed;left:auto;width:min(420px,100%);max-width:100%;max-height:min(68vh,520px);display:none;flex-direction:column;background:#fff;border:1px solid #d8e2f0;border-radius:10px;box-shadow:0 14px 40px rgba(10,20,35,.24);z-index:1250;box-sizing:border-box}
+.rx-quickqa-panel.is-open{display:flex}
+.rx-quickqa-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid #e8edf4;background:#f8fbff;border-radius:10px 10px 0 0}
+.rx-quickqa-title{font-size:13px;font-weight:700;color:#223757}
+.rx-quickqa-close{border:none;background:transparent;font-size:18px;line-height:1;cursor:pointer;color:#7b8798}
+.rx-quickqa-body{padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-height:180px;max-height:340px;overflow:auto}
+.rx-quickqa-msg{max-width:92%;padding:8px 10px;border-radius:10px;font-size:12px;line-height:1.5;white-space:pre-wrap}
+.rx-quickqa-msg.user{align-self:flex-end;background:#2f6ee5;color:#fff}
+.rx-quickqa-msg.assistant{align-self:flex-start;background:#f3f6fb;color:#2c3e54}
+.rx-quickqa-presets{padding:0 12px 8px;display:flex;gap:6px;flex-wrap:wrap}
+.rx-quickqa-preset{height:24px;padding:0 8px;border:1px dashed #b7c7de;border-radius:12px;background:#f9fbff;color:#3f5470;font-size:10px;cursor:pointer}
+.rx-quickqa-compose{display:flex;gap:8px;padding:10px 12px;border-top:1px solid #e8edf4}
+.rx-quickqa-input{flex:1;min-width:0;height:32px;border:1px solid #cfd8e6;border-radius:8px;padding:0 10px;font-size:12px}
+.rx-quickqa-send{height:32px;padding:0 12px;border:none;border-radius:8px;background:#2f6ee5;color:#fff;font-size:12px;cursor:pointer}
 .rx-med-assist-bar{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:1215;display:none;align-items:center;gap:12px;padding:10px 16px;background:#fff;border:1px solid #90caf9;border-radius:999px;box-shadow:0 8px 28px rgba(25,118,210,.25);font-size:12px;color:#37474f;max-width:96vw}
 .rx-med-assist-bar.is-visible{display:flex}
 .rx-med-assist-btn{height:30px;padding:0 14px;border:none;border-radius:999px;background:linear-gradient(135deg,#1976d2,#1565c0);color:#fff;font-size:12px;font-weight:600;cursor:pointer}
@@ -596,7 +630,7 @@ body{background:#dfe6ef;margin:0;padding:0}
     <div class="cmc-modal-titlebar">
       <span id="cmc-modal-title">健共体 | 天津数字健共体</span>
       <div class="cmc-titlebar-right">
-        <button type="button" id="cmcLinkDoctorEval" class="cmc-titlebar-tool" onclick="switchTab('doctor-eval', null)" title="医生个人质控与处方评价（与下方接诊患者 Tab 解耦）">质控评价</button>
+        <button type="button" id="cmcLinkDoctorEval" class="cmc-titlebar-tool" onclick="switchTab('doctor-eval', null)" title="查看我的诊疗行为分析（处方结构、用药合理性与随访执行）">我的诊疗分析</button>
         <div class="cmc-titlebar-actions">
           <button type="button" class="cmc-winbtn cmc-winbtn--icon" onclick="cmcWinSettings()" title="设置">⚙</button>
           <button type="button" class="cmc-winbtn cmc-winbtn--icon" onclick="cmcWinMinimize()" title="最小化">−</button>
@@ -631,14 +665,18 @@ body{background:#dfe6ef;margin:0;padding:0}
     </div>
   </div>
 
-  <!-- CMC工作站 Tab（工作台 / 健康档案 / 慢病管理） -->
-  <div id="tab-workbench" class="tab-content active">
+  <!-- 仅 CMC工作站：工作台 / 健康档案 等子 Tab（与「我的诊疗分析」等独立页解耦，不随其它主 Tab 显示） -->
+  <div id="cmcWorkbenchSubtabsOuter" class="cmc-workbench-subtabs-outer is-visible">
     <div class="cmc-subtabs">
       <button type="button" class="cmc-subtab active" data-cmc-sub="home" onclick="switchCmcSubView('home',this)">工作台</button>
       <button type="button" class="cmc-subtab" data-cmc-sub="record" onclick="switchCmcSubView('record',this)">健康档案</button>
       <button type="button" class="cmc-subtab" data-cmc-sub="guide" onclick="switchCmcSubView('guide',this)">慢病管理</button>
       <button type="button" class="cmc-subtab" data-cmc-sub="mypatients" onclick="switchCmcSubView('mypatients',this)">我的患者</button>
     </div>
+  </div>
+
+  <!-- CMC工作站 Tab -->
+  <div id="tab-workbench" class="tab-content active">
     <div id="cmc-sub-home" class="cmc-subpanel active">
     <div class="workbench-page">
       <div class="wb-card">
@@ -1000,11 +1038,20 @@ body{background:#dfe6ef;margin:0;padding:0}
           <div>
             <div class="rx-lab">主诊断筛选</div>
             <input class="rx-inp" placeholder="输入或选择诊断">
-            <div class="rx-tag">糖尿病 <span style="cursor:pointer">+</span></div>
+            <div id="rxMainDiagTag" class="rx-tag is-selected" onclick="showRxDiagAssist()">糖尿病 <span style="cursor:pointer">+</span></div>
           </div>
           <div>
             <div class="rx-lab">次要诊断筛选</div>
             <input class="rx-inp" placeholder="输入或选择诊断">
+          </div>
+        </div>
+        <div id="rxDiagAssistHint" class="rx-diag-assist is-visible">
+          <div class="rx-diag-assist-text">
+            已选诊断：<strong id="rxDiagAssistName">糖尿病</strong>。可直接发起诊断相关支持：
+          </div>
+          <div class="rx-diag-assist-ops">
+            <button type="button" class="rx-diag-assist-btn primary" onclick="openRxQuickQa('qa')">智能问答</button>
+            <button type="button" class="rx-diag-assist-btn" onclick="openRxQuickQa('policy')">医保政策</button>
           </div>
         </div>
       </div>
@@ -1131,10 +1178,14 @@ body{background:#dfe6ef;margin:0;padding:0}
     </div>
   </div>
 
-  <!-- 质控评价（医生评价模型 · 规划演示） -->
+  <!-- 我的诊疗分析（医生评价模型 · 规划演示） -->
   <div id="tab-doctor-eval" class="tab-content">
     <div class="deval-page">
-      <p class="deval-intro">以下为<strong>医生评价 / 处方质控模型</strong>的规划展示位（演示数据），从窗口标题栏「质控评价」进入：与业务规划的「处方点评、费用结构、中成药占比、临床建议」对齐；后续可对接实时统计与规则引擎，并与<strong>处方开具</strong>、<strong>健康档案</strong>等数据可对账联动。</p>
+      <div class="deval-backbar">
+        <button type="button" class="deval-back-btn" onclick="backFromDoctorEval()">← 返回接诊</button>
+        <span class="deval-back-hint">本页为<strong>医生个人维度</strong>的诊疗行为统计与分析，与当前接诊患者、主 Tab 导航无关（演示）。</span>
+      </div>
+      <p class="deval-intro">以下为<strong>医生个人诊疗行为分析</strong>展示位（演示数据）：聚焦你的处方结构、用药合理性与随访执行等汇总指标；后续可对接实时统计与规则引擎，并与业务侧数据联动核对。</p>
       <div class="deval-grid">
         <div class="deval-card">
           <div class="deval-card-h">处方智能点评</div>
@@ -1162,7 +1213,7 @@ body{background:#dfe6ef;margin:0;padding:0}
             <li>对合并高血压者：建议完善血脂与肾功能筛查后再调脂方案。</li>
             <li>高费用人群：优先展示集采路径与患者沟通话术（与接诊智能提示联动）。</li>
           </ul>
-          <div class="deval-foot">入口说明：本页为<strong>医生维度</strong>质控演示，已从「接诊患者」主 Tab 迁至窗口标题栏「质控评价」；后续可扩展科室看板，或在智能问答 Skill 中追问「我本周质控摘要」。</div>
+          <div class="deval-foot">入口说明：从窗口标题栏「我的诊疗分析」进入本页时，不展示接诊患者信息与主 Tab，避免与医生个人统计混淆；后续可扩展科室看板，或在智能问答 Skill 中追问「我本周诊疗分析摘要」。</div>
         </div>
       </div>
     </div>
@@ -1310,8 +1361,9 @@ body{background:#dfe6ef;margin:0;padding:0}
         </div>
       </div>
       <div class="ai-tip-section">
-        <div class="ai-tip-sec-lbl">① 患者标签 · 期望您做的事</div>
+        <div class="ai-tip-sec-lbl">① 患者标签</div>
         <div class="ai-tip-pills"><span class="ai-tip-pill">高费用</span><span class="ai-tip-pill">处方结构</span></div>
+        <div class="ai-tip-expect-lbl">期望您做的事</div>
         <p class="ai-tip-do">在疗效可替代前提下，将方案向<strong>集采 / 高性价比</strong>路径调整，并向患者说明替换理由；可参考下方对照组合。</p>
         <div class="ai-tip-drug-compare">
           <p class="ai-tip-drug-line"><span class="ai-tip-lbl">原药品组合：</span><span class="ai-tip-drug-list">阿卡波糖片 100mg tid；格列喹酮片 30mg bid；××沙星胶囊 0.2g bid（演示）</span></p>
@@ -1338,8 +1390,9 @@ body{background:#dfe6ef;margin:0;padding:0}
         </div>
       </div>
       <div class="ai-tip-section">
-        <div class="ai-tip-sec-lbl">① 患者标签 · 期望您做的事</div>
+        <div class="ai-tip-sec-lbl">① 患者标签</div>
         <div class="ai-tip-pills"><span class="ai-tip-pill">签约履约</span><span class="ai-tip-pill">慢病管理</span><span class="ai-tip-pill">检验检查缺项</span></div>
+        <div class="ai-tip-expect-lbl">期望您做的事</div>
         <p class="ai-tip-do">协助患者在院内或随访中<strong>补齐年度履约与慢病管理必需的检验检查</strong>，并记录结果以便连续管理。</p>
       </div>
       <div class="ai-tip-section">
@@ -1362,8 +1415,9 @@ body{background:#dfe6ef;margin:0;padding:0}
         </div>
       </div>
       <div class="ai-tip-section">
-        <div class="ai-tip-sec-lbl">① 患者标签 · 期望您做的事</div>
+        <div class="ai-tip-sec-lbl">① 患者标签</div>
         <div class="ai-tip-pills"><span class="ai-tip-pill">糖缓解向</span><span class="ai-tip-pill">慢病增值服务</span></div>
+        <div class="ai-tip-expect-lbl">期望您做的事</div>
         <p class="ai-tip-do">为本例患者启动<strong>糖缓解类风险评估</strong>流程，在对话中完成必要追问与结论说明，便于衔接后续干预。</p>
       </div>
       <div class="ai-tip-section">
@@ -1607,6 +1661,23 @@ body{background:#dfe6ef;margin:0;padding:0}
   </div>
 </div>
 
+<div id="rxQuickQaMask" class="rx-quickqa-mask" onclick="closeRxQuickQa()"></div>
+<div id="rxQuickQaPanel" class="rx-quickqa-panel" role="dialog" aria-modal="true" aria-labelledby="rxQuickQaTitle">
+  <div class="rx-quickqa-head">
+    <div id="rxQuickQaTitle" class="rx-quickqa-title">处方页 · 智能问答</div>
+    <button type="button" class="rx-quickqa-close" onclick="closeRxQuickQa()" aria-label="关闭">×</button>
+  </div>
+  <div id="rxQuickQaBody" class="rx-quickqa-body"></div>
+  <div id="rxQuickQaPresets" class="rx-quickqa-presets">
+    <button type="button" class="rx-quickqa-preset" onclick="askRxQuickQaPreset('脆性糖尿病如何干预？')">脆性糖尿病如何干预？</button>
+    <button type="button" class="rx-quickqa-preset" onclick="askRxQuickQaPreset('糖尿病患者处方开具注意哪些相互作用？')">处方相互作用要点</button>
+  </div>
+  <div class="rx-quickqa-compose">
+    <input id="rxQuickQaInput" class="rx-quickqa-input" placeholder="输入问题并回车发送…" onkeydown="if(event.key==='Enter'){event.preventDefault();sendRxQuickQa()}">
+    <button type="button" class="rx-quickqa-send" onclick="sendRxQuickQa()">发送</button>
+  </div>
+</div>
+
 <script>
 function openCmcModal() {
   var o = document.getElementById('cmc-overlay')
@@ -1632,6 +1703,7 @@ function closeCmcModal() {
     maxBtn.textContent = '□'
   }
   clearRxDrugSelection()
+  closeRxQuickQa()
   var rxStack = document.getElementById('aiFabRxStack')
   if (rxStack) rxStack.classList.remove('is-visible')
 }
@@ -1723,7 +1795,7 @@ function applyAiRxPrefill() {
   var o = document.getElementById('cmc-overlay')
   if (!o || !o.classList.contains('is-open')) openCmcModal()
   var tabBtn = document.querySelector('.tab[data-tab="prescription"]')
-  switchTab('prescription', tabBtn)
+  switchTab('prescription', tabBtn, { skipRxTips: true })
   var set = function (id, v) {
     var el = document.getElementById(id)
     if (el) el.value = v
@@ -1808,6 +1880,150 @@ function refreshAiTipsCountBadges() {
     el.textContent = String(n)
   })
 }
+let rxQuickQaMode = 'qa'
+var rxQuickQaPositionHandlers = { onScroll: null, onResize: null }
+function updateRxQuickQaPanelPosition() {
+  var page = document.querySelector('#tab-prescription .rx-page')
+  var panel = document.getElementById('rxQuickQaPanel')
+  var mask = document.getElementById('rxQuickQaMask')
+  if (!page || !panel || !mask || !panel.classList.contains('is-open')) return
+  var pr = page.getBoundingClientRect()
+  var pad = 8
+  var vw = window.innerWidth
+  var vh = window.innerHeight
+  var innerRight = Math.min(vw, pr.right)
+  var innerLeft = Math.max(0, pr.left)
+  var innerTop = Math.max(0, pr.top)
+  var innerBottom = Math.min(vh, pr.bottom)
+  var maskW = Math.max(0, innerRight - innerLeft)
+  var maskH = Math.max(0, innerBottom - innerTop)
+  mask.style.top = innerTop + 'px'
+  mask.style.left = innerLeft + 'px'
+  mask.style.width = maskW + 'px'
+  mask.style.height = maskH + 'px'
+  var maxW = Math.min(420, Math.max(0, pr.width - pad * 2))
+  panel.style.right = Math.max(pad, vw - innerRight + pad) + 'px'
+  panel.style.width = maxW + 'px'
+  panel.style.maxWidth = maxW + 'px'
+  var fabReserve = 76
+  var availH = innerBottom - innerTop - fabReserve - pad * 2
+  panel.style.maxHeight = Math.min(520, Math.max(220, availH)) + 'px'
+  panel.style.bottom = Math.max(pad, vh - innerBottom + pad) + 'px'
+}
+function bindRxQuickQaPosition() {
+  unbindRxQuickQaPosition()
+  rxQuickQaPositionHandlers.onScroll = function () { updateRxQuickQaPanelPosition() }
+  rxQuickQaPositionHandlers.onResize = function () { updateRxQuickQaPanelPosition() }
+  window.addEventListener('scroll', rxQuickQaPositionHandlers.onScroll, true)
+  window.addEventListener('resize', rxQuickQaPositionHandlers.onResize)
+  updateRxQuickQaPanelPosition()
+}
+function unbindRxQuickQaPosition() {
+  if (rxQuickQaPositionHandlers.onScroll) {
+    window.removeEventListener('scroll', rxQuickQaPositionHandlers.onScroll, true)
+    rxQuickQaPositionHandlers.onScroll = null
+  }
+  if (rxQuickQaPositionHandlers.onResize) {
+    window.removeEventListener('resize', rxQuickQaPositionHandlers.onResize)
+    rxQuickQaPositionHandlers.onResize = null
+  }
+}
+function resetRxQuickQaLayout() {
+  var panel = document.getElementById('rxQuickQaPanel')
+  var mask = document.getElementById('rxQuickQaMask')
+  if (panel) {
+    panel.style.right = ''
+    panel.style.bottom = ''
+    panel.style.width = ''
+    panel.style.maxWidth = ''
+    panel.style.maxHeight = ''
+  }
+  if (mask) {
+    mask.style.top = ''
+    mask.style.left = ''
+    mask.style.width = ''
+    mask.style.height = ''
+  }
+}
+function showRxDiagAssist() {
+  var box = document.getElementById('rxDiagAssistHint')
+  var tag = document.getElementById('rxMainDiagTag')
+  var nameEl = document.getElementById('rxDiagAssistName')
+  if (box) box.classList.add('is-visible')
+  if (nameEl && tag) nameEl.textContent = (tag.textContent || '当前诊断').replace('+', '').trim()
+}
+function openRxQuickQa(mode) {
+  rxQuickQaMode = mode === 'policy' ? 'policy' : 'qa'
+  var panel = document.getElementById('rxQuickQaPanel')
+  var mask = document.getElementById('rxQuickQaMask')
+  var body = document.getElementById('rxQuickQaBody')
+  var title = document.getElementById('rxQuickQaTitle')
+  var input = document.getElementById('rxQuickQaInput')
+  var presets = document.getElementById('rxQuickQaPresets')
+  var diag = (document.getElementById('rxDiagAssistName') && document.getElementById('rxDiagAssistName').textContent) || '当前诊断'
+  if (!panel || !mask || !body || !title || !input || !presets) return
+  panel.classList.add('is-open')
+  mask.classList.add('is-open')
+  title.textContent = rxQuickQaMode === 'policy' ? '处方页 · 医保政策' : '处方页 · 智能问答'
+  presets.style.display = rxQuickQaMode === 'policy' ? 'none' : 'flex'
+  body.innerHTML = ''
+  if (rxQuickQaMode === 'policy') {
+    appendRxQuickQaMsg('assistant', '已进入医保政策速查（演示）。\n可按当前诊断给出处方合规、支付范围与门慢衔接提示。')
+    appendRxQuickQaMsg('assistant', '当前诊断：' + diag + '\n建议先核对：医保目录属性、限制支付条件、是否需补充检验依据。')
+    input.placeholder = '例如：该诊断下二甲双胍和达格列净医保支付注意点？'
+  } else {
+    appendRxQuickQaMsg('assistant', '已进入处方页智能问答（不离开当前页面）。')
+    appendRxQuickQaMsg('assistant', '当前诊断：' + diag + '。你可以直接提问，例如「脆性糖尿病如何干预？」')
+    input.placeholder = '例如：脆性糖尿病如何干预？'
+    input.value = '脆性糖尿病如何干预？'
+    input.select()
+  }
+  input.focus()
+  bindRxQuickQaPosition()
+  requestAnimationFrame(function () { updateRxQuickQaPanelPosition() })
+}
+function closeRxQuickQa() {
+  unbindRxQuickQaPosition()
+  resetRxQuickQaLayout()
+  var panel = document.getElementById('rxQuickQaPanel')
+  var mask = document.getElementById('rxQuickQaMask')
+  if (panel) panel.classList.remove('is-open')
+  if (mask) mask.classList.remove('is-open')
+}
+function appendRxQuickQaMsg(role, text) {
+  var body = document.getElementById('rxQuickQaBody')
+  if (!body) return null
+  var div = document.createElement('div')
+  div.className = 'rx-quickqa-msg ' + (role === 'user' ? 'user' : 'assistant')
+  div.textContent = text
+  body.appendChild(div)
+  body.scrollTop = body.scrollHeight
+  return div
+}
+function askRxQuickQaPreset(q) {
+  var input = document.getElementById('rxQuickQaInput')
+  if (!input) return
+  input.value = q
+  sendRxQuickQa()
+}
+function sendRxQuickQa() {
+  var input = document.getElementById('rxQuickQaInput')
+  var v = (input && input.value || '').trim()
+  if (!v) return
+  input.value = ''
+  appendRxQuickQaMsg('user', v)
+  var loading = appendRxQuickQaMsg('assistant', '处理中...')
+  setTimeout(function () {
+    if (loading && loading.remove) loading.remove()
+    var diag = (document.getElementById('rxDiagAssistName') && document.getElementById('rxDiagAssistName').textContent) || '当前诊断'
+    if (rxQuickQaMode === 'policy') {
+      appendRxQuickQaMsg('assistant', '【医保政策提示（演示）】\n诊断：' + diag + '\n1) 建议优先核对药品医保目录与限制支付条件。\n2) 若涉及门慢管理，建议补齐近期关键检验（血糖/糖化等）作为处方依据。\n3) 对同类可替代药，优先选择目录内且支付条件明确的方案。')
+    } else {
+      appendRxQuickQaMsg('assistant', '【智能问答（演示）】\n你问的是：' + v + '\n针对「' + diag + '」可先按“目标-监测-调整”三步：\n1) 目标：明确近2周血糖控制目标与低血糖风险阈值；\n2) 监测：按餐前/餐后与夜间波动补测并记录诱因；\n3) 调整：结合依从性、饮食与用药时机做分层干预，必要时尽快复诊评估。')
+    }
+    updateRxQuickQaPanelPosition()
+  }, 520)
+}
 function switchCmcSubView(sub, btnEl) {
   document.querySelectorAll('.cmc-subtab').forEach(function (b) { b.classList.remove('active') })
   document.querySelectorAll('.cmc-subpanel').forEach(function (p) { p.classList.remove('active') })
@@ -1824,19 +2040,36 @@ function gotoRxHealthArchive() {
   switchTab('workbench', document.querySelector('.tab[data-tab="workbench"]'))
   switchCmcSubView('record')
 }
+function backFromDoctorEval() {
+  switchTab('workbench', document.querySelector('.tab[data-tab="workbench"]'))
+}
 // Tab 切换
-function switchTab(tab, el) {
+function switchTab(tab, el, opts) {
+  opts = opts || {}
   document.querySelectorAll('.tab').forEach(function (x) { x.classList.remove('active') })
   document.querySelectorAll('.tab-content').forEach(function (x) { x.classList.remove('active') })
   var tabEl = el || document.querySelector('.tab[data-tab="' + tab + '"]')
   if (tabEl) tabEl.classList.add('active')
   var pane = document.getElementById('tab-' + tab)
   if (pane) pane.classList.add('active')
+  var cmcInner = document.querySelector('.container.cmc-inner')
+  if (cmcInner) cmcInner.classList.toggle('cmc-inner--doctor-eval-solo', tab === 'doctor-eval')
+  var subOuter = document.getElementById('cmcWorkbenchSubtabsOuter')
+  if (subOuter) subOuter.classList.toggle('is-visible', tab === 'workbench')
   var evalLink = document.getElementById('cmcLinkDoctorEval')
   if (evalLink) evalLink.classList.toggle('is-active', tab === 'doctor-eval')
   activeOutputTarget = tab === 'lobster-skill' ? 'skill' : 'main'
-  if (tab !== 'prescription') clearRxDrugSelection()
+  if (tab !== 'prescription') {
+    clearRxDrugSelection()
+    closeRxQuickQa()
+  }
   updateRxFabVisibility()
+  if (tab === 'prescription' && !opts.skipRxTips) {
+    var o = document.getElementById('cmc-overlay')
+    if (o && o.classList.contains('is-open')) {
+      setTimeout(function () { openAiTipsPanel('rx') }, 0)
+    }
+  }
 }
 
 // 模式切换
