@@ -8,7 +8,7 @@
 :root{--cmc-main-h:min(580px,calc(96vh - 188px))}
 body{background:#dfe6ef;margin:0;padding:0}
 .container{max-width:960px;margin:0 auto;background:#fff;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.08)}
-.container.cmc-inner{max-width:none;margin:0;border-radius:0;box-shadow:none;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden}
+.container.cmc-inner{max-width:none;margin:0;border-radius:0;box-shadow:none;flex:1;min-height:0;display:flex;flex-direction:column;overflow:hidden;position:relative}
 .cmc-inner.cmc-inner--doctor-eval-solo{--cmc-main-h:min(640px,calc(96vh - 96px))}
 .cmc-inner.cmc-inner--doctor-eval-solo > .header{display:none !important}
 .cmc-inner.cmc-inner--doctor-eval-solo > .tabs{display:none !important}
@@ -105,6 +105,75 @@ body{background:#dfe6ef;margin:0;padding:0}
 .rx-tb{height:28px;padding:0 10px;border:1px solid #cfd8dc;background:#fff;border-radius:3px;font-size:11px;cursor:pointer}
 .rx-tb.primary{background:#1976d2;color:#fff;border-color:#1565c0}
 .rx-pres-note{margin-left:auto;font-size:11px;color:#c62828}
+.rx-tb--cdss{border-color:#7c3aed;background:linear-gradient(180deg,#faf5ff,#f3e8ff);color:#5b21b6;font-weight:700}
+.rx-tb--cdss:hover{filter:brightness(.97);border-color:#6d28d9}
+.rx-ai-cdss-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.4);z-index:1010;display:none}
+.rx-ai-cdss-backdrop.is-open{display:block}
+.rx-ai-cdss-panel{position:fixed;top:0;right:0;width:min(380px,100%);max-width:100%;height:100%;max-height:100%;background:#fff;box-shadow:-8px 0 32px rgba(0,0,0,.22);z-index:1020;display:none;flex-direction:column;font-size:12px;box-sizing:border-box}
+.rx-ai-cdss-panel.is-open{display:flex !important}
+.rx-ai-cdss-hd{display:flex;align-items:center;gap:8px;padding:10px 12px;background:linear-gradient(135deg,#6d28d9,#4f46e5);color:#fff;flex-shrink:0}
+.rx-ai-cdss-hd-ico{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0}
+.rx-ai-cdss-hd-ico img{width:100%;height:100%;object-fit:cover}
+.rx-ai-cdss-hd-title{flex:1;font-size:14px;font-weight:800;letter-spacing:.02em}
+.rx-ai-cdss-hd-x{width:32px;height:32px;border:none;background:transparent;color:#fff;font-size:20px;line-height:1;cursor:pointer;border-radius:4px;flex-shrink:0}
+.rx-ai-cdss-hd-x:hover{background:rgba(255,255,255,.15)}
+.rx-ai-cdss-patient{padding:10px 12px;border-bottom:1px solid #ede9fe;background:#fafaff;flex-shrink:0}
+.rx-ai-cdss-name{font-weight:700;color:#1e1b4b;font-size:13px;margin-bottom:6px}
+.rx-ai-cdss-tags{display:flex;flex-wrap:wrap;gap:4px}
+.rx-ai-cdss-tag{font-size:10px;padding:2px 8px;border-radius:10px;border:1px solid #e9d5ff;background:#fff;color:#5b21b6}
+.rx-ai-cdss-tag--muted{background:#f4f4f5;color:#52525b;border-color:#e4e4e7}
+.rx-ai-cdss-tag--warn{background:#fff7ed;color:#c2410c;border-color:#fed7aa}
+.rx-ai-cdss-tag--risk{background:#fff;border:1px solid #f87171;color:#b91c1c}
+.rx-ai-cdss-tabs{display:flex;gap:0;border-bottom:1px solid #e9e8f4;background:#fff;flex-shrink:0}
+.rx-ai-cdss-tab{flex:1;padding:8px 10px;font-size:11px;text-align:center;cursor:pointer;border:none;background:transparent;color:#64748b;font-family:inherit;border-bottom:2px solid transparent}
+.rx-ai-cdss-tab:hover{color:#4f46e5}
+.rx-ai-cdss-tab.active{color:#2563eb;font-weight:700;border-bottom-color:#2563eb}
+.rx-ai-cdss-body{flex:1;min-height:0;overflow-y:auto;padding:10px 12px;background:#f8fafc}
+.rx-ai-cdss-intro{background:#eef2ff;border:1px solid #c7d2fe;border-radius:8px;padding:8px 10px;font-size:11px;color:#3730a3;line-height:1.55;margin-bottom:10px}
+.rx-ai-cdss-ts{text-align:center;font-size:10px;color:#94a3b8;margin:8px 0}
+.rx-ai-cdss-actions{display:flex;flex-direction:column;gap:8px}
+.rx-ai-cdss-actbtn{display:block;width:100%;padding:10px 12px;border:1px solid #bfdbfe;border-radius:8px;background:linear-gradient(180deg,#eff6ff,#dbeafe);color:#1d4ed8;font-size:12px;font-weight:600;cursor:pointer;text-align:left;font-family:inherit}
+.rx-ai-cdss-actbtn:hover{border-color:#93c5fd;background:#dbeafe}
+.rx-ai-cdss-act-details{margin-top:4px;border:1px solid #c7d2fe;border-radius:8px;background:#fff;flex-shrink:0;max-width:100%}
+.rx-ai-cdss-act-summary{cursor:pointer;padding:6px 10px;font-size:11px;font-weight:700;color:#1e40af;list-style:none;display:flex;align-items:center;justify-content:space-between;gap:8px;line-height:1.3;-webkit-user-select:none;user-select:none}
+.rx-ai-cdss-act-summary::-webkit-details-marker{display:none}
+.rx-ai-cdss-act-summary::after{content:'▸';font-size:10px;color:#64748b;transition:transform .15s}
+.rx-ai-cdss-act-details[open] .rx-ai-cdss-act-summary::after{transform:rotate(90deg)}
+.rx-ai-cdss-actions--grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 8px 8px}
+.rx-ai-cdss-actbtn--compact{padding:6px 6px;font-size:10px;font-weight:600;line-height:1.25;border-radius:6px;text-align:center}
+.rx-ai-cdss-deep .rx-ai-cdss-actions--grid{grid-template-columns:1fr}
+.rx-ai-cdss-deep .rx-ai-cdss-intro{color:#312e81}
+.rx-ai-cdss-ft{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:8px 10px;border-top:1px solid #e9e8f4;background:#fff;flex-shrink:0}
+.rx-ai-cdss-ftbtn{display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:999px;border:1px solid #e2e8f0;background:#f8fafc;font-size:10px;color:#475569;cursor:pointer;font-family:inherit}
+.rx-ai-cdss-ftbtn:hover{background:#f1f5f9}
+.rx-ai-cdss-pane{display:none}
+.rx-ai-cdss-pane.active{display:block}
+/* 指南推荐：上方内容区独立滚动，功能入口固定在面板中段底部，避免遮挡推荐卡片 */
+.rx-ai-cdss-body:has(#rxAiCdssPaneGuide.active){
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  min-height:0;
+}
+#rxAiCdssPaneGuide.rx-ai-cdss-pane--guide.active{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  min-height:0;
+  overflow:hidden;
+}
+.rx-ai-cdss-guide-main{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+#rxAiCdssPaneGuide .rx-ai-cdss-actions{
+  flex-shrink:0;
+  margin-top:0;
+  padding-top:0;
+  border-top:none;
+}
 .rx-grid{background:#fff;border:1px solid #e2e8f0;padding:8px;border-radius:4px;margin-bottom:6px}
 .rx-grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:8px 12px;align-items:center}
 .rx-lab{font-size:11px;color:#546e7a}
@@ -144,13 +213,26 @@ body{background:#dfe6ef;margin:0;padding:0}
 .ai-fab-stack{display:flex;flex-direction:column;align-items:center;gap:4px}
 .ai-fab-stack .ai-doc-fab{position:relative;right:auto;bottom:auto;left:auto;top:auto;z-index:auto}
 .ai-fab-tip-count{font-size:11px;font-weight:700;color:#fff;background:linear-gradient(180deg,#ef5350,#c62828);padding:2px 7px;border-radius:10px;line-height:1.15;min-width:18px;text-align:center;box-shadow:0 2px 6px rgba(198,40,40,.35);border:1px solid rgba(255,255,255,.75)}
-#aiFabHisStack{position:fixed;right:20px;bottom:24px;z-index:1025}
 .ai-doc-fab:hover{transform:scale(1.06);box-shadow:0 6px 22px rgba(30,60,120,.45)}
 .ai-doc-fab:focus{outline:2px solid #fff;outline-offset:2px}
 .ai-doc-fab-img{width:44px;height:44px;border-radius:50%;object-fit:cover;display:block;box-shadow:inset 0 0 0 2px rgba(255,255,255,.85)}
-#tab-prescription .ai-fab-stack--rx{position:absolute;left:auto;right:16px;bottom:14px;top:auto;z-index:6;display:none;box-shadow:none}
-#tab-prescription .ai-fab-stack--rx .ai-doc-fab{box-shadow:0 4px 16px rgba(30,60,120,.32)}
-#tab-prescription .ai-fab-stack--rx.is-visible{display:flex !important}
+.rx-ai-fab-anchor{position:relative;display:none;flex-direction:column;align-items:flex-end;gap:0}
+.rx-ai-fab-anchor.is-visible{display:flex !important}
+.rx-ai-fab-anchor .ai-fab-stack .ai-doc-fab{box-shadow:0 4px 16px rgba(30,60,120,.32)}
+.cmc-inner-fab-slot{position:absolute;right:8px;bottom:6px;z-index:30;pointer-events:none;max-width:calc(100% - 16px)}
+.cmc-inner-fab-slot .rx-ai-fab-anchor{pointer-events:auto}
+.his-ai-fab-anchor{position:fixed;right:16px;bottom:20px;z-index:1025;display:flex;flex-direction:column;align-items:flex-end;gap:0;pointer-events:auto}
+.his-ai-fab-anchor .ai-fab-stack .ai-doc-fab{position:relative;right:auto;bottom:auto;box-shadow:0 4px 16px rgba(30,60,120,.32)}
+.rx-ai-fab-menu{display:none;min-width:220px;max-width:min(92vw,280px);background:#fff;border:1px solid #e2e8f0;border-radius:10px;box-shadow:0 10px 36px rgba(15,23,42,.18);padding:6px;margin-bottom:8px;order:-1}
+.rx-ai-fab-menu.is-open{display:block}
+.rx-ai-fab-menu-h{font-size:10px;color:#94a3b8;padding:4px 10px 2px;letter-spacing:.02em}
+.rx-ai-fab-menu-item{display:flex;width:100%;align-items:center;gap:8px;text-align:left;padding:10px 12px;border:none;border-radius:8px;background:transparent;font-size:12px;font-family:inherit;cursor:pointer;color:#1e293b;box-sizing:border-box}
+.rx-ai-fab-menu-item:hover{background:#f1f5f9}
+.rx-ai-fab-menu-item .rx-ai-fab-menu-ico{font-size:16px;line-height:1;flex-shrink:0}
+.rx-ai-fab-menu-item strong{font-weight:700}
+.rx-ai-fab-menu-item--cdss{background:linear-gradient(180deg,#faf5ff,#f3e8ff);color:#5b21b6;border:1px solid #e9d5ff;margin-top:2px}
+.rx-ai-fab-menu-item--cdss:hover{filter:brightness(.98)}
+.rx-ai-fab-menu-item .rx-menu-badge{font-size:10px;margin-left:auto;padding:1px 6px;border-radius:999px;background:#c62828;color:#fff;font-weight:700;flex-shrink:0}
 .ai-doc-fab--pulse{animation:aiFabPulse 2s ease-in-out infinite}
 @keyframes aiFabPulse{0%,100%{box-shadow:0 4px 18px rgba(30,60,120,.38)}50%{box-shadow:0 4px 22px rgba(46,160,255,.65)}}
 .ai-tips-backdrop{position:fixed;inset:0;background:rgba(15,35,55,.4);z-index:1220;display:none}
@@ -165,6 +247,7 @@ body{background:#dfe6ef;margin:0;padding:0}
 .ai-tips-close{margin-left:auto;border:none;background:transparent;font-size:20px;line-height:1;cursor:pointer;color:#90a4ae;padding:0 4px}
 .ai-tips-close:hover{color:#455a64}
 .ai-tips-body{padding:12px 16px;display:flex;flex-direction:column;gap:10px}
+.ai-tip-group-title{font-size:11px;font-weight:700;color:#475569;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:6px 10px}
 .ai-tip-card{font-size:12px;line-height:1.5;padding:12px 14px;border-radius:8px;border:1px solid #e0e0e0;display:flex;flex-direction:column;align-items:stretch;gap:0}
 .ai-tip-card-headrow{display:flex;align-items:center;gap:8px;margin-bottom:2px}
 .ai-tip-card-text{flex:1;min-width:0}
@@ -181,10 +264,44 @@ body{background:#dfe6ef;margin:0;padding:0}
 .ai-tip-benefit{margin:0;font-size:11px;color:#546e7a;line-height:1.55}
 .ai-tip-perf-row{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;font-size:12px;color:#37474f}
 .ai-tip-perf-val{font-weight:700;color:#2e7d32;font-size:13px}
-.ai-tip-card-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:12px;padding-top:10px;border-top:1px solid #eceff1;width:100%;box-sizing:border-box}
+.ai-tip-status-bar{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;padding-top:10px;border-top:1px dashed #e2e8f0;width:100%;box-sizing:border-box}
+.ai-tip-status-label{font-size:11px;font-weight:600;color:#64748b}
+.ai-tip-card[data-tip-state="done"] .ai-tip-status-label{color:#15803d}
+.ai-tip-card[data-tip-state="todo"] .ai-tip-status-label{color:#7c3aed}
+.ai-tip-card[data-tip-state="later"] .ai-tip-status-label{color:#b45309}
+.ai-tip-status-btns{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ai-tip-st{height:24px;padding:0 8px;font-size:10px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;color:#475569;cursor:pointer;font-family:inherit;line-height:1}
+.ai-tip-st:hover{background:#f8fafc;border-color:#94a3b8}
+.ai-tip-st.is-active{background:#e0f2fe;border-color:#38bdf8;color:#0369a1;font-weight:700}
+.ai-tip-card[data-tip-state="done"] .ai-tip-st[data-st="done"].is-active{background:#dcfce7;border-color:#4ade80;color:#166534}
+.ai-tip-card[data-tip-state="todo"] .ai-tip-st[data-st="todo"].is-active{background:#ede9fe;border-color:#a78bfa;color:#5b21b6}
+.ai-tip-card[data-tip-state="later"] .ai-tip-st[data-st="later"].is-active{background:#ffedd5;border-color:#fb923c;color:#9a3412}
+.ai-tip-snooze-hint{font-size:10px;color:#92400e;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:6px 8px;line-height:1.45;margin-top:8px}
+.ai-tip-card--muted{opacity:0.78}
+.ai-tip-card--muted .ai-tip-card-actions .ai-tips-btn.primary{opacity:0.85}
+.ai-tips-tabs{display:flex;gap:0;margin:0 0 10px;padding:0;background:#f1f5f9;border-radius:10px;border:1px solid #e2e8f0;overflow:hidden}
+.ai-tips-tab{flex:1;padding:8px 10px;font-size:12px;font-weight:700;border:none;background:transparent;color:#64748b;cursor:pointer;font-family:inherit}
+.ai-tips-tab:hover{background:#e2e8f0;color:#334155}
+.ai-tips-tab.active{background:#fff;color:#1d4ed8;box-shadow:inset 0 -2px 0 #2563eb}
+.ai-tips-pane{display:none;flex-direction:column;gap:10px}
+.ai-tips-pane.active{display:flex}
+.ai-tips-pane-hint{font-size:10px;color:#64748b;margin:0 0 2px;line-height:1.45;padding:0 2px}
+.rx-cdss-tip-wrap{margin-bottom:10px}
+#rxAiCdssPanel .rx-cdss-tip-wrap .check-card{font-size:11px}
+#rxAiCdssPanel .rx-cdss-tip-wrap .risk-card{font-size:11px}
+.ai-tip-card-actions{display:flex;gap:8px;align-items:center;justify-content:flex-end;margin-top:10px;padding-top:10px;border-top:1px solid #eceff1;width:100%;box-sizing:border-box}
 .ai-tip-card .ai-tips-btn{height:28px;padding:0 10px;font-size:11px;white-space:nowrap}
 .ai-tip-card--info{background:#f5fbff;border-left:4px solid #1976d2}
+.ai-tip-card--todo{background:#f7f7ff;border-left:4px solid #5b21b6;border-color:#ddd6fe}
 .ai-tip-card--warn{background:#fffdf5;border-left:4px solid #f9a825}
+.ai-tip-from-rec-hint{font-size:10px;color:#5b21b6;font-weight:600;margin:0 0 8px;padding:6px 8px;background:#f5f3ff;border-radius:6px;border:1px solid #ddd6fe;line-height:1.35}
+.ai-tip-smart-batch{margin:0 0 10px;border:1px dashed #bfdbfe;border-radius:10px;background:#f8fbff;overflow:hidden}
+.ai-tip-smart-batch-h{font-size:11px;font-weight:700;color:#1e3a5f;padding:8px 10px;background:linear-gradient(180deg,#eef6ff,#e0f2fe);border-bottom:1px solid #dbeafe}
+.ai-tip-snap{padding:8px 10px;border-bottom:1px solid #e8f0fa;display:flex;flex-direction:column;align-items:stretch;gap:6px}
+.ai-tip-snap:last-child{border-bottom:none}
+.ai-tip-snap-title{font-size:12px;font-weight:700;color:#0f172a;line-height:1.4}
+.ai-tip-snap-meta{font-size:10px;color:#64748b;line-height:1.35}
+.ai-tip-snap .ai-tips-btn.primary{align-self:flex-end;height:28px;padding:0 12px;font-size:11px}
 .ai-tip-card--highcost{border:1px solid #ef9a9a;border-left:4px solid #c62828;background:#fff5f5}
 .ai-tip-cost-title{color:#b71c1c;font-weight:700;font-size:13px;margin:0}
 .ai-tip-headline{font-size:13px;font-weight:700;margin:0;color:#1e3a5f}
@@ -618,11 +735,25 @@ body{background:#dfe6ef;margin:0;padding:0}
   <div class="his-foot">王晓飞 · 内科 · 本机 192.168.0.1 · 2023-12-19 09:00</div>
 </div>
 
-<div class="ai-fab-stack" id="aiFabHisStack">
-  <span class="ai-fab-tip-count" data-ai-tip-count>0</span>
-  <button type="button" class="ai-doc-fab ai-doc-fab--pulse" id="aiFabHis" onclick="openAiTipsPanel('his')" title="AI 医生助手（院内）" aria-label="AI 医生助手">
-    <img src="assets/ai-robot-avatar.png" alt="" class="ai-doc-fab-img" width="44" height="44" />
-  </button>
+<div class="his-ai-fab-anchor" id="hisAiDock">
+  <div id="hisAiFabMenu" class="rx-ai-fab-menu" role="menu" aria-label="HIS AI 助手菜单">
+    <div class="rx-ai-fab-menu-h">点击头像展开（与处方页一致）</div>
+    <button type="button" class="rx-ai-fab-menu-item" role="menuitem" onclick="pickHisAiFabMenu('tips')" title="接诊智能提示">
+      <span class="rx-ai-fab-menu-ico" aria-hidden="true">💬</span>
+      <span><strong>提醒消息</strong> · 智能提示</span>
+      <span class="rx-menu-badge" data-ai-tip-count>0</span>
+    </button>
+    <button type="button" class="rx-ai-fab-menu-item rx-ai-fab-menu-item--cdss" role="menuitem" onclick="pickHisAiFabMenu('cdss')" title="AI-CDSS 临床辅助侧栏">
+      <span class="rx-ai-fab-menu-ico" aria-hidden="true">🧠</span>
+      <span><strong>AI-CDSS</strong> · 临床辅助</span>
+    </button>
+  </div>
+  <div class="ai-fab-stack" id="hisAiFabStack">
+    <span class="ai-fab-tip-count" data-ai-tip-count>0</span>
+    <button type="button" class="ai-doc-fab ai-doc-fab--pulse" id="aiFabHis" onclick="toggleHisAiFabMenu(event)" title="接诊提醒 / AI-CDSS" aria-expanded="false" aria-haspopup="true" aria-controls="hisAiFabMenu" aria-label="打开 AI 助手菜单">
+      <img src="assets/ai-robot-avatar.png" alt="" class="ai-doc-fab-img" width="44" height="44" />
+    </button>
+  </div>
 </div>
 
 <div id="cmc-overlay" class="cmc-overlay" aria-hidden="true" onclick="if(event.target===this)closeCmcModal()">
@@ -1023,6 +1154,7 @@ body{background:#dfe6ef;margin:0;padding:0}
         <button type="button" class="rx-tb">开具草药</button>
         <button type="button" class="rx-tb">处方上传</button>
         <button type="button" class="rx-tb">合理用药</button>
+        <button type="button" class="rx-tb rx-tb--cdss" onclick="openRxAiCdssPanel()" title="直达 AI-CDSS（演示保留，可与第三方确认后决定是否落地）">AI-CDSS</button>
         <span class="rx-pres-note">处方信息（*注意：处方有效期3天*）2025-12-25</span>
       </div>
       <div class="rx-grid">
@@ -1055,7 +1187,7 @@ body{background:#dfe6ef;margin:0;padding:0}
           </div>
         </div>
       </div>
-      <p class="rx-plugin-note">说明：传统 HIS 处方页内嵌的「糖尿病管理 / 待检项」红框提示由<strong>健共体插件</strong>改为通过右下角 <strong>AI 医生助手</strong>推送（此处不重复嵌入）；接诊后请点机器人查看提示，或在下方明细中<strong>点选药品行</strong>唤起用药助手。</p>
+      <p class="rx-plugin-note">说明：第三方 HIS 处方工具栏是否可改需协商；除工具栏「AI-CDSS」外，<strong>宽屏会话（智能问答 / Skill）打开时，右下角仍保留同一 AI 头像菜单</strong>，可直达接诊提醒或 AI-CDSS，无需切回处方页。</p>
       <div class="rx-add-row">
         <div><span class="rx-lab">药品名称</span><input id="rxLineName" class="rx-inp" placeholder="检索"></div>
         <div><span class="rx-lab">规格</span><input id="rxLineSpec" class="rx-inp"></div>
@@ -1089,12 +1221,6 @@ body{background:#dfe6ef;margin:0;padding:0}
             <tr class="rx-row-base rx-drug-row" data-drug="阿卡波糖片" onclick="selectRxDrugRow(event,this)"><td>1</td><td>R001</td><td>—</td><td>阿卡波糖片</td><td>100mg</td><td>mg</td><td>tid</td><td>1</td><td>21</td><td>口服</td><td>2.92</td><td>61.29</td><td>100mg×30</td><td>盒</td></tr>
           </tbody>
         </table>
-      </div>
-      <div class="ai-fab-stack ai-fab-stack--rx" id="aiFabRxStack">
-        <span class="ai-fab-tip-count" data-ai-tip-count>0</span>
-        <button type="button" class="ai-doc-fab ai-doc-fab--rx" id="aiFabRx" onclick="openAiTipsPanel('rx')" title="AI 医生助手（处方）" aria-label="AI 医生助手">
-          <img src="assets/ai-robot-avatar.png" alt="" class="ai-doc-fab-img" width="44" height="44" />
-        </button>
       </div>
     </div>
   </div>
@@ -1337,8 +1463,86 @@ body{background:#dfe6ef;margin:0;padding:0}
       </div>
     </div>
   </div>
+  <div class="cmc-inner-fab-slot" aria-hidden="false">
+    <div class="rx-ai-fab-anchor" id="rxAiFabAnchor">
+      <div id="rxAiFabMenu" class="rx-ai-fab-menu" role="menu" aria-label="AI 助手菜单">
+        <div class="rx-ai-fab-menu-h">插件入口（处方 / 宽屏会话均可）</div>
+        <button type="button" class="rx-ai-fab-menu-item" role="menuitem" onclick="pickRxAiFabMenu('tips')" title="接诊智能提示卡片">
+          <span class="rx-ai-fab-menu-ico" aria-hidden="true">💬</span>
+          <span><strong>接诊提醒</strong> · 智能提示</span>
+          <span class="rx-menu-badge" data-ai-tip-count>0</span>
+        </button>
+        <button type="button" class="rx-ai-fab-menu-item rx-ai-fab-menu-item--cdss" role="menuitem" onclick="pickRxAiFabMenu('cdss')" title="AI-CDSS 临床辅助侧栏">
+          <span class="rx-ai-fab-menu-ico" aria-hidden="true">🧠</span>
+          <span><strong>AI-CDSS</strong> · 临床辅助</span>
+        </button>
+      </div>
+      <div class="ai-fab-stack ai-fab-stack--rx" id="aiFabRxStack">
+        <span class="ai-fab-tip-count" data-ai-tip-count>0</span>
+        <button type="button" class="ai-doc-fab ai-doc-fab--rx" id="aiFabRx" onclick="toggleRxAiFabMenu(event)" title="接诊提醒 / AI-CDSS（宽屏下也可用）" aria-expanded="false" aria-haspopup="true" aria-controls="rxAiFabMenu" aria-label="打开 AI 助手菜单">
+          <img src="assets/ai-robot-avatar.png" alt="" class="ai-doc-fab-img" width="44" height="44" />
+        </button>
+      </div>
+    </div>
+  </div>
   </div>
 </div>
+<div id="rxAiCdssBackdrop" class="rx-ai-cdss-backdrop" onclick="closeRxAiCdssPanel()" aria-hidden="true"></div>
+<aside id="rxAiCdssPanel" class="rx-ai-cdss-panel" role="dialog" aria-labelledby="rxAiCdssTitle" aria-modal="true" onclick="event.stopPropagation()">
+  <div class="rx-ai-cdss-hd">
+    <div class="rx-ai-cdss-hd-ico"><img src="assets/ai-robot-avatar.png" alt="" width="36" height="36" /></div>
+    <div class="rx-ai-cdss-hd-title" id="rxAiCdssTitle">AI-CDSS 临床辅助</div>
+    <button type="button" class="rx-ai-cdss-hd-x" onclick="closeRxAiCdssPanel()" aria-label="关闭">×</button>
+  </div>
+  <div class="rx-ai-cdss-patient">
+    <div class="rx-ai-cdss-name">李学坤 · 男 · 67岁</div>
+    <div class="rx-ai-cdss-tags">
+      <span class="rx-ai-cdss-tag rx-ai-cdss-tag--muted">家庭签约</span>
+      <span class="rx-ai-cdss-tag rx-ai-cdss-tag--warn">大人头</span>
+      <span class="rx-ai-cdss-tag">2型糖尿病</span>
+      <span class="rx-ai-cdss-tag rx-ai-cdss-tag--risk">高血压</span>
+    </div>
+  </div>
+  <div class="rx-ai-cdss-tabs" role="tablist">
+    <button type="button" class="rx-ai-cdss-tab active" id="rxAiCdssTabGuide" role="tab" aria-selected="true" onclick="switchRxAiCdssTab('guide')">指南推荐</button>
+    <button type="button" class="rx-ai-cdss-tab" id="rxAiCdssTabDeep" role="tab" aria-selected="false" onclick="switchRxAiCdssTab('deep')">AI深度思考</button>
+  </div>
+  <div class="rx-ai-cdss-body">
+    <div id="rxAiCdssPaneGuide" class="rx-ai-cdss-pane rx-ai-cdss-pane--guide active" role="tabpanel">
+      <div class="rx-ai-cdss-guide-main">
+      <div class="rx-ai-cdss-intro">您好，我是您的AI临床辅助助手。基于患者当前病情与用药，我将为您提供循证医学支持。需要时再展开下方能力入口。</div>
+      <div class="rx-ai-cdss-ts">2026-04-04 14:32</div>
+      </div>
+      <details class="rx-ai-cdss-act-details">
+        <summary class="rx-ai-cdss-act-summary">临床能力快捷入口 <span style="font-weight:500;color:#64748b">(展开)</span></summary>
+        <div class="rx-ai-cdss-actions rx-ai-cdss-actions--grid">
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">病情小结</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">慢病风险</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">推荐检查</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">生活处方</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" style="grid-column:1/-1" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">转诊建议</button>
+        </div>
+      </details>
+    </div>
+    <div id="rxAiCdssPaneDeep" class="rx-ai-cdss-pane rx-ai-cdss-deep" role="tabpanel">
+      <div class="rx-ai-cdss-intro">深度思考模式：结合多源信息与推理链，输出可复核的临床要点（演示）。与「指南推荐」共享同一患者上下文。</div>
+      <div class="rx-ai-cdss-ts">推理就绪</div>
+      <details class="rx-ai-cdss-act-details">
+        <summary class="rx-ai-cdss-act-summary">进入宽屏会话 <span style="font-weight:500;color:#64748b">(展开)</span></summary>
+        <div class="rx-ai-cdss-actions rx-ai-cdss-actions--grid">
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">智能问答（深度）</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster-skill',null,{skipRxTips:true});closeRxAiCdssPanel();">Skill 流程新版</button>
+        </div>
+      </details>
+    </div>
+  </div>
+  <div class="rx-ai-cdss-ft">
+    <button type="button" class="rx-ai-cdss-ftbtn" onclick="openAiTipsPanel('rx')">💬 接诊提醒</button>
+    <button type="button" class="rx-ai-cdss-ftbtn" onclick="openCmcModal();gotoRxHealthArchive({skipRxTips:true});closeRxAiCdssPanel();">📁 档案</button>
+    <button type="button" class="rx-ai-cdss-ftbtn" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">🤖 问答</button>
+    <button type="button" class="rx-ai-cdss-ftbtn" onclick="closeRxAiCdssPanel()">✕ 关闭</button>
+  </div>
+</aside>
 </div>
 
 <!-- 接诊智能提示（插件侧，非 HIS 内嵌） -->
@@ -1348,11 +1552,70 @@ body{background:#dfe6ef;margin:0;padding:0}
     <div class="ai-tips-ico"><img src="assets/ai-robot-avatar.png" alt="" /></div>
     <div>
       <div id="aiTipsTitle" class="ai-tips-title">接诊智能提示</div>
-      <div class="ai-tips-sub">健共体插件 · 非 HIS 原生界面</div>
+      <div class="ai-tips-sub">健共体插件 · 非 HIS 原生界面 · 角标为待跟进条数（不含「已处理 / 稍后提醒」）（演示）</div>
     </div>
     <button type="button" class="ai-tips-close" onclick="closeAiTipsPanel()" aria-label="关闭">×</button>
   </div>
   <div class="ai-tips-body">
+    <div class="ai-tips-tabs" role="tablist" aria-label="消息分类">
+      <button type="button" class="ai-tips-tab active" id="aiTipsTabRec" role="tab" aria-selected="true" aria-controls="aiTipsPaneRec" onclick="switchAiTipsBodyTab('rec')">推荐消息</button>
+      <button type="button" class="ai-tips-tab" id="aiTipsTabTodo" role="tab" aria-selected="false" aria-controls="aiTipsPaneTodo" onclick="switchAiTipsBodyTab('todo')">待办任务</button>
+    </div>
+    <div id="aiTipsPaneRec" class="ai-tips-pane active" role="tabpanel" aria-labelledby="aiTipsTabRec">
+    <p class="ai-tips-pane-hint">业务推荐类：费用结构、履约待检、增值评估等（演示分区）。点「转待办」将把<strong>本条</strong>加入「待办任务」列表并从本页移除（演示）。</p>
+    <div class="ai-tip-smart-batch" aria-label="AI 触发推荐聚合">
+      <div class="ai-tip-smart-batch-h">AI 触发推荐（接诊场景聚类 · 演示）</div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">AI 拟诊为「难治型」高血压患者，尝试探索增强方案</div>
+        <div class="ai-tip-snap-meta">侧栏摘要诊疗路径要点；完整方案请在宽屏「推荐诊疗方案」展开。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-ht-enhanced')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者为糖尿病可缓解人群，请为患者确认管理方案</div>
+        <div class="ai-tip-snap-meta">与下方「糖缓解」大卡同源能力，侧栏展示评估标签卡。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('tang-mgmt')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">风险预警：该患者高血压患病高风险</div>
+        <div class="ai-tip-snap-meta">侧栏展示慢病风险分层卡片（高血压维度）。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('risk-ht-warn')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者为慢阻肺高风险人群，建议转诊以明确诊断</div>
+        <div class="ai-tip-snap-meta">侧栏补充转诊提示；完整评估见宽屏会话。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('risk-copd')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者为慢性冠脉综合征高概率人群，建议转诊</div>
+        <div class="ai-tip-snap-meta">侧栏摘要冠心病路径要点。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-chd-high')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者为慢性冠脉综合征中概率人群，建议转诊</div>
+        <div class="ai-tip-snap-meta">侧栏摘要冠心病路径要点（中概率）。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-chd-mid')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者可能满足糖尿病可缓解的条件，请进一步评估</div>
+        <div class="ai-tip-snap-meta">侧栏为糖缓解向风险评估卡。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('tang-eval')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者有 3 项待检项，点击查看</div>
+        <div class="ai-tip-snap-meta">侧栏为医保上报视图检验检查推荐卡。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('check-insurance')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">智能助手为您生成了一份患者【病情小结】，请参考</div>
+        <div class="ai-tip-snap-meta">侧栏展示基于档案摘要的病情小结文本（演示）。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('summary')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">为您推荐该疾病最具性价比治疗方案</div>
+        <div class="ai-tip-snap-meta">与下方「高费用」大卡呼应；侧栏为路径与选品摘要。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-cost')">打开 AI-CDSS</button>
+      </div>
+    </div>
     <div class="ai-tip-card ai-tip-card--highcost">
       <div class="ai-tip-card-headrow">
         <span class="tip-ico" aria-hidden="true">💰</span>
@@ -1377,6 +1640,14 @@ body{background:#dfe6ef;margin:0;padding:0}
       <div class="ai-tip-section">
         <div class="ai-tip-sec-lbl">③ 绩效加分</div>
         <div class="ai-tip-perf-row"><span class="ai-tip-perf-val">+12 分</span><span>（演示）</span></div>
+      </div>
+      <div class="ai-tip-status-bar">
+        <span class="ai-tip-status-label" data-tip-status-label>待处理</span>
+        <div class="ai-tip-status-btns">
+          <button type="button" class="ai-tip-st" data-st="done" onclick="setAiTipCardStatus(this,'done')">已处理</button>
+          <button type="button" class="ai-tip-st" data-st="todo" onclick="moveAiTipCardToTodo(this)">转待办</button>
+          <button type="button" class="ai-tip-st" data-st="later" onclick="setAiTipCardStatus(this,'later')">稍后提醒</button>
+        </div>
       </div>
       <div class="ai-tip-card-actions">
         <button type="button" class="ai-tips-btn primary" onclick="applyAiRxPrefill()">一键采纳</button>
@@ -1403,8 +1674,16 @@ body{background:#dfe6ef;margin:0;padding:0}
         <div class="ai-tip-sec-lbl">③ 绩效加分</div>
         <div class="ai-tip-perf-row"><span class="ai-tip-perf-val">+8 分</span><span>（演示）</span></div>
       </div>
+      <div class="ai-tip-status-bar">
+        <span class="ai-tip-status-label" data-tip-status-label>待处理</span>
+        <div class="ai-tip-status-btns">
+          <button type="button" class="ai-tip-st" data-st="done" onclick="setAiTipCardStatus(this,'done')">已处理</button>
+          <button type="button" class="ai-tip-st" data-st="todo" onclick="moveAiTipCardToTodo(this)">转待办</button>
+          <button type="button" class="ai-tip-st" data-st="later" onclick="setAiTipCardStatus(this,'later')">稍后提醒</button>
+        </div>
+      </div>
       <div class="ai-tip-card-actions">
-        <button type="button" class="ai-tips-btn primary" onclick="openMedAssistFromPending()">立即查看</button>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('check-insurance')">转到 AI-CDSS 处理</button>
       </div>
     </div>
     <div class="ai-tip-card ai-tip-card--info">
@@ -1428,9 +1707,47 @@ body{background:#dfe6ef;margin:0;padding:0}
         <div class="ai-tip-sec-lbl">③ 绩效加分</div>
         <div class="ai-tip-perf-row"><span class="ai-tip-perf-val">+15 分</span><span>（演示）</span></div>
       </div>
-      <div class="ai-tip-card-actions">
-        <button type="button" class="ai-tips-btn primary" onclick="aiTipStartSkillEvaluation()">立即评估</button>
+      <div class="ai-tip-status-bar">
+        <span class="ai-tip-status-label" data-tip-status-label>待处理</span>
+        <div class="ai-tip-status-btns">
+          <button type="button" class="ai-tip-st" data-st="done" onclick="setAiTipCardStatus(this,'done')">已处理</button>
+          <button type="button" class="ai-tip-st" data-st="todo" onclick="moveAiTipCardToTodo(this)">转待办</button>
+          <button type="button" class="ai-tip-st" data-st="later" onclick="setAiTipCardStatus(this,'later')">稍后提醒</button>
+        </div>
       </div>
+      <div class="ai-tip-card-actions">
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('tang-risk')">转到 AI-CDSS 评估</button>
+      </div>
+    </div>
+    </div>
+    <div id="aiTipsPaneTodo" class="ai-tips-pane" role="tabpanel" aria-labelledby="aiTipsTabTodo">
+    <p class="ai-tips-pane-hint">任务闭环类：公卫随访等待办项（演示分区）。本列表中的条目<strong>已是待办</strong>，仅保留「已处理 / 稍后提醒」；从「推荐消息」转入的条目会带浅色说明条。</p>
+    <div class="ai-tip-card ai-tip-card--todo">
+      <div class="ai-tip-card-headrow">
+        <span class="tip-ico" aria-hidden="true">📝</span>
+        <div class="ai-tip-card-text">
+          <div class="ai-tip-headline" style="color:#5b21b6">公卫待随访</div>
+        </div>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">① 待办内容</div>
+        <p class="ai-tip-do">请医生引导患者去 <strong>CMC 慢病管理中心</strong>接受自测、健康指导，并形成随访记录闭环（演示）。</p>
+      </div>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">② 建议动作</div>
+        <p class="ai-tip-benefit">点击下方按钮后将打开 AI-CDSS 侧栏并生成一张处理建议卡；不直接跳转智能问答宽屏。</p>
+      </div>
+      <div class="ai-tip-status-bar">
+        <span class="ai-tip-status-label" data-tip-status-label>待处理</span>
+        <div class="ai-tip-status-btns">
+          <button type="button" class="ai-tip-st" data-st="done" onclick="setAiTipCardStatus(this,'done')">已处理</button>
+          <button type="button" class="ai-tip-st" data-st="later" onclick="setAiTipCardStatus(this,'later')">稍后提醒</button>
+        </div>
+      </div>
+      <div class="ai-tip-card-actions">
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssCardFromTip('公卫待随访', ['请在 3 天内完成患者公卫随访触达。', '引导患者去 CMC 慢病管理中心完成自测与健康指导。', '建议同步设置 7 天复查提醒并记录随访结论。'])">去处理</button>
+      </div>
+    </div>
     </div>
   </div>
 </div>
@@ -1680,6 +1997,7 @@ body{background:#dfe6ef;margin:0;padding:0}
 
 <script>
 function openCmcModal() {
+  closeHisAiFabMenu()
   var o = document.getElementById('cmc-overlay')
   if (o) {
     o.classList.add('is-open')
@@ -1704,8 +2022,11 @@ function closeCmcModal() {
   }
   clearRxDrugSelection()
   closeRxQuickQa()
-  var rxStack = document.getElementById('aiFabRxStack')
-  if (rxStack) rxStack.classList.remove('is-visible')
+  closeRxAiCdssPanel()
+  closeRxAiFabMenu()
+  closeHisAiFabMenu()
+  var rxAnchor = document.getElementById('rxAiFabAnchor')
+  if (rxAnchor) rxAnchor.classList.remove('is-visible')
 }
 function showCmcToast(msg) {
   var el = document.getElementById('cmcToast')
@@ -1757,6 +2078,7 @@ function openAiTipsPanel(source) {
   var p = document.getElementById('aiTipsPanel')
   if (bd) bd.classList.add('is-open')
   if (p) p.classList.add('is-open')
+  switchAiTipsBodyTab('rec')
   var hisFab = document.getElementById('aiFabHis')
   if (hisFab) hisFab.classList.remove('ai-doc-fab--pulse')
 }
@@ -1765,6 +2087,218 @@ function closeAiTipsPanel() {
   var pan = document.getElementById('aiTipsPanel')
   if (bd) bd.classList.remove('is-open')
   if (pan) pan.classList.remove('is-open')
+}
+/** 推荐消息 → 待办：从「推荐消息」列表移除该卡，复制到「待办任务」列表（演示闭环） */
+function moveAiTipCardToTodo(btn) {
+  var card = btn && btn.closest && btn.closest('.ai-tip-card')
+  var recPane = document.getElementById('aiTipsPaneRec')
+  var todoPane = document.getElementById('aiTipsPaneTodo')
+  if (!card || !recPane || !todoPane || !recPane.contains(card)) return
+  var clone = card.cloneNode(true)
+  var td = clone.querySelector('.ai-tip-st[data-st="todo"]')
+  if (td) td.remove()
+  clone.removeAttribute('data-tip-state')
+  clone.classList.remove('ai-tip-card--muted')
+  var oldSnooze = clone.querySelector('.ai-tip-snooze-hint')
+  if (oldSnooze) oldSnooze.remove()
+  var hint = document.createElement('div')
+  hint.className = 'ai-tip-from-rec-hint'
+  hint.textContent = '已从「推荐消息」转入 · 在待办中跟进（演示）'
+  clone.insertBefore(hint, clone.firstChild)
+  todoPane.appendChild(clone)
+  card.remove()
+  switchAiTipsBodyTab('todo')
+  refreshAiTipsCountBadges()
+  showRxAiToast('已加入「待办任务」列表（演示）')
+}
+function setAiTipCardStatus(btn, state) {
+  var card = btn && btn.closest && btn.closest('.ai-tip-card')
+  if (!card || !state) return
+  card.setAttribute('data-tip-state', state)
+  var label = card.querySelector('[data-tip-status-label]')
+  var map = { done: '已处理', todo: '已转待办', later: '稍后提醒（约30分钟后）' }
+  if (label) label.textContent = map[state] || state
+  card.classList.toggle('ai-tip-card--muted', state === 'done' || state === 'later')
+  var oldHint = card.querySelector('.ai-tip-snooze-hint')
+  if (oldHint) oldHint.remove()
+  if (state === 'later') {
+    var hint = document.createElement('div')
+    hint.className = 'ai-tip-snooze-hint'
+    hint.textContent = '下次提醒（演示）：关闭本窗口后约 30 分钟再次弹出；或下次进入「处方开具」页时再次提示。正式环境可由机构配置「延迟时长 / 下次打开页面 / 次日晨间」等策略。'
+    var bar = card.querySelector('.ai-tip-status-bar')
+    if (bar && bar.parentNode) bar.parentNode.insertBefore(hint, bar)
+  }
+  var wrap = card.querySelector('.ai-tip-status-btns')
+  if (wrap) {
+    wrap.querySelectorAll('.ai-tip-st').forEach(function (b) {
+      b.classList.toggle('is-active', b.getAttribute('data-st') === state)
+    })
+  }
+  refreshAiTipsCountBadges()
+  var toasts = {
+    done: '已标记为已处理（演示）',
+    todo: '已转入待办（演示）',
+    later: '已推迟：约 30 分钟后再次提醒（演示）'
+  }
+  showRxAiToast(toasts[state] || '')
+}
+function switchAiTipsBodyTab(which) {
+  var rec = document.getElementById('aiTipsPaneRec')
+  var todo = document.getElementById('aiTipsPaneTodo')
+  var tabRec = document.getElementById('aiTipsTabRec')
+  var tabTodo = document.getElementById('aiTipsTabTodo')
+  var isRec = which === 'rec'
+  if (rec) rec.classList.toggle('active', isRec)
+  if (todo) todo.classList.toggle('active', !isRec)
+  if (tabRec) {
+    tabRec.classList.toggle('active', isRec)
+    tabRec.setAttribute('aria-selected', isRec ? 'true' : 'false')
+  }
+  if (tabTodo) {
+    tabTodo.classList.toggle('active', !isRec)
+    tabTodo.setAttribute('aria-selected', !isRec ? 'true' : 'false')
+  }
+}
+function removeRxCdssEmbeddedTip() {
+  var old = document.getElementById('rxCdssTipCard')
+  if (old) old.remove()
+}
+function appendCdssTipCard(title, lines) {
+  var pane = document.getElementById('rxAiCdssPaneGuide')
+  if (!pane) return
+  removeRxCdssEmbeddedTip()
+  var card = document.createElement('div')
+  card.id = 'rxCdssTipCard'
+  card.className = 'rx-ai-cdss-intro'
+  card.style.borderColor = '#c7d2fe'
+  card.style.background = '#eef2ff'
+  var titleEl = document.createElement('div')
+  titleEl.style.fontWeight = '700'
+  titleEl.style.marginBottom = '6px'
+  titleEl.textContent = '来自提醒消息：' + (title || '待办任务')
+  card.appendChild(titleEl)
+  var ul = document.createElement('ul')
+  ul.style.margin = '0'
+  ul.style.paddingLeft = '16px'
+  ul.style.color = '#4338ca'
+  ul.style.lineHeight = '1.6'
+  ;(lines || []).forEach(function (x) {
+    var li = document.createElement('li')
+    li.textContent = x
+    ul.appendChild(li)
+  })
+  card.appendChild(ul)
+  var guideMain = pane.querySelector('.rx-ai-cdss-guide-main')
+  if (guideMain) guideMain.appendChild(card)
+  else {
+    var body = pane.querySelector('.rx-ai-cdss-actions')
+    if (body && body.parentNode) body.parentNode.insertBefore(card, body)
+  }
+}
+function mountCdssGuideTip(capHtml, innerEl) {
+  var pane = document.getElementById('rxAiCdssPaneGuide')
+  if (!pane || !innerEl) return
+  removeRxCdssEmbeddedTip()
+  var guideMain = pane.querySelector('.rx-ai-cdss-guide-main')
+  var body = pane.querySelector('.rx-ai-cdss-actions')
+  var wrap = document.createElement('div')
+  wrap.id = 'rxCdssTipCard'
+  wrap.className = 'rx-cdss-tip-wrap'
+  var cap = document.createElement('div')
+  cap.className = 'rx-ai-cdss-intro'
+  cap.style.marginBottom = '8px'
+  cap.innerHTML = capHtml
+  wrap.appendChild(cap)
+  wrap.appendChild(innerEl)
+  if (guideMain) guideMain.appendChild(wrap)
+  else if (body && body.parentNode) body.parentNode.insertBefore(wrap, body)
+  var sc = guideMain || pane.querySelector('.rx-ai-cdss-body')
+  if (sc) sc.scrollTop = 0
+}
+function mountCdssTipCheckInsurance() {
+  var el = buildCheckRecommendationCardElement('insurance')
+  mountCdssGuideTip('<strong>推荐检验检查</strong>', el)
+}
+function mountCdssTipTangRiskCustom(capHtml, riskCardTitle) {
+  var input = collectArchiveInput()
+  var el = buildRiskAssessmentCardElement(input)
+  var t = el.querySelector('.claw-card-title')
+  if (t && riskCardTitle) t.textContent = riskCardTitle
+  mountCdssGuideTip(capHtml, el)
+}
+function mountCdssTipTangRisk() {
+  mountCdssTipTangRiskCustom('<strong>糖缓解向 · 慢病风险评估</strong>', '慢病风险评估标签 · 糖缓解评估')
+}
+function mountCdssTipPlanHtEnhanced() {
+  var box = document.createElement('div')
+  box.className = 'check-card'
+  box.innerHTML = '<div class="claw-card-title">推荐诊疗方案 · 高血压（难治型）</div><div style="font-size:11px;color:#37474f;line-height:1.55;margin-top:6px">基于 AI 拟诊「难治型高血压」，可在<strong>智能问答宽屏</strong>使用「推荐诊疗方案」展开联合用药与路径；侧栏为触达摘要（演示）。</div>'
+  mountCdssGuideTip('<strong>难治型高血压 · 增强方案探索</strong>', box)
+}
+function mountCdssTipRiskHtWarn() {
+  mountCdssTipTangRiskCustom('<strong>风险预警 · 高血压患病高风险</strong>', '慢病风险评估标签 · 高血压分层')
+}
+function mountCdssTipRiskCopd() {
+  var input = collectArchiveInput()
+  var el = buildRiskAssessmentCardElement(input)
+  var t = el.querySelector('.claw-card-title')
+  if (t) t.textContent = '慢阻肺高风险 · 分层与转诊建议'
+  var note = document.createElement('div')
+  note.style.cssText = 'font-size:11px;color:#b45309;margin-top:8px;padding:6px 8px;background:#fffbeb;border-radius:6px;border:1px solid #fde68a;line-height:1.45'
+  note.textContent = '建议转诊至呼吸专科完善肺功能等检查以明确诊断（演示）。'
+  var box = document.createElement('div')
+  box.appendChild(el)
+  box.appendChild(note)
+  mountCdssGuideTip('<strong>慢阻肺高风险人群</strong>', box)
+}
+function mountCdssTipPlanChd(level) {
+  var prob = level === 'high' ? '高概率' : '中概率'
+  var box = document.createElement('div')
+  box.className = 'check-card'
+  box.innerHTML = '<div class="claw-card-title">诊疗方案推荐 · 慢性冠脉综合征（' + prob + '）</div><div style="font-size:11px;color:#37474f;line-height:1.55;margin-top:6px">侧栏摘要：抗栓 + 降脂 + 心率控制框架；完整选品与路径见宽屏「推荐冠心病诊疗方案」（演示）。</div>'
+  mountCdssGuideTip('<strong>慢性冠脉综合征 · ' + prob + '</strong>', box)
+}
+function mountCdssTipConditionSummary() {
+  var input = collectArchiveInput()
+  var pre = document.createElement('div')
+  pre.style.cssText = 'white-space:pre-wrap;font-size:11px;color:#334155;line-height:1.5;max-height:240px;overflow:auto;margin:0;padding:8px 10px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0'
+  pre.textContent = typeof buildArchiveSummary === 'function' ? buildArchiveSummary(input) : ''
+  var box = document.createElement('div')
+  box.className = 'check-card'
+  var ttl = document.createElement('div')
+  ttl.className = 'claw-card-title'
+  ttl.textContent = 'AI 病情小结（侧栏摘要）'
+  box.appendChild(ttl)
+  box.appendChild(pre)
+  mountCdssGuideTip('<strong>基于档案的病情小结</strong>', box)
+}
+function mountCdssTipPlanCostTeaser() {
+  var box = document.createElement('div')
+  box.className = 'check-card'
+  box.innerHTML = '<div class="claw-card-title">最具性价比治疗方案（演示）</div><div style="font-size:11px;color:#37474f;line-height:1.55;margin-top:6px">与「高费用 · 处方结构优化」同源思路：集采/经济学评价组合；可在<strong>处方开具</strong>页使用「一键采纳」回填（演示）。</div>'
+  mountCdssGuideTip('<strong>费用与路径优化</strong>', box)
+}
+function openCdssFromTip(mode) {
+  closeAiTipsPanel()
+  openRxAiCdssPanel()
+  switchRxAiCdssTab('guide')
+  if (mode === 'check-insurance') mountCdssTipCheckInsurance()
+  else if (mode === 'tang-risk') mountCdssTipTangRisk()
+  else if (mode === 'plan-ht-enhanced') mountCdssTipPlanHtEnhanced()
+  else if (mode === 'tang-mgmt') mountCdssTipTangRiskCustom('<strong>糖尿病可缓解 · 管理方案确认</strong>', '慢病风险评估标签 · 糖缓解管理')
+  else if (mode === 'tang-eval') mountCdssTipTangRiskCustom('<strong>糖尿病可缓解 · 进一步评估</strong>', '慢病风险评估标签 · 糖缓解评估')
+  else if (mode === 'risk-ht-warn') mountCdssTipRiskHtWarn()
+  else if (mode === 'risk-copd') mountCdssTipRiskCopd()
+  else if (mode === 'plan-chd-high') mountCdssTipPlanChd('high')
+  else if (mode === 'plan-chd-mid') mountCdssTipPlanChd('mid')
+  else if (mode === 'summary') mountCdssTipConditionSummary()
+  else if (mode === 'plan-cost') mountCdssTipPlanCostTeaser()
+}
+function openCdssCardFromTip(title, lines) {
+  closeAiTipsPanel()
+  openRxAiCdssPanel()
+  switchRxAiCdssTab('guide')
+  appendCdssTipCard(title, lines || [])
 }
 /** 接诊提示「立即评估」→ 健共体 Skill 版 + 慢病风险评估引导流程 */
 async function aiTipStartSkillEvaluation() {
@@ -1867,15 +2401,25 @@ function clearRxDrugSelection() {
   if (bar) bar.classList.remove('is-visible')
 }
 function updateRxFabVisibility() {
-  var rxStack = document.getElementById('aiFabRxStack')
+  var anchor = document.getElementById('rxAiFabAnchor')
   var o = document.getElementById('cmc-overlay')
-  if (!rxStack || !o || !o.classList.contains('is-open')) return
-  var pane = document.getElementById('tab-prescription')
-  if (pane && pane.classList.contains('active')) rxStack.classList.add('is-visible')
-  else rxStack.classList.remove('is-visible')
+  if (!anchor || !o || !o.classList.contains('is-open')) return
+  var active = document.querySelector('.tab-content.active')
+  var id = active && active.id
+  var show = id === 'tab-prescription' || id === 'tab-lobster' || id === 'tab-lobster-skill'
+  if (show) anchor.classList.add('is-visible')
+  else {
+    anchor.classList.remove('is-visible')
+    closeRxAiFabMenu()
+  }
 }
 function refreshAiTipsCountBadges() {
-  var n = document.querySelectorAll('#aiTipsPanel .ai-tip-card').length
+  var cards = document.querySelectorAll('#aiTipsPanel .ai-tip-card')
+  var n = 0
+  cards.forEach(function (c) {
+    var st = c.getAttribute('data-tip-state')
+    if (st !== 'done' && st !== 'later') n++
+  })
   document.querySelectorAll('[data-ai-tip-count]').forEach(function (el) {
     el.textContent = String(n)
   })
@@ -1951,6 +2495,104 @@ function showRxDiagAssist() {
   var nameEl = document.getElementById('rxDiagAssistName')
   if (box) box.classList.add('is-visible')
   if (nameEl && tag) nameEl.textContent = (tag.textContent || '当前诊断').replace('+', '').trim()
+}
+function openRxAiCdssPanel() {
+  var o = document.getElementById('cmc-overlay')
+  if (o && !o.classList.contains('is-open')) openCmcModal()
+  var b = document.getElementById('rxAiCdssBackdrop')
+  var p = document.getElementById('rxAiCdssPanel')
+  if (b) {
+    b.classList.add('is-open')
+    b.setAttribute('aria-hidden', 'false')
+  }
+  if (p) p.classList.add('is-open')
+}
+function closeRxAiCdssPanel() {
+  var b = document.getElementById('rxAiCdssBackdrop')
+  var p = document.getElementById('rxAiCdssPanel')
+  if (b) {
+    b.classList.remove('is-open')
+    b.setAttribute('aria-hidden', 'true')
+  }
+  if (p) p.classList.remove('is-open')
+}
+function rxAiFabMenuOutside(ev) {
+  var anchor = document.getElementById('rxAiFabAnchor')
+  if (anchor && !anchor.contains(ev.target)) closeRxAiFabMenu()
+}
+function closeRxAiFabMenu() {
+  var m = document.getElementById('rxAiFabMenu')
+  var fab = document.getElementById('aiFabRx')
+  if (m) m.classList.remove('is-open')
+  if (fab) fab.setAttribute('aria-expanded', 'false')
+  document.removeEventListener('click', rxAiFabMenuOutside, true)
+}
+function toggleRxAiFabMenu(ev) {
+  if (ev) ev.stopPropagation()
+  var m = document.getElementById('rxAiFabMenu')
+  var fab = document.getElementById('aiFabRx')
+  if (!m) return
+  if (m.classList.contains('is-open')) {
+    closeRxAiFabMenu()
+    return
+  }
+  m.classList.add('is-open')
+  if (fab) fab.setAttribute('aria-expanded', 'true')
+  document.addEventListener('click', rxAiFabMenuOutside, true)
+}
+function pickRxAiFabMenu(which) {
+  closeRxAiFabMenu()
+  if (which === 'tips') openAiTipsPanel('rx')
+  else if (which === 'cdss') openRxAiCdssPanel()
+}
+function hisAiFabMenuOutside(ev) {
+  var anchor = document.getElementById('hisAiDock')
+  if (anchor && !anchor.contains(ev.target)) closeHisAiFabMenu()
+}
+function closeHisAiFabMenu() {
+  var m = document.getElementById('hisAiFabMenu')
+  var fab = document.getElementById('aiFabHis')
+  if (m) m.classList.remove('is-open')
+  if (fab) fab.setAttribute('aria-expanded', 'false')
+  document.removeEventListener('click', hisAiFabMenuOutside, true)
+}
+function toggleHisAiFabMenu(ev) {
+  if (ev) ev.stopPropagation()
+  var m = document.getElementById('hisAiFabMenu')
+  var fab = document.getElementById('aiFabHis')
+  if (!m) return
+  if (m.classList.contains('is-open')) {
+    closeHisAiFabMenu()
+    return
+  }
+  m.classList.add('is-open')
+  if (fab) fab.setAttribute('aria-expanded', 'true')
+  document.addEventListener('click', hisAiFabMenuOutside, true)
+}
+function pickHisAiFabMenu(which) {
+  closeHisAiFabMenu()
+  if (which === 'tips') openAiTipsPanel('his')
+  else if (which === 'cdss') {
+    openCmcModal()
+    openRxAiCdssPanel()
+  }
+}
+function switchRxAiCdssTab(which) {
+  var guideTab = document.getElementById('rxAiCdssTabGuide')
+  var deepTab = document.getElementById('rxAiCdssTabDeep')
+  var guidePane = document.getElementById('rxAiCdssPaneGuide')
+  var deepPane = document.getElementById('rxAiCdssPaneDeep')
+  var isGuide = which === 'guide'
+  if (guideTab) {
+    guideTab.classList.toggle('active', isGuide)
+    guideTab.setAttribute('aria-selected', isGuide ? 'true' : 'false')
+  }
+  if (deepTab) {
+    deepTab.classList.toggle('active', !isGuide)
+    deepTab.setAttribute('aria-selected', isGuide ? 'false' : 'true')
+  }
+  if (guidePane) guidePane.classList.toggle('active', isGuide)
+  if (deepPane) deepPane.classList.toggle('active', !isGuide)
 }
 function openRxQuickQa(mode) {
   rxQuickQaMode = mode === 'policy' ? 'policy' : 'qa'
@@ -2036,8 +2678,8 @@ function switchCmcSubView(sub, btnEl) {
   var el = document.getElementById(map[sub])
   if (el) el.classList.add('active')
 }
-function gotoRxHealthArchive() {
-  switchTab('workbench', document.querySelector('.tab[data-tab="workbench"]'))
+function gotoRxHealthArchive(opts) {
+  switchTab('workbench', document.querySelector('.tab[data-tab="workbench"]'), opts || {})
   switchCmcSubView('record')
 }
 function backFromDoctorEval() {
@@ -2062,6 +2704,7 @@ function switchTab(tab, el, opts) {
   if (tab !== 'prescription') {
     clearRxDrugSelection()
     closeRxQuickQa()
+    closeRxAiCdssPanel()
   }
   updateRxFabVisibility()
   if (tab === 'prescription' && !opts.skipRxTips) {
@@ -2832,11 +3475,11 @@ function addActionMsg(promptText, actions) {
   }
   return div
 }
-function addRiskAssessmentCard(input) {
+function buildRiskAssessmentCardElement(input) {
   const div = document.createElement('div')
-  div.className = 'msg assistant risk-card'
+  div.className = 'risk-card'
   div.innerHTML = `
-    <div class="claw-card-title">慢病风险评估标签（🦞 OpenClaw）</div>
+    <div class="claw-card-title">慢病风险评估标签</div>
     <div style="font-size:12px;color:#5a6a86;margin-bottom:6px">${input.patient}</div>
     <div class="risk-group">
       <div class="risk-group-title">已患病病情控制标签</div>
@@ -2854,6 +3497,11 @@ function addRiskAssessmentCard(input) {
       <div><strong>建议：</strong>优先纳入红黄灯管理，2周复评；强化降脂与生活方式干预，必要时上级专科联合管理。</div>
     </div>
   `
+  return div
+}
+function addRiskAssessmentCard(input) {
+  const div = buildRiskAssessmentCardElement(input)
+  div.className = 'msg assistant risk-card'
   const chat = getActiveChat()
   chat.appendChild(div)
   chat.scrollTop = 9999
@@ -2873,12 +3521,12 @@ function addClawSummaryCard(titleText) {
   chat.scrollTop = 9999
   return body
 }
-function addCheckRecommendationCard(type) {
+function buildCheckRecommendationCardElement(type) {
   const card = document.createElement('div')
-  card.className = 'msg assistant check-card'
+  card.className = 'check-card'
   const title = type === 'insurance'
-    ? '检查检验推荐-医保上报（🦞 OpenClaw）'
-    : `检查检验推荐-${type}（🦞 OpenClaw）`
+    ? '检查检验推荐-医保上报'
+    : `检查检验推荐-${type}`
   const isInsurance = type === 'insurance'
   const insuranceRows = [
     { item: '血糖检查', value: '餐后2小时血糖（2025-08-10）', status: 'pending' },
@@ -2934,9 +3582,6 @@ function addCheckRecommendationCard(type) {
         《市医保结算中心关于选定糖尿病门特健康管理事项关键指标数据的通知》
       </div>` : '<div class="check-refer"><a class="check-link" href="javascript:void(0)">查看更多</a></div>'}
   `
-  const chat = getActiveChat()
-  chat.appendChild(card)
-  chat.scrollTop = 9999
 
   renderRows(defaultTab)
   card.querySelectorAll('.check-tab').forEach(tab => {
@@ -2947,6 +3592,14 @@ function addCheckRecommendationCard(type) {
       renderRows(tabName)
     }
   })
+  return card
+}
+function addCheckRecommendationCard(type) {
+  const card = buildCheckRecommendationCardElement(type)
+  card.className = 'msg assistant check-card'
+  const chat = getActiveChat()
+  chat.appendChild(card)
+  chat.scrollTop = 9999
 }
 
 async function runCheckRecommendationFlow() {
