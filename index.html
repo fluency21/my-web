@@ -538,6 +538,36 @@ body{background:#dfe6ef;margin:0;padding:0}
 .check-row-warn td{background:#fff7f7}
 .check-row-warn .check-link{color:#d94b4b}
 .check-refer{margin-top:10px;font-size:12px;color:#44526b;line-height:1.5}
+.med-portrait{display:grid;grid-template-columns:1.35fr .85fr;gap:12px;align-items:stretch}
+.med-portrait-left{display:flex;flex-direction:column;gap:8px}
+.med-portrait-right{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:10px;display:flex;flex-direction:column;min-height:0}
+.med-portrait-total{font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:8px}
+.med-portrait-item{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:8px 10px}
+.med-portrait-item-h{display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;color:#334155;margin-bottom:4px}
+.med-portrait-item-h .score{color:#0f62fe}
+.med-portrait-item p{margin:0;font-size:11px;line-height:1.45;color:#475569}
+.med-portrait-radar-title{font-size:11px;color:#64748b;margin:0 0 6px}
+.med-portrait-radar-foot{font-size:10px;color:#64748b;text-align:center;margin-top:8px;line-height:1.45}
+.med-radar-wrap{position:relative;width:100%;min-height:240px;flex:1;display:flex;align-items:center;justify-content:center;padding:4px 0}
+.med-radar-svg{display:block;width:100%;max-width:320px;height:auto;min-height:220px;overflow:visible}
+.med-radar-svg .mr-hit{cursor:help}
+.med-radar-svg .mr-hit:hover{filter:drop-shadow(0 0 4px rgba(236,72,153,.55))}
+.med-portrait-card{width:100%;max-width:100%}
+.chat .msg.assistant.check-card.med-portrait-card{max-width:100%;width:100%}
+.med-portrait-card--compact{padding:10px 12px}
+.med-portrait-compact-tag{margin:0 0 6px;font-size:10px;color:#64748b;line-height:1.35}
+.med-portrait-compact-summary{margin-bottom:6px}
+.med-portrait-compact-total{font-size:13px;font-weight:700;color:#1e3a5f;margin-bottom:4px}
+.med-portrait-compact-dims{font-size:10px;color:#475569;line-height:1.45;word-break:break-all}
+.med-portrait-compact-lead{margin:0 0 6px;font-size:11px;line-height:1.45;color:#334155}
+.med-portrait-compact-radar{margin:4px 0 2px}
+.med-portrait-compact-radar .med-radar-wrap{min-height:100px;max-height:150px;padding:2px 0}
+.med-portrait-compact-radar .med-radar-svg{min-height:96px;max-width:220px;margin:0 auto}
+.med-portrait-compact-radar .med-portrait-radar-foot{display:none}
+.med-portrait-compact-bullets{margin:6px 0 0;padding-left:16px;font-size:10px;line-height:1.45;color:#475569}
+.med-portrait-compact-bullets li{margin:3px 0}
+.med-portrait-compact-cta{margin-top:8px}
+#rxAiCdssPanel .med-portrait-card--compact .claw-card-title{font-size:13px}
 .quick-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
 .quick-btn{border:1px solid #cbd5e1;background:#fff;color:#2563eb;border-radius:6px;min-height:32px;height:auto;padding:6px 12px;font-size:12px;font-weight:500;cursor:pointer;line-height:1.3}
 .quick-btn:hover{background:#eff6ff;border-color:#93c5fd}
@@ -1373,6 +1403,7 @@ body{background:#dfe6ef;margin:0;padding:0}
           <button class="btn" onclick="run(6)">推荐检验检查</button>
           <button class="btn" onclick="showDiseaseSelect()">推荐诊疗方案</button>
           <button class="btn" onclick="run(8)">临床报告解读</button>
+          <button class="btn" onclick="runMedicationPortraitFlow()">患者用药画像</button>
           <button class="btn" onclick="run(3)">生成生活处方</button>
           <button class="btn" onclick="run(4)">转诊建议判断</button>
           <div class="panel-section-general">
@@ -1431,6 +1462,7 @@ body{background:#dfe6ef;margin:0;padding:0}
             <button class="btn" onclick="runSkill(6)">推荐检验检查</button>
             <button class="btn" onclick="runSkillPlan()">推荐诊疗方案</button>
             <button class="btn" onclick="runSkill(8)">临床报告解读</button>
+            <button class="btn" onclick="runMedicationPortraitFlow('skill')">患者用药画像</button>
             <button class="btn" onclick="runSkill(3)">生成生活处方</button>
             <button class="btn" onclick="runSkill(4)">转诊建议判断</button>
             <div class="panel-section-general">
@@ -1520,6 +1552,7 @@ body{background:#dfe6ef;margin:0;padding:0}
           <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">慢病风险</button>
           <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">推荐检查</button>
           <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">生活处方</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="mountCdssTipMedicationPortrait()">用药画像</button>
           <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" style="grid-column:1/-1" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">转诊建议</button>
         </div>
       </details>
@@ -1558,62 +1591,37 @@ body{background:#dfe6ef;margin:0;padding:0}
   </div>
   <div class="ai-tips-body">
     <div class="ai-tips-tabs" role="tablist" aria-label="消息分类">
-      <button type="button" class="ai-tips-tab active" id="aiTipsTabRec" role="tab" aria-selected="true" aria-controls="aiTipsPaneRec" onclick="switchAiTipsBodyTab('rec')">推荐消息</button>
+      <button type="button" class="ai-tips-tab active" id="aiTipsTabFocus" role="tab" aria-selected="true" aria-controls="aiTipsPaneFocus" onclick="switchAiTipsBodyTab('focus')">重点关注</button>
+      <button type="button" class="ai-tips-tab" id="aiTipsTabMsg" role="tab" aria-selected="false" aria-controls="aiTipsPaneMsg" onclick="switchAiTipsBodyTab('msg')">消息</button>
       <button type="button" class="ai-tips-tab" id="aiTipsTabTodo" role="tab" aria-selected="false" aria-controls="aiTipsPaneTodo" onclick="switchAiTipsBodyTab('todo')">待办任务</button>
     </div>
-    <div id="aiTipsPaneRec" class="ai-tips-pane active" role="tabpanel" aria-labelledby="aiTipsTabRec">
-    <p class="ai-tips-pane-hint">业务推荐类：费用结构、履约待检、增值评估等（演示分区）。点「转待办」将把<strong>本条</strong>加入「待办任务」列表并从本页移除（演示）。</p>
-    <div class="ai-tip-smart-batch" aria-label="AI 触发推荐聚合">
-      <div class="ai-tip-smart-batch-h">AI 触发推荐（接诊场景聚类 · 演示）</div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">AI 拟诊为「难治型」高血压患者，尝试探索增强方案</div>
-        <div class="ai-tip-snap-meta">侧栏摘要诊疗路径要点；完整方案请在宽屏「推荐诊疗方案」展开。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-ht-enhanced')">打开 AI-CDSS</button>
+    <div id="aiTipsPaneFocus" class="ai-tips-pane active" role="tabpanel" aria-labelledby="aiTipsTabFocus">
+    <p class="ai-tips-pane-hint">重点患者优先：展示高价值提醒（用药画像 / 高费用 / 待检与履约 / 糖缓解）。</p>
+    <div class="ai-tip-card ai-tip-card--info">
+      <div class="ai-tip-card-headrow">
+        <span class="tip-ico" aria-hidden="true">📈</span>
+        <div class="ai-tip-card-text">
+          <div class="ai-tip-headline ai-tip-headline--info">重点患者 · 用药画像提示</div>
+        </div>
       </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">该患者为糖尿病可缓解人群，请为患者确认管理方案</div>
-        <div class="ai-tip-snap-meta">与下方「糖缓解」大卡同源能力，侧栏展示评估标签卡。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('tang-mgmt')">打开 AI-CDSS</button>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">① 画像结论（简版）</div>
+        <p class="ai-tip-do">总分 <strong>93</strong>：五维中<strong>经济性 75</strong>最需优化（进口降糖药月均 2800–3300 元，建议目录内 SGLT2 替代）；<strong>适宜性</strong>因缺完整用药记录暂无法精细匹配；<strong>依从性</strong>表面满分但取药与用药天数不一致提示漏服风险。</p>
       </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">风险预警：该患者高血压患病高风险</div>
-        <div class="ai-tip-snap-meta">侧栏展示慢病风险分层卡片（高血压维度）。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('risk-ht-warn')">打开 AI-CDSS</button>
+      <div class="ai-tip-section">
+        <div class="ai-tip-sec-lbl">② 建议动作</div>
+        <p class="ai-tip-benefit">打开 AI-CDSS 查看用药画像<strong>简版</strong>；点侧栏内「在智能问答查看完整版」或直接进入智能问答可看<strong>完整长文与五维详解</strong>。</p>
       </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">该患者为慢阻肺高风险人群，建议转诊以明确诊断</div>
-        <div class="ai-tip-snap-meta">侧栏补充转诊提示；完整评估见宽屏会话。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('risk-copd')">打开 AI-CDSS</button>
+      <div class="ai-tip-status-bar">
+        <span class="ai-tip-status-label" data-tip-status-label>待处理</span>
+        <div class="ai-tip-status-btns">
+          <button type="button" class="ai-tip-st" data-st="done" onclick="setAiTipCardStatus(this,'done')">已处理</button>
+          <button type="button" class="ai-tip-st" data-st="todo" onclick="moveAiTipCardToTodo(this)">转待办</button>
+          <button type="button" class="ai-tip-st" data-st="later" onclick="setAiTipCardStatus(this,'later')">稍后提醒</button>
+        </div>
       </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">该患者为慢性冠脉综合征高概率人群，建议转诊</div>
-        <div class="ai-tip-snap-meta">侧栏摘要冠心病路径要点。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-chd-high')">打开 AI-CDSS</button>
-      </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">该患者为慢性冠脉综合征中概率人群，建议转诊</div>
-        <div class="ai-tip-snap-meta">侧栏摘要冠心病路径要点（中概率）。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-chd-mid')">打开 AI-CDSS</button>
-      </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">该患者可能满足糖尿病可缓解的条件，请进一步评估</div>
-        <div class="ai-tip-snap-meta">侧栏为糖缓解向风险评估卡。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('tang-eval')">打开 AI-CDSS</button>
-      </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">该患者有 3 项待检项，点击查看</div>
-        <div class="ai-tip-snap-meta">侧栏为医保上报视图检验检查推荐卡。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('check-insurance')">打开 AI-CDSS</button>
-      </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">智能助手为您生成了一份患者【病情小结】，请参考</div>
-        <div class="ai-tip-snap-meta">侧栏展示基于档案摘要的病情小结文本（演示）。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('summary')">打开 AI-CDSS</button>
-      </div>
-      <div class="ai-tip-snap">
-        <div class="ai-tip-snap-title">为您推荐该疾病最具性价比治疗方案</div>
-        <div class="ai-tip-snap-meta">与下方「高费用」大卡呼应；侧栏为路径与选品摘要。</div>
-        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-cost')">打开 AI-CDSS</button>
+      <div class="ai-tip-card-actions">
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('med-portrait')">转到 AI-CDSS 查看画像</button>
       </div>
     </div>
     <div class="ai-tip-card ai-tip-card--highcost">
@@ -1717,6 +1725,62 @@ body{background:#dfe6ef;margin:0;padding:0}
       </div>
       <div class="ai-tip-card-actions">
         <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('tang-risk')">转到 AI-CDSS 评估</button>
+      </div>
+    </div>
+    </div>
+    <div id="aiTipsPaneMsg" class="ai-tips-pane" role="tabpanel" aria-labelledby="aiTipsTabMsg">
+    <p class="ai-tips-pane-hint">接诊智能提醒中的其余推荐与能力入口（演示）。<strong>高费用、待检与履约、糖缓解</strong>已归入「重点关注」。点「转待办」将把<strong>本条</strong>加入「待办任务」列表并从本页移除（演示）。</p>
+    <div class="ai-tip-smart-batch" aria-label="AI 触发推荐聚合">
+      <div class="ai-tip-smart-batch-h">AI 触发推荐（接诊场景聚类 · 演示）</div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">AI 拟诊为「难治型」高血压患者，尝试探索增强方案</div>
+        <div class="ai-tip-snap-meta">侧栏摘要诊疗路径要点；完整方案请在宽屏「推荐诊疗方案」展开。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-ht-enhanced')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者为糖尿病可缓解人群，请为患者确认管理方案</div>
+        <div class="ai-tip-snap-meta">与「重点关注」中「糖缓解」卡片同源能力，侧栏展示评估标签卡。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('tang-mgmt')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">风险预警：该患者高血压患病高风险</div>
+        <div class="ai-tip-snap-meta">侧栏展示慢病风险分层卡片（高血压维度）。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('risk-ht-warn')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者为慢阻肺高风险人群，建议转诊以明确诊断</div>
+        <div class="ai-tip-snap-meta">侧栏补充转诊提示；完整评估见宽屏会话。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('risk-copd')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者为慢性冠脉综合征高概率人群，建议转诊</div>
+        <div class="ai-tip-snap-meta">侧栏摘要冠心病路径要点。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-chd-high')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者为慢性冠脉综合征中概率人群，建议转诊</div>
+        <div class="ai-tip-snap-meta">侧栏摘要冠心病路径要点（中概率）。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-chd-mid')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者可能满足糖尿病可缓解的条件，请进一步评估</div>
+        <div class="ai-tip-snap-meta">侧栏为糖缓解向风险评估卡。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('tang-eval')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">该患者有 3 项待检项，点击查看</div>
+        <div class="ai-tip-snap-meta">侧栏为医保上报视图检验检查推荐卡。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('check-insurance')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">智能助手为您生成了一份患者【病情小结】，请参考</div>
+        <div class="ai-tip-snap-meta">侧栏展示基于档案摘要的病情小结文本（演示）。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('summary')">打开 AI-CDSS</button>
+      </div>
+      <div class="ai-tip-snap">
+        <div class="ai-tip-snap-title">为您推荐该疾病最具性价比治疗方案</div>
+        <div class="ai-tip-snap-meta">与「重点关注」中「高费用」卡片呼应；侧栏为路径与选品摘要。</div>
+        <button type="button" class="ai-tips-btn primary" onclick="openCdssFromTip('plan-cost')">打开 AI-CDSS</button>
       </div>
     </div>
     </div>
@@ -2078,7 +2142,8 @@ function openAiTipsPanel(source) {
   var p = document.getElementById('aiTipsPanel')
   if (bd) bd.classList.add('is-open')
   if (p) p.classList.add('is-open')
-  switchAiTipsBodyTab('rec')
+  switchAiTipsBodyTab('focus')
+  reorderTodoCards()
   var hisFab = document.getElementById('aiFabHis')
   if (hisFab) hisFab.classList.remove('ai-doc-fab--pulse')
 }
@@ -2088,12 +2153,16 @@ function closeAiTipsPanel() {
   if (bd) bd.classList.remove('is-open')
   if (pan) pan.classList.remove('is-open')
 }
-/** 推荐消息 → 待办：从「推荐消息」列表移除该卡，复制到「待办任务」列表（演示闭环） */
+/** 消息 / 重点关注 → 待办：从原列表移除该卡，复制到「待办任务」列表（演示闭环） */
 function moveAiTipCardToTodo(btn) {
   var card = btn && btn.closest && btn.closest('.ai-tip-card')
-  var recPane = document.getElementById('aiTipsPaneRec')
+  var recPane = document.getElementById('aiTipsPaneMsg')
+  var focusPane = document.getElementById('aiTipsPaneFocus')
   var todoPane = document.getElementById('aiTipsPaneTodo')
-  if (!card || !recPane || !todoPane || !recPane.contains(card)) return
+  if (!card || !todoPane) return
+  var fromRec = recPane && recPane.contains(card)
+  var fromFocus = focusPane && focusPane.contains(card)
+  if (!fromRec && !fromFocus) return
   var clone = card.cloneNode(true)
   var td = clone.querySelector('.ai-tip-st[data-st="todo"]')
   if (td) td.remove()
@@ -2103,13 +2172,31 @@ function moveAiTipCardToTodo(btn) {
   if (oldSnooze) oldSnooze.remove()
   var hint = document.createElement('div')
   hint.className = 'ai-tip-from-rec-hint'
-  hint.textContent = '已从「推荐消息」转入 · 在待办中跟进（演示）'
+  hint.textContent = fromFocus ? '已从「重点关注」转入 · 在待办中跟进（演示）' : '已从「消息」转入 · 在待办中跟进（演示）'
   clone.insertBefore(hint, clone.firstChild)
+  clone.setAttribute('data-tip-order', String(Date.now()))
   todoPane.appendChild(clone)
   card.remove()
   switchAiTipsBodyTab('todo')
+  reorderTodoCards()
   refreshAiTipsCountBadges()
   showRxAiToast('已加入「待办任务」列表（演示）')
+}
+function reorderTodoCards() {
+  var pane = document.getElementById('aiTipsPaneTodo')
+  if (!pane) return
+  var cards = Array.from(pane.querySelectorAll('.ai-tip-card'))
+  cards.sort(function (a, b) {
+    var sa = a.getAttribute('data-tip-state')
+    var sb = b.getAttribute('data-tip-state')
+    var pa = sa === 'done' ? 1 : 0
+    var pb = sb === 'done' ? 1 : 0
+    if (pa !== pb) return pa - pb
+    var oa = Number(a.getAttribute('data-tip-order') || 0)
+    var ob = Number(b.getAttribute('data-tip-order') || 0)
+    return ob - oa
+  })
+  cards.forEach(function (c) { pane.appendChild(c) })
 }
 function setAiTipCardStatus(btn, state) {
   var card = btn && btn.closest && btn.closest('.ai-tip-card')
@@ -2134,6 +2221,10 @@ function setAiTipCardStatus(btn, state) {
       b.classList.toggle('is-active', b.getAttribute('data-st') === state)
     })
   }
+  if (card.closest && card.closest('#aiTipsPaneTodo')) {
+    if (!card.getAttribute('data-tip-order')) card.setAttribute('data-tip-order', String(Date.now()))
+    reorderTodoCards()
+  }
   refreshAiTipsCountBadges()
   var toasts = {
     done: '已标记为已处理（演示）',
@@ -2143,20 +2234,29 @@ function setAiTipCardStatus(btn, state) {
   showRxAiToast(toasts[state] || '')
 }
 function switchAiTipsBodyTab(which) {
-  var rec = document.getElementById('aiTipsPaneRec')
+  var focus = document.getElementById('aiTipsPaneFocus')
+  var rec = document.getElementById('aiTipsPaneMsg')
   var todo = document.getElementById('aiTipsPaneTodo')
-  var tabRec = document.getElementById('aiTipsTabRec')
+  var tabFocus = document.getElementById('aiTipsTabFocus')
+  var tabRec = document.getElementById('aiTipsTabMsg')
   var tabTodo = document.getElementById('aiTipsTabTodo')
-  var isRec = which === 'rec'
+  var isFocus = which === 'focus'
+  var isRec = which === 'msg'
+  var isTodo = which === 'todo'
+  if (focus) focus.classList.toggle('active', isFocus)
   if (rec) rec.classList.toggle('active', isRec)
-  if (todo) todo.classList.toggle('active', !isRec)
+  if (todo) todo.classList.toggle('active', isTodo)
+  if (tabFocus) {
+    tabFocus.classList.toggle('active', isFocus)
+    tabFocus.setAttribute('aria-selected', isFocus ? 'true' : 'false')
+  }
   if (tabRec) {
     tabRec.classList.toggle('active', isRec)
     tabRec.setAttribute('aria-selected', isRec ? 'true' : 'false')
   }
   if (tabTodo) {
-    tabTodo.classList.toggle('active', !isRec)
-    tabTodo.setAttribute('aria-selected', !isRec ? 'true' : 'false')
+    tabTodo.classList.toggle('active', isTodo)
+    tabTodo.setAttribute('aria-selected', isTodo ? 'true' : 'false')
   }
 }
 function removeRxCdssEmbeddedTip() {
@@ -2278,6 +2378,17 @@ function mountCdssTipPlanCostTeaser() {
   box.innerHTML = '<div class="claw-card-title">最具性价比治疗方案（演示）</div><div style="font-size:11px;color:#37474f;line-height:1.55;margin-top:6px">与「高费用 · 处方结构优化」同源思路：集采/经济学评价组合；可在<strong>处方开具</strong>页使用「一键采纳」回填（演示）。</div>'
   mountCdssGuideTip('<strong>费用与路径优化</strong>', box)
 }
+function openFullMedicationPortraitFromCdss() {
+  openCmcModal()
+  switchTab('lobster', null, { skipRxTips: true })
+  setTimeout(function () {
+    runMedicationPortraitFlow()
+  }, 380)
+}
+function mountCdssTipMedicationPortrait() {
+  var box = buildMedicationPortraitCardElementCompact()
+  mountCdssGuideTip('<strong>重点患者 · 用药画像</strong>', box)
+}
 function openCdssFromTip(mode) {
   closeAiTipsPanel()
   openRxAiCdssPanel()
@@ -2293,6 +2404,7 @@ function openCdssFromTip(mode) {
   else if (mode === 'plan-chd-mid') mountCdssTipPlanChd('mid')
   else if (mode === 'summary') mountCdssTipConditionSummary()
   else if (mode === 'plan-cost') mountCdssTipPlanCostTeaser()
+  else if (mode === 'med-portrait') mountCdssTipMedicationPortrait()
 }
 function openCdssCardFromTip(title, lines) {
   closeAiTipsPanel()
@@ -3498,6 +3610,270 @@ function buildRiskAssessmentCardElement(input) {
     </div>
   `
   return div
+}
+function buildMedicationRadarSvg(scores) {
+  var dims = [
+    { key: 'safety', label: '安全性' },
+    { key: 'economy', label: '经济性' },
+    { key: 'adherence', label: '依从性' },
+    { key: 'suitability', label: '适宜性' },
+    { key: 'efficacy', label: '有效性' }
+  ]
+  var values = dims.map(function (d) {
+    var v = scores[d.key]
+    return Math.max(0, Math.min(100, typeof v === 'number' ? v : 0))
+  })
+  var n = dims.length
+  var cx = 140
+  var cy = 140
+  var rOuter = 86
+  var labelR = rOuter * 1.22
+  function angle(i) {
+    return -Math.PI / 2 + (i * 2 * Math.PI) / n
+  }
+  function pt(i, scale) {
+    var a = angle(i)
+    return [cx + Math.cos(a) * rOuter * scale, cy + Math.sin(a) * rOuter * scale]
+  }
+  function polyPoints(scale) {
+    var arr = []
+    for (var i = 0; i < n; i++) {
+      var p = pt(i, scale)
+      arr.push(p[0].toFixed(2) + ',' + p[1].toFixed(2))
+    }
+    return arr.join(' ')
+  }
+  var uid = 'mrG' + Math.random().toString(36).slice(2, 9)
+  var parts = []
+  parts.push(
+    '<defs><linearGradient id="' +
+      uid +
+      '-fill" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:rgba(244,114,182,.38)"/><stop offset="100%" style="stop-color:rgba(236,72,153,.14)"/></linearGradient><filter id="' +
+      uid +
+      '-s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="b"/><feOffset dx="0" dy="1" in="b"/><feComponentTransfer><feFuncA type="linear" slope="0.25"/></feComponentTransfer><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>'
+  )
+  parts.push('<circle cx="' + cx + '" cy="' + cy + '" r="' + (rOuter + 28) + '" fill="#faf8fb" stroke="none"/>')
+  for (var lv = 1; lv <= 5; lv++) {
+    var t = lv / 5
+    var stroke = lv === 5 ? '#cbd5e1' : lv % 2 === 0 ? '#e8edf3' : '#eef2f7'
+    var sw = lv === 5 ? 1.25 : 0.75
+    var fill = lv === 5 ? 'none' : lv % 2 === 0 ? 'rgba(248,250,252,.65)' : 'rgba(255,255,255,.4)'
+    parts.push(
+      '<polygon points="' +
+        polyPoints(t) +
+        '" fill="' +
+        fill +
+        '" stroke="' +
+        stroke +
+        '" stroke-width="' +
+        sw +
+        '"/>'
+    )
+  }
+  for (var ax = 0; ax < n; ax++) {
+    var pEnd = pt(ax, 1)
+    parts.push(
+      '<line x1="' +
+        cx +
+        '" y1="' +
+        cy +
+        '" x2="' +
+        pEnd[0].toFixed(2) +
+        '" y2="' +
+        pEnd[1].toFixed(2) +
+        '" stroke="#dce4ee" stroke-width="1"/>'
+    )
+  }
+  var tickAxis = 1
+  for (var tk = 1; tk <= 5; tk++) {
+    var ts = tk / 5
+    var px = pt(tickAxis, ts)
+    var a0 = angle(tickAxis)
+    var perp = a0 + Math.PI / 2
+    var ox = Math.cos(perp) * 3.5
+    var oy = Math.sin(perp) * 3.5
+    parts.push(
+      '<line x1="' +
+        (px[0] - ox).toFixed(2) +
+        '" y1="' +
+        (px[1] - oy).toFixed(2) +
+        '" x2="' +
+        (px[0] + ox).toFixed(2) +
+        '" y2="' +
+        (px[1] + oy).toFixed(2) +
+        '" stroke="#94a3b8" stroke-width="0.7" opacity="0.85"/>'
+    )
+    var tx = px[0] + Math.cos(a0) * 10 + 4
+    var ty = px[1] + Math.sin(a0) * 10 + 3
+    parts.push(
+      '<text x="' +
+        tx.toFixed(1) +
+        '" y="' +
+        ty.toFixed(1) +
+        '" fill="#94a3b8" font-size="9" font-weight="600" text-anchor="start">' +
+        (tk * 20) +
+        '</text>'
+    )
+  }
+  var dataPts = []
+  for (var j = 0; j < n; j++) {
+    var sc = values[j] / 100
+    var pj = pt(j, sc)
+    dataPts.push(pj[0].toFixed(2) + ',' + pj[1].toFixed(2))
+  }
+  parts.push(
+    '<polygon points="' +
+      dataPts.join(' ') +
+      '" fill="url(#' +
+      uid +
+      '-fill)" stroke="#db2777" stroke-width="2" stroke-linejoin="round" filter="url(#' +
+      uid +
+      '-s)" opacity="0.98"/>'
+  )
+  for (var k = 0; k < n; k++) {
+    var sc2 = values[k] / 100
+    var pk = pt(k, sc2)
+    var tip = dims[k].label + ' ' + values[k] + ' 分'
+    parts.push(
+      '<g class="mr-hit"><circle cx="' +
+        pk[0].toFixed(2) +
+        '" cy="' +
+        pk[1].toFixed(2) +
+        '" r="11" fill="transparent" stroke="none"><title>' +
+        tip +
+        '</title></circle><circle cx="' +
+        pk[0].toFixed(2) +
+        '" cy="' +
+        pk[1].toFixed(2) +
+        '" r="5.5" fill="rgba(253,242,248,.95)" stroke="#db2777" stroke-width="1.8"><title>' +
+        tip +
+        '</title></circle></g>'
+    )
+  }
+  for (var li = 0; li < n; li++) {
+    var pl = pt(li, labelR / rOuter)
+    parts.push(
+      '<text x="' +
+        pl[0].toFixed(1) +
+        '" y="' +
+        (pl[1] - 5).toFixed(1) +
+        '" fill="#334155" font-size="11" font-weight="700" text-anchor="middle">' +
+        dims[li].label +
+        '</text>'
+    )
+    parts.push(
+      '<text x="' +
+        pl[0].toFixed(1) +
+        '" y="' +
+        (pl[1] + 8).toFixed(1) +
+        '" fill="#64748b" font-size="10.5" font-weight="600" text-anchor="middle">' +
+        values[li] +
+        '</text>'
+    )
+  }
+  return (
+    '<div class="med-radar-wrap"><svg class="med-radar-svg" viewBox="0 0 280 280" role="img" aria-label="患者用药画像五维雷达图，悬停数据点可查看分值">' +
+      parts.join('') +
+      '</svg></div>'
+  )
+}
+function buildMedicationPortraitScores() {
+  return { total: 93, safety: 100, efficacy: 90, suitability: 100, economy: 75, adherence: 100 }
+}
+/** 侧栏简版：摘要 + 小雷达 + 要点；完整长文仅智能问答宽屏 */
+function buildMedicationPortraitCardElementCompact() {
+  var score = buildMedicationPortraitScores()
+  var div = document.createElement('div')
+  div.className = 'check-card med-portrait-card med-portrait-card--compact'
+  div.innerHTML =
+    '<div class="claw-card-title">患者用药画像</div>' +
+    '<p class="med-portrait-compact-tag">侧栏为简版预览；五维分项长文与说明请在「智能问答」查看完整版。</p>' +
+    '<div class="med-portrait-compact-summary">' +
+    '<div class="med-portrait-compact-total">总分 ' +
+    score.total +
+    '</div>' +
+    '<div class="med-portrait-compact-dims">安全性 ' +
+    score.safety +
+    ' · 有效性 ' +
+    score.efficacy +
+    ' · 适宜性 ' +
+    score.suitability +
+    ' · 经济性 ' +
+    score.economy +
+    ' · 依从性 ' +
+    score.adherence +
+    '</div></div>' +
+    '<p class="med-portrait-compact-lead">经济性偏低（月均药费偏高，建议目录内 SGLT2 替代）；适宜性受限于用药记录不全；依从性需关注漏服。CKD 3 期注意达格列净剂量与 eGFR 监测。</p>' +
+    '<div class="med-portrait-compact-radar">' +
+    '<p class="med-portrait-radar-title" style="margin:0 0 4px;font-size:10px">五维雷达（简）</p>' +
+    buildMedicationRadarSvg(score) +
+    '</div>' +
+    '<ul class="med-portrait-compact-bullets">' +
+    '<li>3 日内复诊复核血糖与剂量，补测 HbA1c、血脂</li>' +
+    '<li>每 3 个月复查 eGFR</li>' +
+    '<li>评估医保甲类替代与患者沟通话术</li>' +
+    '</ul>' +
+    '<div class="med-portrait-compact-cta">' +
+    '<button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" style="width:100%;justify-content:center" onclick="openFullMedicationPortraitFromCdss()">在智能问答查看完整版</button>' +
+    '</div>'
+  return div
+}
+function buildMedicationPortraitCardElement() {
+  const score = buildMedicationPortraitScores()
+  const div = document.createElement('div')
+  div.className = 'check-card med-portrait-card'
+  div.innerHTML = `
+    <div class="claw-card-title">患者用药画像</div>
+    <div class="med-portrait">
+      <div class="med-portrait-left">
+        <div class="med-portrait-item">
+          <div class="med-portrait-item-h"><span>总分</span><span class="score">${score.total}</span></div>
+          <p>患者用药画像评价：当前降糖方案存在剂量规范性待确认（空腹血糖 0.5 mmol/L 需复核真实性），达格列净片在 CKD 3 期（eGFR 63.26ml/min）需按指南调整剂量并监测肾功能。用药适应性待完善，未覆盖高脂血症等潜在合并症。依从性表面达标但存在漏服风险，经济性矛盾突出。建议 3 日内复诊复核血糖与药物剂量，并补测 HbA1c、血脂、eGFR 动态监测。</p>
+        </div>
+        <div class="med-portrait-item">
+          <div class="med-portrait-item-h"><span>安全性</span><span class="score">${score.safety}</span></div>
+          <p>基于患者用药档案及健康档案：当前无明确不良反应记录，药物相互作用风险未触发。特殊人群安全用药规则显示达格列净片在儿童及哺乳期禁用，但患者无相关禁忌。肝肾功能检验提示肾小球滤过率 63.26L/min（CKD 3期），需注意达格列净片在 CKD 4期禁用，建议监测肾功能并按指南调整剂量。诊断信息中的 2 型糖尿病与达格列净片适应症匹配，但需警惕腹胀等胃肠道不良反应。综合评估无立即安全风险，建议定期监测肝肾功能及血糖水平。</p>
+        </div>
+        <div class="med-portrait-item">
+          <div class="med-portrait-item-h"><span>有效性</span><span class="score">${score.efficacy}</span></div>
+          <p>基于健康档案全面评估：患者近期空腹血糖 0.5mmol/L（低于正常值，提示可能存在录入误差需复核），餐后血糖及 HbA1c 未提供有效数据，并发症筛查（眼底/神经/肾病）均阴性，肾功能（肌酐 89.81μmol/L）、肝功能（ALT14.8U/L）正常。当前用药方案未明确记录，但根据药品知识库：降糖药需关注达格列净剂量规范性，调脂药需关注瑞舒伐他汀 5-20mg/d 的达标情况。建议优先复诊确认血糖数据准确性及药物方案合规性，重点关注药物剂量与代谢指标匹配性。</p>
+        </div>
+        <div class="med-portrait-item">
+          <div class="med-portrait-item-h"><span>适宜性</span><span class="score">${score.suitability}</span></div>
+          <p>当前输入信息未包含患者具体用药记录及重点关注适应性内容（如用药建议、复查指导等），无法进行用药方案匹配性分析。建议补充患者实际用药清单、疾病诊断详情及药历回访记录，以便评估药物适应症覆盖情况、禁忌证冲突及治疗方案优化需求。</p>
+        </div>
+        <div class="med-portrait-item">
+          <div class="med-portrait-item-h"><span>经济性</span><span class="score">${score.economy}</span></div>
+          <p>基于患者高费用特征及连续 3 个月达格列净片用药记录（月均费用 2800–3300 元），当前治疗方案缺乏医保目录内替代药物选择。建议优先考虑 SGLT2 抑制剂类其他医保甲类药物（如恩格列净），或在内分泌科医生指导下调整降糖方案。患者电话回访未接通（灰标签），需加强用药依从性管理。</p>
+        </div>
+        <div class="med-portrait-item">
+          <div class="med-portrait-item-h"><span>依从性</span><span class="score">${score.adherence}</span></div>
+          <p>患者当前无明确药物依从性问题记录，依从性评分 100 分。基于达格列净片等慢病用药记录分析：取药间隔 3 个月（20250902–20251223）与推荐用药周期匹配，但用药天数 55 天与处方量存在差异，提示潜在漏服风险。建议加强用药监测，设置智能服药提醒，定期复查血糖控制情况，确保治疗连续性。</p>
+        </div>
+      </div>
+      <div class="med-portrait-right">
+        <p class="med-portrait-radar-title">五维评分雷达图</p>
+        ${buildMedicationRadarSvg(score)}
+        <div class="med-portrait-radar-foot">雷达图分层为 20/40/60/80/100 分刻度；悬停顶点可查看该维度分值。优先动作：3 日内复诊复核血糖与剂量；补测 HbA1c/血脂；每 3 个月复查 eGFR（演示）</div>
+      </div>
+    </div>
+  `
+  return div
+}
+async function runMedicationPortraitFlow(target) {
+  activeOutputTarget = target === 'skill' ? 'skill' : 'main'
+  addMsg('患者用药画像', 'user')
+  addLog('→ 调用 🦞 OpenClaw：medication.portrait')
+  const loading = addMsg('正在生成患者用药画像…', 'assistant typing')
+  await sleep(700)
+  if (loading && loading.remove) loading.remove()
+  const div = buildMedicationPortraitCardElement()
+  div.className = 'msg assistant check-card med-portrait-card'
+  const chat = getActiveChat()
+  if (chat) {
+    chat.appendChild(div)
+    chat.scrollTop = 99999
+  }
 }
 function addRiskAssessmentCard(input) {
   const div = buildRiskAssessmentCardElement(input)
