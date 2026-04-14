@@ -141,6 +141,36 @@ body{background:#dfe6ef;margin:0;padding:0}
 .rx-ai-cdss-act-details[open] .rx-ai-cdss-act-summary::after{transform:rotate(90deg)}
 .rx-ai-cdss-actions--grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 8px 8px}
 .rx-ai-cdss-actbtn--compact{padding:6px 6px;font-size:10px;font-weight:600;line-height:1.25;border-radius:6px;text-align:center}
+.rx-ai-cdss-actbtn--pri{
+  border-color:#2563eb;
+  background:linear-gradient(180deg,#dbeafe,#eff6ff);
+  box-shadow:0 0 0 1px rgba(37,99,235,.22);
+  color:#1e3a8a;
+}
+.rx-cdss-skill-fullrow{grid-column:1/-1}
+#rxCdssSkillGrid{
+  transition:box-shadow .25s ease,transform .25s ease;
+}
+@keyframes rxCdssSkillReveal{
+  0%{box-shadow:0 0 0 0 rgba(37,99,235,.45);transform:scale(1)}
+  40%{box-shadow:0 0 0 5px rgba(37,99,235,.18);transform:scale(1.018)}
+  100%{box-shadow:0 0 0 0 rgba(37,99,235,0);transform:scale(1)}
+}
+.rxCdssSkillGrid--pulse{
+  animation:rxCdssSkillReveal .85s ease-out 1;
+  border-radius:8px;
+  outline:1px solid rgba(37,99,235,.35);
+  background:linear-gradient(180deg,rgba(239,246,255,.95),#fff);
+}
+.rx-cdss-refill-rx{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed #7dd3fc}
+.rx-cdss-refill-rx.rx-cdss-refill-rx--show{display:block}
+.rx-cdss-refill-rx-btn{
+  width:100%;padding:8px 10px;border-radius:8px;border:1px solid #15803d;
+  background:linear-gradient(180deg,#22c55e,#15803d);color:#fff;font-size:11px;font-weight:800;
+  cursor:pointer;font-family:inherit;box-shadow:0 2px 8px rgba(21,128,61,.28)
+}
+.rx-cdss-refill-rx-btn:hover{filter:brightness(1.05)}
+.rx-cdss-refill-rx-hint{display:block;margin-top:5px;font-size:9px;color:#64748b;line-height:1.4}
 .rx-ai-cdss-deep .rx-ai-cdss-actions--grid{grid-template-columns:1fr}
 .rx-ai-cdss-deep .rx-ai-cdss-intro{color:#312e81}
 .rx-ai-cdss-ft{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;padding:8px 10px;border-top:1px solid #e9e8f4;background:#fff;flex-shrink:0}
@@ -168,6 +198,32 @@ body{background:#dfe6ef;margin:0;padding:0}
   overflow-y:auto;
   -webkit-overflow-scrolling:touch;
 }
+.rx-cdss-main-task{
+  background:linear-gradient(180deg,#f0f9ff,#fff);
+  border:1px solid #bae6fd;
+  border-radius:10px;
+  padding:8px 10px 10px;
+  margin-bottom:10px;
+  flex-shrink:0;
+}
+.rx-cdss-main-task-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}
+.rx-cdss-main-task-title{font-size:12px;font-weight:800;color:#0c4a6e;letter-spacing:.02em}
+.rx-cdss-main-task-badge{font-size:10px;font-weight:700;color:#0369a1;background:#e0f2fe;border:1px solid #7dd3fc;padding:2px 8px;border-radius:999px}
+.rx-cdss-main-task-lead{margin:0 0 8px;font-size:10px;line-height:1.45;color:#334155}
+.rx-cdss-main-task-seg{display:flex;gap:0;border-radius:8px;overflow:hidden;border:1px solid #93c5fd;margin-bottom:8px}
+.rx-cdss-main-task-opt{flex:1;padding:7px 6px;font-size:11px;font-weight:700;border:none;background:#f8fafc;color:#475569;cursor:pointer;font-family:inherit;line-height:1.25}
+.rx-cdss-main-task-opt:hover{background:#eff6ff;color:#1d4ed8}
+.rx-cdss-main-task-opt.active{background:linear-gradient(180deg,#2563eb,#1d4ed8);color:#fff}
+.rx-cdss-main-task-body{font-size:10px;line-height:1.45;color:#1e293b;background:#fff;border:1px solid #e0f2fe;border-radius:6px;padding:6px 8px}
+.rx-cdss-main-task-body strong{color:#0f172a}
+.rx-cdss-main-task-prior{margin:0;padding-left:14px}
+.rx-cdss-main-task-prior li{margin:4px 0}
+.rx-cdss-main-task-fn{margin:8px 0 0;font-size:9px;line-height:1.45;color:#64748b}
+.rx-cdss-main-task-row{margin-top:6px;text-align:center}
+.rx-cdss-main-task-link{
+  background:none;border:none;padding:0;font-size:10px;color:#2563eb;text-decoration:underline;cursor:pointer;font-family:inherit
+}
+.rx-cdss-main-task-link:hover{color:#1d4ed8}
 #rxAiCdssPaneGuide .rx-ai-cdss-actions{
   flex-shrink:0;
   margin-top:0;
@@ -1542,18 +1598,38 @@ body{background:#dfe6ef;margin:0;padding:0}
   <div class="rx-ai-cdss-body">
     <div id="rxAiCdssPaneGuide" class="rx-ai-cdss-pane rx-ai-cdss-pane--guide active" role="tabpanel">
       <div class="rx-ai-cdss-guide-main">
+      <div class="rx-cdss-main-task" id="rxCdssMainTaskCard">
+        <div class="rx-cdss-main-task-h">
+          <span class="rx-cdss-main-task-title">本次接诊主任务</span>
+          <span class="rx-cdss-main-task-badge" id="rxCdssMainTaskBadge">续方</span>
+        </div>
+        <p class="rx-cdss-main-task-lead">基层常见：先确认患者本次是<strong>续方拿药</strong>为主，还是<strong>就诊看病</strong>为主。这决定侧栏 AI 的<strong>优先策略</strong>——与下方「接诊提醒」里的清单<strong>不是同一套东西</strong>：提醒来自签约健管数据、履约与业务规则（费控/风险/域外流控等），本卡只锚定<strong>本诊一条主线</strong>。</p>
+        <div class="rx-cdss-main-task-seg" role="group" aria-label="本诊主任务类型">
+          <button type="button" class="rx-cdss-main-task-opt active" data-mode="refill" onclick="setRxCdssMainTask('refill')">续方开药</button>
+          <button type="button" class="rx-cdss-main-task-opt" data-mode="visit" onclick="setRxCdssMainTask('visit')">就诊看病</button>
+        </div>
+        <div class="rx-cdss-main-task-body" id="rxCdssMainTaskBody"></div>
+        <div class="rx-cdss-refill-rx" id="rxCdssRefillRxRow">
+          <button type="button" class="rx-cdss-refill-rx-btn" onclick="demoRxOneClickPrescribe()">一键开方（演示）</button>
+          <span class="rx-cdss-refill-rx-hint">续方场景：核对长期用药与禁忌后跳转「处方开具」页保存；与费控/履约提醒可在接诊提醒中并行处理。</span>
+        </div>
+        <p class="rx-cdss-main-task-fn">接诊提醒（重点关注 / 消息 / 待办）= 签约大人头健管与履约驱动的<strong>分流与任务</strong>；本卡 = <strong>本诊节奏二选一</strong>。请先在接诊提醒处理高优先级项，再回到本卡选能力；<strong>主任务不替代待办</strong>，避免重复处理同一事项。</p>
+        <div class="rx-cdss-main-task-row">
+          <button type="button" class="rx-cdss-main-task-link" onclick="openAiTipsPanel('rx')">打开接诊提醒窗口（重点关注 / 消息 / 待办）</button>
+        </div>
+      </div>
       <div class="rx-ai-cdss-intro">您好，我是您的AI临床辅助助手。基于患者当前病情与用药，我将为您提供循证医学支持。需要时再展开下方能力入口。</div>
       <div class="rx-ai-cdss-ts">2026-04-04 14:32</div>
       </div>
-      <details class="rx-ai-cdss-act-details">
+      <details class="rx-ai-cdss-act-details" id="rxCdssActDetails">
         <summary class="rx-ai-cdss-act-summary">临床能力快捷入口 <span style="font-weight:500;color:#64748b">(展开)</span></summary>
-        <div class="rx-ai-cdss-actions rx-ai-cdss-actions--grid">
-          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">病情小结</button>
-          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">慢病风险</button>
-          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">推荐检查</button>
-          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">生活处方</button>
-          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" onclick="mountCdssTipMedicationPortrait()">用药画像</button>
-          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" style="grid-column:1/-1" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">转诊建议</button>
+        <div class="rx-ai-cdss-actions rx-ai-cdss-actions--grid" id="rxCdssSkillGrid">
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" data-cdss-skill="summary" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">病情小结</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" data-cdss-skill="risk" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">慢病风险</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" data-cdss-skill="check" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">推荐检查</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" data-cdss-skill="lifestyle" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">生活处方</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact" data-cdss-skill="portrait" onclick="mountCdssTipMedicationPortrait()">用药画像</button>
+          <button type="button" class="rx-ai-cdss-actbtn rx-ai-cdss-actbtn--compact rx-cdss-skill-fullrow" data-cdss-skill="referral" onclick="openCmcModal();switchTab('lobster',null,{skipRxTips:true});closeRxAiCdssPanel();">转诊建议</button>
         </div>
       </details>
     </div>
@@ -2608,6 +2684,102 @@ function showRxDiagAssist() {
   if (box) box.classList.add('is-visible')
   if (nameEl && tag) nameEl.textContent = (tag.textContent || '当前诊断').replace('+', '').trim()
 }
+var RX_CDSS_MAIN_TASK_KEY = 'rxCdssMainTaskMode'
+function getRxCdssMainTaskMode() {
+  try {
+    var v = sessionStorage.getItem(RX_CDSS_MAIN_TASK_KEY)
+    if (v === 'visit' || v === 'refill') return v
+  } catch (e) {}
+  return 'refill'
+}
+function setRxCdssMainTask(mode) {
+  if (mode !== 'visit' && mode !== 'refill') return
+  try {
+    sessionStorage.setItem(RX_CDSS_MAIN_TASK_KEY, mode)
+  } catch (e) {}
+  refreshRxCdssMainTaskCard({ animateSkill: true })
+}
+/** 切换续方/就诊后：自动展开能力区并播放动效，便于感知顺序变化 */
+function revealRxCdssSkillGridAnimate() {
+  var det = document.getElementById('rxCdssActDetails')
+  var grid = document.getElementById('rxCdssSkillGrid')
+  if (det) det.open = true
+  if (grid) {
+    grid.classList.remove('rxCdssSkillGrid--pulse')
+    void grid.offsetWidth
+    grid.classList.add('rxCdssSkillGrid--pulse')
+    setTimeout(function () {
+      var anchor = det || grid
+      if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+    }, 40)
+    setTimeout(function () {
+      grid.classList.remove('rxCdssSkillGrid--pulse')
+    }, 900)
+  }
+}
+/** 续方：用药画像置顶并高亮；就诊：病情小结+推荐检查优先。转诊建议始终末行通栏 */
+function applyRxCdssSkillGridLayout() {
+  var grid = document.getElementById('rxCdssSkillGrid')
+  if (!grid) return
+  var mode = getRxCdssMainTaskMode()
+  var order =
+    mode === 'refill'
+      ? ['portrait', 'summary', 'risk', 'check', 'lifestyle', 'referral']
+      : ['summary', 'check', 'risk', 'portrait', 'lifestyle', 'referral']
+  var pri = mode === 'refill' ? ['portrait', 'summary'] : ['summary', 'check']
+  var map = {}
+  grid.querySelectorAll('[data-cdss-skill]').forEach(function (btn) {
+    map[btn.getAttribute('data-cdss-skill')] = btn
+  })
+  order.forEach(function (key) {
+    var el = map[key]
+    if (!el) return
+    grid.appendChild(el)
+    el.classList.toggle('rx-ai-cdss-actbtn--pri', pri.indexOf(key) >= 0)
+    el.classList.toggle('rx-cdss-skill-fullrow', key === 'referral')
+  })
+}
+function refreshRxCdssMainTaskCard(opts) {
+  opts = opts || {}
+  var mode = getRxCdssMainTaskMode()
+  var badge = document.getElementById('rxCdssMainTaskBadge')
+  var body = document.getElementById('rxCdssMainTaskBody')
+  var card = document.getElementById('rxCdssMainTaskCard')
+  var refillRx = document.getElementById('rxCdssRefillRxRow')
+  if (refillRx) refillRx.classList.toggle('rx-cdss-refill-rx--show', mode === 'refill')
+  if (card) {
+    card.querySelectorAll('.rx-cdss-main-task-opt').forEach(function (b) {
+      b.classList.toggle('active', b.getAttribute('data-mode') === mode)
+    })
+  }
+  if (badge) badge.textContent = mode === 'refill' ? '续方' : '看病'
+  if (body) {
+    if (mode === 'refill') {
+      body.innerHTML =
+        '<ul class="rx-cdss-main-task-prior">' +
+        '<li><strong>侧栏 AI 优先：</strong>用药画像、依从与经济性、处方结构与费控（目录内替代等）。</li>' +
+        '<li><strong>与接诊提醒配合：</strong>「高费用」「用药画像」等提醒<strong>服务续方场景</strong>；需跟进闭环请用提醒内<strong>转待办</strong>，勿与本卡重复劳动。</li>' +
+        '<li><strong>快捷入口：</strong>切换本任务后将<strong>自动展开</strong>下方区域并<strong>闪烁提示</strong>；按钮已按续方排序，「用药画像」「病情小结」<strong>高亮</strong>。</li>' +
+        '</ul>'
+    } else {
+      body.innerHTML =
+        '<ul class="rx-cdss-main-task-prior">' +
+        '<li><strong>侧栏 AI 优先：</strong>病情小结与线索、待检/履约类检查推荐、慢病风险评估与转诊建议。</li>' +
+        '<li><strong>与接诊提醒配合：</strong>「待检与履约」「病情风险」等<strong>对齐检查与随访</strong>；本诊以问诊评估为主，清单项仍在提醒窗口处理。</li>' +
+        '<li><strong>快捷入口：</strong>切换后将<strong>自动展开</strong>并<strong>闪烁提示</strong>；按钮已按就诊排序，「病情小结」「推荐检查」<strong>高亮</strong>。</li>' +
+        '</ul>'
+    }
+  }
+  applyRxCdssSkillGridLayout()
+  if (opts.animateSkill) revealRxCdssSkillGridAnimate()
+}
+function demoRxOneClickPrescribe() {
+  openCmcModal()
+  var tabEl = document.querySelector('.tab[data-tab="prescription"]')
+  switchTab('prescription', tabEl, { skipRxTips: true })
+  closeRxAiCdssPanel()
+  showRxAiToast('已打开「处方开具」；请核对药品与用量后保存（演示 · 一键开方）')
+}
 function openRxAiCdssPanel() {
   var o = document.getElementById('cmc-overlay')
   if (o && !o.classList.contains('is-open')) openCmcModal()
@@ -2618,6 +2790,7 @@ function openRxAiCdssPanel() {
     b.setAttribute('aria-hidden', 'false')
   }
   if (p) p.classList.add('is-open')
+  refreshRxCdssMainTaskCard()
 }
 function closeRxAiCdssPanel() {
   var b = document.getElementById('rxAiCdssBackdrop')
@@ -5014,6 +5187,7 @@ async function myTasks() {
   function boot() {
     refreshAiTipsCountBadges()
     tryScheduleAiReceptionTips()
+    refreshRxCdssMainTaskCard()
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot)
   else boot()
