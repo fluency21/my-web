@@ -993,7 +993,7 @@ body{background:#dfe6ef;margin:0;padding:0}
   <div class="ai-fab-stack" id="hisAiFabStack">
     <span class="ai-fab-tip-count" data-ai-tip-count>0</span>
     <button type="button" class="ai-doc-fab ai-doc-fab--pulse" id="aiFabHis" onclick="toggleHisAiFabMenu(event)" title="智能辅助诊疗 / 接诊智能提示" aria-expanded="false" aria-haspopup="true" aria-controls="hisAiFabMenu" aria-label="打开 AI 助手菜单">
-      <img src="assets/ai-robot-avatar.png" alt="" class="ai-doc-fab-img" width="44" height="44" />
+      <img src="assets/ai-robot-avatar.png" data-ai-avatar="1" alt="" class="ai-doc-fab-img" width="44" height="44" />
     </button>
   </div>
 </div>
@@ -1022,7 +1022,7 @@ body{background:#dfe6ef;margin:0;padding:0}
     </div>
     <div class="doctor-ai-info" id="header-doctor-ai-info">
       <div class="doctor-ai-main">
-        <img class="doctor-ai-avatar" src="assets/ai-robot-avatar.png" alt="" width="30" height="30" />
+        <img class="doctor-ai-avatar" src="assets/ai-robot-avatar.png" data-ai-avatar="1" alt="" width="30" height="30" />
         <div>
           <div class="doctor-ai-name">肖红 · 内分泌调理科</div>
           <div class="doctor-ai-meta">AI医生智能体会话中（当前患者上下文）</div>
@@ -1612,7 +1612,7 @@ body{background:#dfe6ef;margin:0;padding:0}
         <div class="agent-home-grid" aria-hidden="true"></div>
         <div class="agent-home-inner">
           <div class="agent-home-brand">
-            <img src="assets/ai-robot-avatar.png" alt="" width="52" height="52" />
+            <img src="assets/ai-robot-avatar.png" data-ai-avatar="1" alt="" width="52" height="52" />
             <div>
               <h1 class="agent-home-h1">AI 医生智能体</h1>
               <p class="agent-home-sub">诊间核心智能中枢（演示）· 承接工作台与处方上下文 · 会话可从小窗「最大化」无缝续接</p>
@@ -1837,7 +1837,7 @@ body{background:#dfe6ef;margin:0;padding:0}
       <div class="ai-fab-stack ai-fab-stack--rx" id="aiFabRxStack">
         <span class="ai-fab-tip-count" data-ai-tip-count>0</span>
         <button type="button" class="ai-doc-fab ai-doc-fab--rx" id="aiFabRx" onclick="toggleRxAiFabMenu(event)" title="智能辅助诊疗 / 接诊智能提示" aria-expanded="false" aria-haspopup="true" aria-controls="rxAiFabMenu" aria-label="打开 AI 助手菜单">
-          <img src="assets/ai-robot-avatar.png" alt="" class="ai-doc-fab-img" width="44" height="44" />
+          <img src="assets/ai-robot-avatar.png" data-ai-avatar="1" alt="" class="ai-doc-fab-img" width="44" height="44" />
         </button>
       </div>
     </div>
@@ -1847,7 +1847,7 @@ body{background:#dfe6ef;margin:0;padding:0}
 <div id="rxAiCdssBackdrop" class="rx-ai-cdss-backdrop" onclick="closeRxAiCdssPanel()" aria-hidden="true"></div>
 <aside id="rxAiCdssPanel" class="rx-ai-cdss-panel" role="dialog" aria-labelledby="rxAiCdssTitle" aria-modal="true" onclick="event.stopPropagation()">
   <div class="rx-ai-cdss-hd">
-    <div class="rx-ai-cdss-hd-ico"><img src="assets/ai-robot-avatar.png" alt="" width="36" height="36" /></div>
+    <div class="rx-ai-cdss-hd-ico"><img src="assets/ai-robot-avatar.png" data-ai-avatar="1" alt="" width="36" height="36" /></div>
     <div class="rx-ai-cdss-hd-title" id="rxAiCdssTitle">AI-CDSS 临床辅助</div>
     <button type="button" class="rx-ai-cdss-hd-x" onclick="closeRxAiCdssPanel()" aria-label="关闭">×</button>
   </div>
@@ -1927,7 +1927,7 @@ body{background:#dfe6ef;margin:0;padding:0}
 <div id="aiTipsBackdrop" class="ai-tips-backdrop" onclick="closeAiTipsPanel()"></div>
 <div id="aiTipsPanel" class="ai-tips-panel" role="dialog" aria-modal="true" aria-labelledby="aiTipsTitle">
   <div class="ai-tips-head">
-    <div class="ai-tips-ico"><img src="assets/ai-robot-avatar.png" alt="" width="34" height="34" /></div>
+    <div class="ai-tips-ico"><img src="assets/ai-robot-avatar.png" data-ai-avatar="1" alt="" width="34" height="34" /></div>
     <div>
       <div id="aiTipsTitle" class="ai-tips-title">接诊智能提示</div>
     </div>
@@ -2840,26 +2840,95 @@ function mountCdssTipMedicationPortrait() {
 }
 function openCdssFromTip(mode) {
   closeAiTipsPanel()
-  openRxAiCdssPanel()
-  switchRxAiCdssTab('guide')
-  if (mode === 'check-insurance') mountCdssTipCheckInsurance()
-  else if (mode === 'tang-risk') mountCdssTipTangRisk()
-  else if (mode === 'plan-ht-enhanced') mountCdssTipPlanHtEnhanced()
-  else if (mode === 'tang-mgmt') mountCdssTipTangRiskCustom('<strong>糖尿病可缓解 · 管理方案确认</strong>', '慢病风险评估标签 · 糖缓解管理')
-  else if (mode === 'tang-eval') mountCdssTipTangRiskCustom('<strong>糖尿病可缓解 · 进一步评估</strong>', '慢病风险评估标签 · 糖缓解评估')
-  else if (mode === 'risk-ht-warn') mountCdssTipRiskHtWarn()
-  else if (mode === 'risk-copd') mountCdssTipRiskCopd()
-  else if (mode === 'plan-chd-high') mountCdssTipPlanChd('high')
-  else if (mode === 'plan-chd-mid') mountCdssTipPlanChd('mid')
-  else if (mode === 'summary') mountCdssTipConditionSummary()
-  else if (mode === 'plan-cost') mountCdssTipPlanCostTeaser()
-  else if (mode === 'med-portrait') mountCdssTipMedicationPortrait()
+  closeRxAiCdssPanel()
+  openCmcModal()
+  switchTab('ai-agent', document.querySelector('.tab[data-tab="ai-agent"]'), { skipRxTips: true })
+  ensureAgentSessionForChat()
+  var chat = document.getElementById('chat-agent')
+  if (!chat) return
+  var head = document.createElement('div')
+  head.className = 'msg assistant'
+  head.textContent = '已根据接诊智能提示打开 AI 智能助手，并自动推送以下卡片（演示）：'
+  chat.appendChild(head)
+  var card = null
+  if (mode === 'check-insurance') {
+    card = buildCheckRecommendationCardElement('insurance')
+  } else if (mode === 'tang-risk') {
+    card = buildRiskAssessmentCardElement(collectArchiveInput())
+    var t1 = card.querySelector('.claw-card-title')
+    if (t1) t1.textContent = '慢病风险评估标签 · 糖缓解评估'
+  } else if (mode === 'plan-ht-enhanced') {
+    card = document.createElement('div')
+    card.className = 'check-card'
+    card.innerHTML = '<div class="claw-card-title">推荐诊疗方案 · 高血压（难治型）</div><div style="font-size:11px;color:#37474f;line-height:1.55;margin-top:6px">基于 AI 拟诊「难治型高血压」，可继续追问联合用药与诊疗路径（演示）。</div>'
+  } else if (mode === 'tang-mgmt') {
+    card = buildRiskAssessmentCardElement(collectArchiveInput())
+    var t2 = card.querySelector('.claw-card-title')
+    if (t2) t2.textContent = '慢病风险评估标签 · 糖缓解管理'
+  } else if (mode === 'tang-eval') {
+    card = buildRiskAssessmentCardElement(collectArchiveInput())
+    var t3 = card.querySelector('.claw-card-title')
+    if (t3) t3.textContent = '慢病风险评估标签 · 糖缓解评估'
+  } else if (mode === 'risk-ht-warn') {
+    card = buildRiskAssessmentCardElement(collectArchiveInput())
+    var t4 = card.querySelector('.claw-card-title')
+    if (t4) t4.textContent = '慢病风险评估标签 · 高血压分层'
+  } else if (mode === 'risk-copd') {
+    card = buildRiskAssessmentCardElement(collectArchiveInput())
+    var t5 = card.querySelector('.claw-card-title')
+    if (t5) t5.textContent = '慢阻肺高风险 · 分层与转诊建议'
+  } else if (mode === 'plan-chd-high' || mode === 'plan-chd-mid') {
+    var prob = mode === 'plan-chd-high' ? '高概率' : '中概率'
+    card = document.createElement('div')
+    card.className = 'check-card'
+    card.innerHTML = '<div class="claw-card-title">诊疗方案推荐 · 慢性冠脉综合征（' + prob + '）</div><div style="font-size:11px;color:#37474f;line-height:1.55;margin-top:6px">已推送冠脉综合征诊疗摘要卡片，可继续追问完整选品与路径（演示）。</div>'
+  } else if (mode === 'summary') {
+    card = document.createElement('div')
+    card.className = 'check-card'
+    card.innerHTML = '<div class="claw-card-title">AI 病情小结（侧栏摘要）</div>'
+    var pre = document.createElement('div')
+    pre.style.cssText = 'white-space:pre-wrap;font-size:11px;color:#334155;line-height:1.5;max-height:240px;overflow:auto;margin:6px 0 0;padding:8px 10px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0'
+    pre.textContent = typeof buildArchiveSummary === 'function' ? buildArchiveSummary(collectArchiveInput()) : ''
+    card.appendChild(pre)
+  } else if (mode === 'plan-cost') {
+    card = document.createElement('div')
+    card.className = 'check-card'
+    card.innerHTML = '<div class="claw-card-title">最具性价比治疗方案（演示）</div><div style="font-size:11px;color:#37474f;line-height:1.55;margin-top:6px">与高费用处方结构优化同源，可继续追问集采替代与费用测算。</div>'
+  } else if (mode === 'med-portrait') {
+    card = buildMedicationPortraitCardElementCompact()
+  }
+  if (card) {
+    card.classList.add('msg', 'assistant')
+    chat.appendChild(card)
+  }
+  chat.scrollTop = 99999
 }
 function openCdssCardFromTip(title, lines) {
   closeAiTipsPanel()
-  openRxAiCdssPanel()
-  switchRxAiCdssTab('guide')
-  appendCdssTipCard(title, lines || [])
+  closeRxAiCdssPanel()
+  openCmcModal()
+  switchTab('ai-agent', document.querySelector('.tab[data-tab="ai-agent"]'), { skipRxTips: true })
+  ensureAgentSessionForChat()
+  var chat = document.getElementById('chat-agent')
+  if (!chat) return
+  var head = document.createElement('div')
+  head.className = 'msg assistant'
+  head.textContent = '已从接诊智能提示进入 AI 智能助手，以下为自动推送卡片：'
+  chat.appendChild(head)
+  var card = document.createElement('div')
+  card.className = 'msg assistant check-card'
+  card.innerHTML = '<div class="claw-card-title">' + (title || '提醒消息') + '</div>'
+  var ul = document.createElement('ul')
+  ul.style.margin = '6px 0 0'
+  ul.style.paddingLeft = '16px'
+  ;(lines || []).forEach(function (x) {
+    var li = document.createElement('li')
+    li.textContent = x
+    ul.appendChild(li)
+  })
+  card.appendChild(ul)
+  chat.appendChild(card)
+  chat.scrollTop = 99999
 }
 /** 接诊提示「立即评估」→ 健共体 Skill 版 + 慢病风险评估引导流程 */
 async function aiTipStartSkillEvaluation() {
@@ -6407,8 +6476,31 @@ async function myTasks() {
 
 智能助手会持续执行并提醒。`)
 }
+function resolveAiAvatarSources() {
+  var imgs = Array.from(document.querySelectorAll('img[data-ai-avatar]'))
+  if (!imgs.length) return
+  var candidates = [
+    'assets/ai-robot-avatar.png',
+    './assets/ai-robot-avatar.png',
+    '../assets/ai-robot-avatar.png',
+    'demos/assets/ai-robot-avatar.png',
+    '/assets/ai-robot-avatar.png',
+    '/demos/assets/ai-robot-avatar.png'
+  ]
+  var pick = function (url) {
+    imgs.forEach(function (img) { img.src = url })
+  }
+  ;(function tryNext(i) {
+    if (i >= candidates.length) return
+    var test = new Image()
+    test.onload = function () { pick(candidates[i]) }
+    test.onerror = function () { tryNext(i + 1) }
+    test.src = candidates[i]
+  })(0)
+}
 ;(function initAiReceptionDemo() {
   function boot() {
+    resolveAiAvatarSources()
     refreshAiTipsCountBadges()
     refreshRxCdssMainTaskCard()
     initRxDrugLockInput()
